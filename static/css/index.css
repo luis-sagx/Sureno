@@ -1,0 +1,120 @@
+:root {
+    /* Color Palette */
+    --cafe: rgb(95, 68, 52);          /* Rich brown */
+    --beige: #F5F5DC;         /* Soft beige */
+    --celeste: #87CEEB;       /* Sky blue */
+    --white: #FFFFFF;         /* Pure white */
+    --black: #000000;         /* Pure black */
+    --celeste-oscuro: #316168;
+    --boton-cafe: #906243;
+    --boton-cafe-hover: #fc894f;
+    --boton-celeste: #408791;
+    --boton-celeste-hover: #00b1c9;
+    
+    /* Light Theme */
+    --bg-color: var(--white);
+    --text-color: var(--cafe);
+    --header-bg: var(--beige);
+    --nav-bg: var(--cafe);
+    --link-color: var(--white);
+    --hover-link-color: var(--celeste);
+    --icon-color: var(--cafe);
+    --checkbox-bg: var(--cafe);
+    --checkbox-ball: var(--beige);
+    --section-1: var(--beige);
+    --section-2: var(--celeste);
+}
+
+/* Dark Theme */
+body.dark-mode {
+    --bg-color: #1E1E1E;
+    --text-color: var(--beige);
+    --header-bg: #2b2a2a;
+    --nav-bg: var(--cafe);
+    --link-color: var(--beige);
+    --hover-link-color: var(--celeste);
+    --icon-color: var(--beige);
+    --checkbox-bg: var(--beige);
+    --checkbox-ball: var(--cafe);
+    --section-1: var(--cafe);
+    --section-2: var(--celeste-oscuro);
+}
+
+.banner {
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+    ), url('../img/Fondo-main.webp'); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.content-banner {
+    background-color: rgba(0,0,0,0.5);
+    padding: 4rem 0;
+}
+
+.banner-subtitle {
+    font-size: 1.5rem;
+    color: var(--white);
+    font-style: italic;
+    font-weight: bold;
+    padding: 1.5rem;
+    text-shadow: 0px 0px 10px rgba(255, 252, 221, 0.5);
+}
+
+.banner-title {
+    font-weight: bold;
+    color: var(--white);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    padding: 2rem;
+    background-color: var(--bg-color);
+}
+
+.gallery img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+.services {
+    background-color: var(--section-1);
+    padding: 4rem 0;
+}
+
+.services-content {
+    text-align: center;
+}
+
+.services-group {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.services-1 {
+    text-align: center;
+    padding: 1rem;
+    transition: transform 0.3s;
+}
+
+.services-1:hover {
+    transform: scale(1.05);
+}
+
+.services-1 img {
+    max-width: 150px;
+    margin-bottom: 1rem;
+}

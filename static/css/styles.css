@@ -1,0 +1,180 @@
+:root {
+    /* Color Palette */
+    --cafe: #6F4E37;          /* Rich brown */
+    --beige: #F5F5DC;         /* Soft beige */
+    --celeste: #87CEEB;       /* Sky blue */
+    --white: #FFFFFF;         /* Pure white */
+    --black: #000000;         /* Pure black */
+    --celeste-oscuro: #316168;
+    --boton-cafe: #906243;
+    --boton-cafe-hover: #fc894f;
+    --boton-celeste: #408791;
+    --boton-celeste-hover: #00b1c9;
+    
+    /* Light Theme */
+    --bg-color: var(--white);
+    --text-color: var(--cafe);
+    --header-bg: var(--beige);
+    --nav-bg: var(--cafe);
+    --link-color: var(--white);
+    --hover-link-color:rgb(255, 255, 221);
+    --icon-color: var(--cafe);
+    --checkbox-bg: var(--cafe);
+    --checkbox-ball: var(--beige);
+    --section-1: var(--beige);
+    --section-2: var(--celeste);
+}
+
+/* Dark Theme */
+body.dark-mode {
+    --bg-color: #1E1E1E;
+    --text-color: var(--beige);
+    --header-bg: #2b2a2a;
+    --nav-bg: var(--cafe);
+    --link-color: var(--beige);
+    --hover-link-color: rgb(255, 255, 221);
+    --icon-color: var(--beige);
+    --checkbox-bg: var(--beige);
+    --checkbox-ball: var(--cafe);
+    --section-1: var(--cafe);
+    --section-2: var(--celeste-oscuro);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Header Styles */
+.bg-custom {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+    width: 3.5rem;
+    object-fit: cover;
+}
+
+.site-title {
+    font-style: italic;
+    font-family: "Pacifico";
+    font-weight: bold;
+    font-size: 2.5rem;
+    color: var(--text-color);
+}
+
+/* Navigation Styles */
+.navbar {
+    background-color: var(--nav-bg) !important;
+    padding: 0.5rem 0;
+}
+
+.navbar-nav .nav-link {
+    color: var(--link-color) !important;
+    transition: color 0.3s;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--hover-link-color) !important;
+    text-shadow: 0px 0px 10px rgba(255, 252, 221, 0.5);
+}
+
+.icono-nav{
+    color: var(--cafe);
+}
+
+.btn-1{
+    background-color: var(--boton-cafe);
+}
+
+.btn-1:hover{
+    background-color: var(--boton-cafe-hover);
+}
+
+.btn-2{
+    background-color: var(--boton-celeste);
+}
+
+.btn-2:hover{
+    background-color: var(--boton-celeste-hover);
+}
+
+.btn-1, .btn-2 {
+    color: var(--white);
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--nav-bg);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.social-icons {
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    color: var(--white);
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: var(--celeste);
+}
+
+/* Dark Mode Toggle */
+.toggle-container {
+    width: 50px;
+    height: 25px;
+    background-color: var(--checkbox-bg);
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-ball {
+    width: 20px;
+    height: 20px;
+    background-color: var(--checkbox-ball);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    transform: translateY(-50%);
+    transition: left 0.3s, background-color 0.3s;
+}
+
+body.dark-mode .toggle-ball {
+    left: 27px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .logo {
+        width: 3.5rem;
+    }
+    
+    .site-title {
+        font-size: 2rem;
+    }
+    
+    .services-group {
+        flex-direction: column;
+    }
+    
+    .services-1 {
+        margin-bottom: 1rem;
+    }
+    
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}

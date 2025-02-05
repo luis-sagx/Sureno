@@ -1,11 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sureño</title>
-</head>
-<body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<section class="banner container-fluid p-0">
+    <div class="content-banner text-center text-white py-5">
+        <div class="container">
+            <p class="mb-3 banner-subtitle">El mejor trago para el paladar</p><br><br>
+            <h2 class="display-4 mb-4 banner-title">100% Natural <br>Licor de excelensia</h2>
+            <a href="./carKit.html" class="btn btn-1">Comprar Ahora</a>
+        </div>
+    </div>
+</section>
+
+<div class="services">
+    <div class="services-content container">
+        <h2 class="site-title ">¿Te gustaría saber más de nosotros?</h2>
+        <div class="services-group">
+            <div class="services-1">
+                <img src="./static/img/Elaboracion.png" alt="">
+                <h3>Elaboración</h3>
+            </div>
+            <div class="services-1">
+                <img src="./static/img/Fabricantes.png" alt="">
+                <h3>Fabricantes</h3>
+            </div>
+            <div class="services-1">
+                <img src="./static/img/producto.png" alt="">
+                <h3>Productos</h3>
+            </div>
+        </div>
+        <p>
+            En una pequeña esquina de la ciudad, donde las luces tintinean 
+            y el aroma de los buenos momentos flota en el aire, se encuentra 
+            <em>"SUREÑO"</em>, la tienda de licores que transforma cualquier ocasión 
+            en una experiencia inolvidable.
+        </p>
+        <a href="./aboutUs.html" class="btn btn-1">Información</a>
+    </div>
+</div>
+<section class="gallery container my-5">
+    <div class="row g-3">
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="" class="img-fluid rounded shadow" alt="Galería 1">
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="" class="img-fluid rounded shadow" alt="Galería 2">
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="" class="img-fluid rounded shadow" alt="Galería 3">
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="" class="img-fluid rounded shadow" alt="Galería 4">
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="" class="img-fluid rounded shadow" alt="Galería 5">
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="" class="img-fluid rounded shadow" alt="Galería 6">
+        </div>
+    </div>
+</section>
+
+{% endblock %}

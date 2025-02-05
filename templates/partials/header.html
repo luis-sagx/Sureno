@@ -1,0 +1,25 @@
+<header class="bg-custom">
+    <div class="container">
+        <div class="row align-items-center py-3">
+            <div class="col-4 d-flex align-items-center">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" class="img-fluid logo">
+                <h1 class="ms-3 mb-0 text-custom site-title">Sureño</h1>
+            </div>
+            <div class="col-8 d-flex justify-content-end align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('login') }}" class="me-3">
+                        <i class="fa-solid fa-user fa-2x text-custom icono-nav"></i>
+                    </a>
+                    <a href="{{ url_for('cart') }}" class="me-3">
+                        <i class="fa-solid fa-cart-shopping fa-2x text-custom icono-nav"></i>
+                    </a>
+                    <div class="form-check form-switch me-2">
+                        <div class="toggle-container" id="dark-mode-toggle">
+                            <div class="toggle-ball"></div>
+                        </div>
+                    </div>                        
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
