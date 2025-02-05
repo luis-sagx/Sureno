@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+
+{% extends "base.html" %} {% block content %}
+
+<section class="phrase-container">
+  <div class="phrase-info">
+    <p>
+      En cada botella de Sureño, destilamos tradición, pasión y el sabor de lo
+      auténtico, para que cada momento se convierta en una experiencia única.
+    </p>
+  </div>
+</section>
+<section id="aboutUs">
+  <div class="section history">
+    <img src="{{ url_for('static', filename='img/history.jpg') }}" alt="history"/>
+    <div class="aboutUs-information">
+      <div class="center-information">
+        <h2>Nuestra Historia</h2>
+        <p>
+          Desde 1980, <strong>Sureño</strong> ha sido sinónimo de calidad y
+          tradición. Ubicados al sur de Quito, trabajamos con dedicación para
+          ofrecer licores excepcionales que combinan el arte artesanal con los
+          más altos estándares de producción.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section valors">
+    <div class="aboutUs-information">
+      <div class="center-information">
+        <h2>Nuestros Valores</h2>
+        <ul>
+          <li>
+            <strong>Calidad:</strong> Garantizamos un producto excepcional en
+            cada botella.
+          </li>
+          <li>
+            <strong>Tradición:</strong> Respetamos las técnicas artesanales en
+            cada proceso.
+          </li>
+          <li>
+            <strong>Innovación:</strong> Creamos nuevas experiencias para
+            nuestros clientes.
+          </li>
+          <li>
+            <strong>Compromiso:</strong> Apoyamos la producción local y
+            sostenible.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <img src="{{ url_for('static', filename='img/valores.jpeg') }}" alt="valores"/>
+  </div>
+
+  <div class="section show-products">
+    <div class="center-information">
+      <h2>Nuestros Productos</h2>
+      <p>Ofrecemos una variedad de bebidas espirituosas:</p>
+      <ul>
+        <li><strong>Vinos:</strong> Elegantes y de sabor refinado.</li>
+        <li><strong>Whisky:</strong> Perfectamente añejados.</li>
+        <li><strong>Vodka:</strong> Destilados con pureza excepcional.</li>
+        <li><strong>Aguardiente:</strong> Tradicional y auténtico.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
