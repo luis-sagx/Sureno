@@ -1,30 +1,30 @@
 :root {
-    --bg-color: white;
+    --bg-color: #FFFFFF;
     --text-color: #4E342E;
     --link-color: #6F4E37;
     --input-border: #1B1A17;
     --button-bg: #906243;
-    --button-text: white;
+    --button-text: #FFFFFF;
     --button-hover-bg: #fc894f;
-    --info-bg: #82CBD4;
+    --info-bg: #8FC1D4;
     --info-text: #4E342E;
-    --icon-bg: #d1D6D7;
-    --form-bg: #fdc887;
+    --icon-bg: #f5f1dc;
+    --form-bg: #f5f1dc;
     --form-text-bg: #4E342E;
     --map-bg: #333333;
 }
 
 body.dark-mode {
     --bg-color: #1E1E1E;
-    --text-color: #F5F5F5;
-    --link-color: #F5F5F5;
-    --input-border: #1B1A17;
+    --text-color: #FFFFFF;
+    --link-color: #FFFFFF;
+    --input-border:#000000;
     --button-bg: #906243;
     --button-text: white;
     --button-hover-bg: #fc894f;
     --info-bg: #2e5c63;
     --info-text: white;
-    --icon-bg: #f7b462;
+    --icon-bg: #6f4e37;
     --form-bg: rgb(95, 68, 52);
     --form-text-bg: white;
     --map-bg: #333333;
