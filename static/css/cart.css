@@ -1,0 +1,212 @@
+:root {
+    --beige: #f5f1dc;
+    --white: #FFFFFF;
+    --cafe: #6F4E37;
+    --naranja: #fc894f;
+    --p-color: black;
+    --boton-cafe: #906243;
+    --boton-cafe-hover: var(--naranja);
+    --card: var(--beige);
+    --text-color: var(--cafe);
+    --boton-celeste: #408791;
+    --boton-celeste-hover: #00b1c9;
+    --title-color: var(--black);
+}
+
+
+/* Dark Theme */
+
+body.dark-mode {
+    --bg-color: #1E1E1E;
+    --text-color: var(--beige);
+    --header-bg: #2b2a2a;
+    --nav-bg: var(--cafe);
+    --link-color: var(--beige);
+    --hover-link-color: rgb(255, 255, 221);
+    --icon-color: var(--beige);
+    --checkbox-bg: var(--beige);
+    --checkbox-ball: var(--cafe);
+    --section-1: var(--cafe);
+    --section-2: var(--celeste-oscuro);
+    --card: var(--cafe);
+    --text-color: var(--beige);
+    --title-color: var(--white);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.cart-box {
+    width: 50rem;
+    margin: auto;
+    margin-top: 1.875rem;
+    margin-bottom: 1.875rem;
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    background-color: var(--card);
+    box-shadow: 0 0.25rem 0.9375rem var(--box-shadow);
+}
+
+.cart-box h1 {
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 1.25rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    color: var(--text-color);
+}
+
+.item-details p {
+    color: var(--text-color);
+}
+
+@keyframes animateLiquorCard {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.cart-item img {
+    width: 9.375rem;
+    height: auto;
+    border-radius: 0.625rem;
+    margin-right: 1.25rem;
+}
+
+.cart-item img:hover {
+    animation: animateLiquorCard 1s;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-details h2 {
+    font-size: 1.2rem;
+    color: var(--title-color);
+    margin-bottom: 0.3125rem
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--price-color);
+}
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    margin-top: 0.625rem
+}
+
+.quantity-btn {
+    background-color: var(--boton-cafe);
+    color: white;
+    border: none;
+    padding: 0.3125rem 0.625rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 0.3125rem;
+    margin: 0 0.3125rem;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.quantity-btn:hover {
+    background-color: var(--boton-cafe-hover);
+    transform: scale(1.05);
+}
+
+.quantity-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid var(--input-border);
+    background-color: var(--cart-bg);
+    color: var(--text-color);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: var(--remove-btn);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.remove-btn:hover {
+    color: var(--remove-hover);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.total-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+.total-price {
+    color: #fc894f;
+    font-weight: bold;
+}
+
+.checkout-btn {
+    display: block;
+    width: 95%;
+    padding: 10px 20px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.checkout-btn:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+.btn {
+    margin: auto;
+}
+
+.btn-1 {
+    background-color: var(--boton-cafe);
+    margin: auto;
+}
+
+.btn-1:hover {
+    background-color: var(--boton-cafe-hover);
+}

@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="{{url_for('static', filename='css/cart.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
+/>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> {% extends "base.html" %} {% block content %}
+
+
+<div class="container">
+    <div class="cart-box">
+        <h1>Carrito de Compras</h1>
+        <div class="cart-item">
+            <img src="./images/whisky.jpg" alt="Producto">
+            <div class="item-details">
+                <h2>Whisky</h2>
+                <p>Whisky Sureño es una mezcla exclusiva de malta seleccionada, añejada por años para alcanzar una suavidad y complejidad única.</p>
+                <p>750ml</p>
+                <span class="price">$12.00</span>
+                <div class="quantity-box">
+                    <button class="quantity-btn">-</button>
+                    <input type="number" value="1" class="quantity-input">
+                    <button class="quantity-btn">+</button>
+                </div>
+            </div>
+            <button class="remove-btn"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <hr>
+        <div class="cart-item">
+            <img src="./images/vodka.jpg" alt="Producto">
+            <div class="item-details">
+                <h2>Vodka</h2>
+                <p>Bebida destilada de la más alta pureza, obtenida a partir de granos seleccionados. Con un sabor suave y limpio, es perfecto para disfrutar solo o en cócteles.</p>
+                <p>750ml</p>
+                <span class="price">$7.00</span>
+                <div class="quantity-box">
+                    <button class="quantity-btn">-</button>
+                    <input type="number" value="2" class="quantity-input">
+                    <button class="quantity-btn">+</button>
+                </div>
+            </div>
+            <button class="remove-btn"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <hr>
+        <div class="total-box">
+            <h3>Total:</h3>
+            <span class="total-price">$19.00</span>
+        </div>
+        <a href="CheckOut.html" class="btn btn-1">Finalizar Compra</a>
+    </div>
+
+</div>
+{% endblock %}

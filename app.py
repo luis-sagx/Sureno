@@ -20,11 +20,11 @@ def contact():
 
 @app.route('/cart')
 def cart():
-    return "Página del carrito"
+    return render_template('cart.html')
 
 @app.route('/login')
 def login():
-    return "Página de login"
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
