@@ -10,8 +10,11 @@
                     <a href="{{ url_for('login') }}" class="me-3">
                         <i class="fa-solid fa-user fa-2x text-custom icono-nav"></i>
                     </a>
-                    <a href="{{ url_for('cart') }}" class="me-3">
-                        <i class="fa-solid fa-cart-shopping fa-2x text-custom icono-nav"></i>
+                    <a href="{{ url_for('cart') }}" class="me-3 position-relative">
+                        <i class="fa-solid fa-cart-shopping fa-2x text-custom icono-nav" id="cart-icon"></i>
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            0
+                        </span>
                     </a>
                     <div class="form-check form-switch me-2">
                         <div class="toggle-container" id="dark-mode-toggle">

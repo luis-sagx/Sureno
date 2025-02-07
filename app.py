@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from routes import register_routes
 
 app = Flask(__name__)
 
@@ -10,9 +11,14 @@ def index():
 def about():
     return render_template('aboutUs.html')
 
+from models.product import ProductModel
+
 @app.route('/products')
 def products():
-    return render_template('product.html')
+    products = ProductModel.get_all()
+    for product in products:
+        product['_id'] = str(product['_id'])
+    return render_template('product.html', products=products)
 
 @app.route('/contact')
 def contact():
@@ -26,5 +32,7 @@ def cart():
 def login():
     return render_template('login.html')
 
+register_routes(app)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

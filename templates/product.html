@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Importar SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container">
+    <h1 class="text-center my-4 site-title">Productos Sureño</h1>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 section-2">
+                <img src="{{ product.imagen }}" class="card-img-top img-fluid" alt="{{ product.nombre }}" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.nombre }}</h5>
+                    <p class="card-text text-muted">{{ product.descripcion }}</p>
+                    <p>Caja: 12 unidades</p>
+                    <p class="fw-bold">Precio: ${{ product.precio }}</p>
+                    <p class="badge section-1">{{ product.tipo }}</p>
+                    <p class="badge section-2">{{ product.militros }} ml</p>
+                    <button class="btn btn-2 w-100 mt-2" 
+                        onclick="agregarAlCarrito('{{ product._id }}', '{{ product.nombre }}', '{{ product.precio }}', '{{ product.imagen }}', '{{ product.militros }}')">
+                        <i class="fas fa-cart-plus"></i> Agregar al carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% endblock %}
