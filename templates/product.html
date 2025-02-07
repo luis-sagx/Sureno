@@ -8,9 +8,9 @@
     <h1 class="text-center my-4 site-title">Productos Sureño</h1>
     <div class="row">
         {% for product in products %}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card shadow-sm border-0 section-2">
-                <img src="{{ product.imagen }}" class="card-img-top img-fluid" alt="{{ product.nombre }}" style="height: 250px; object-fit: cover;">
+                <img src="{{ product.imagen }}" class="card-img-top img-fluid" alt="{{ product.nombre }}" style="height: 20rem; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{{ product.nombre }}</h5>
                     <p class="card-text text-muted">{{ product.descripcion }}</p>

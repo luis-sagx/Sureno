@@ -1,8 +1,41 @@
 from flask import Blueprint, request, jsonify, render_template
 from models.product import ProductModel
 from bson.objectid import ObjectId
+import os
+from werkzeug.utils import secure_filename
 
 product_routes = Blueprint('product_routes', __name__)
+
+# Configuración de carpeta de subida
+UPLOAD_FOLDER = "static/uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@product_routes.route('/upload-image/<product_id>', methods=['POST'])
+def upload_image(product_id):
+    if "imagen" not in request.files:
+        return jsonify({"error": "No se envió ninguna imagen"}), 400
+    
+    imagen = request.files["imagen"]
+    if imagen.filename == "" or not allowed_file(imagen.filename):
+        return jsonify({"error": "Formato no permitido"}), 400
+    
+    filename = secure_filename(imagen.filename)
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    imagen.save(filepath)
+
+    # Guardar la ruta en la base de datos
+    image_path = f"/static/img/products/{filename}"
+    updated = ProductModel.update_image(product_id, image_path)
+
+    if updated:
+        return jsonify({"mensaje": "Imagen subida con éxito", "ruta": image_path}), 200
+    else:
+        return jsonify({"error": "Producto no encontrado"}), 404
+
 
 @product_routes.route('/api/products', methods=['GET'])
 def get_products():

@@ -4,6 +4,10 @@ from routes import register_routes
 app = Flask(__name__)
 
 @app.route('/')
+def confirmacion():
+    return render_template('confirmacion.html')
+
+@app.route('/index')
 def index():
     return render_template('index.html')
 

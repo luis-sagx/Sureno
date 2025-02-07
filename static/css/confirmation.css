@@ -1,0 +1,62 @@
+*{
+    margin: 0 auto;
+}
+
+.container-box {
+    width: 100%;
+    height: 100vh; 
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+}
+
+.confirmation-box {
+    text-align: center;
+    width: 50%;
+    background-color: #564034;
+    padding: 1.5rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+    border-radius: 10px; 
+    border: 10px solid rgb(253, 229, 205);
+}
+
+.text-confirmation{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;  
+}
+
+.h-confirmation{
+    color: rgb(255, 245, 235);
+    font-style: italic; 
+    font-family: "Pacifico";
+    font-size: 4rem;
+}
+
+.p-confirmation{
+    width: 70%;
+    margin: 10px;
+    color: white;
+}
+
+.buttons{
+    margin: 30px;
+}
+
+.buttons a{
+    margin: 20px;
+    list-style: none;
+    text-decoration: none; 
+    padding: 10px 50px;
+}
+
+.footer-box{
+    align-items: center;
+    display: flex;
+    max-width: 20%;
+}
+
+p{
+    color: white;
+}
