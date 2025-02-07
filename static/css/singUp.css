@@ -16,11 +16,7 @@ body.dark-mode {
     --text-color: var(--beige);
 }
 
-body {
-    background-color: var(--beige);
-}
-
-.login-container {
+.register-container {
     max-width: 35rem;
     margin: 3rem auto;
     padding: 30px;
@@ -29,11 +25,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#inputLogin {
-    margin-top: 2.3rem;
-}
-
-.login-title {
+.register-title {
     color: var(--text-color);
     font-weight: bold;
     text-align: center;
@@ -41,4 +33,24 @@ body {
 
 .form-control {
     border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: var(--boton-cafe);
+    border-color: var(--boton-cafe);
+}
+
+.btn-primary:hover {
+    background-color: var(--boton-cafe-hover);
+    border-color: var(--boton-cafe-hover);
+}
+
+.btn-secondary {
+    background-color: var(--boton-celeste);
+    border-color: var(--boton-celeste);
+}
+
+.btn-secondary:hover {
+    background-color: var(--boton-celeste-hover);
+    border-color: var(--boton-celeste-hover);
 }

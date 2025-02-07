@@ -36,6 +36,10 @@ def cart():
 def login():
     return render_template('login.html')
 
+@app.route('/singUp')
+def singUp():
+    return render_template('singUp.html')
+
 register_routes(app)
 
 if __name__ == '__main__':

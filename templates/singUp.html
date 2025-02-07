@@ -1,22 +1,31 @@
-<link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/singUp.css')}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
 />
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> {% extends "base.html" %} {% block content %}
-<div class="login-container">
-    <h2 class="login-title">Iniciar Sesión</h2>
+
+<div class="register-container">
+    <h2 class="register-title">Registro</h2>
     <form>
-        <div class="mb-3" id="inputLogin">
+        <div class="mb-3">
             <label for="email" class="form-label">Correo Electrónico</label>
             <input type="email" class="form-control" id="email" placeholder="Ingrese su correo" required>
         </div>
-        <div class="mb-3" id="inputLogin">
+        <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
         </div>
-        <div class="d-grid gap-2" id="inputLogin">
-            <button type="submit" class="btn btn-1">Ingresar</button>
-            <a href="{{ url_for('singUp') }}" class="btn btn-2">Registrarse</a>
+        <div class="mb-3">
+            <label for="cedula" class="form-label">Cédula</label>
+            <input type="text" class="form-control" id="cedula" placeholder="Ingrese su cédula" required>
+        </div>
+        <div class="mb-3">
+            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fecha_nacimiento" required>
+        </div>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-1">Registrarse</button>
+            <a href="{{ url_for('login') }}" class="btn btn-2">Volver</a>
         </div>
     </form>
 </div>
