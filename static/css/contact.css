@@ -2,18 +2,18 @@
     --bg-color: #FFFFFF;
     --text-color: #4E342E;
     --link-color: #6F4E37;
-    --input-border: #1B1A17;
+    --input-border: #000000;
     --button-bg: #906243;
     --button-text: #FFFFFF;
     --button-hover-bg: #fc894f;
-    --info-bg: #8FC1D4;
+    --info-bg: #87CEEB;
     --info-text: #4E342E;
     --icon-bg: #f5f1dc;
+    --icon-text: #0b0808;
     --form-bg: #f5f1dc;
     --form-text-bg: #4E342E;
     --map-bg: #333333;
 }
-
 body.dark-mode {
     --bg-color: #1E1E1E;
     --text-color: #FFFFFF;
@@ -25,205 +25,62 @@ body.dark-mode {
     --info-bg: #2e5c63;
     --info-text: white;
     --icon-bg: #6f4e37;
+    --icon-text: #FFFFFF;
     --form-bg: rgb(95, 68, 52);
     --form-text-bg: white;
     --map-bg: #333333;
 }
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
-a {
-    color: var(--link-color);
-    text-decoration: none;
-}
-a:hover {
-    color: var(--hover-link-color);
-}
-.contactUs {
-    position: relative;
-    width: 100%;
-    padding: 40px 100px;
-}
-.contactUs .title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2em;
-}
-.contactUs .title h2 {
-    color: var(--text-color);
-    font-weight: 500;
-    font-style: italic; 
-    font-family: "Pacifico";
-}
-/* Formulario del contacto*/
-
-/*Formulario*/
-.contact {
+.card.p-1.shadow {
     background-color: var(--form-bg);
     color: var(--form-text-bg);
-    border-radius: 15px;
-    padding: 40px;
-}
-.box {
-    position: relative;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 5fr 4fr;
-    grid-template-areas: 
-    "form inf"
-    "form map";
-    grid-gap: 20px;
-    margin-top: 20px;
-}
-.form {
-    grid-area: form;
-    border-radius: 15px;
-}
-.formBox {
-    position: relative;
     width: 100%;
+    max-width: 900px;
+    margin: auto;
 }
-.formBox .row50 {
-    display: flex;
-    gap: 20px;
-    border-radius: 15%;
+.text-center {
+    text-align: center;
 }
-.inputBox {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    width: 50%;
-}
-.formBox .row100 .inputBox {
-    width: 100%;
-}
-.inputBox span {
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-.inputBox input {
-    padding: 10px;
-    font-size: 1.1em;
-    outline: none;
-    border-radius: 10px;
+.col-md-6.mb-3 input{
     border: 1px solid var(--input-border);
-    color: var(--text-color);
-    background-color: var(--bg-color);
 }
-.inputBox textarea {
-    padding: 10px;
-    font-size: 1.1em;
-    outline: none;
-    resize: none;
-    min-height: 220px;
-    margin-bottom: 10px;
-    border-radius: 10px;
+.mb-3 textarea {
     border: 1px solid var(--input-border);
-    color: var(--text-color);
-    background-color: var(--bg-color);
 }
-.inputBox input[type="submit"] {
-    border: none;
-    font-size: 1.1em;
-    max-width: 120px;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 14px 15px;
+.text-center button[type="submit"]{
     background-color: var(--button-bg);
     color: var(--button-text);
+    border: none;
 }
-.inputBox ::placeholder {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 0.9rem;
-}
-
-.inputBox:hover input[type="submit"]{
+.text-center button[type="submit"]:hover {
     background-color: var(--button-hover-bg);
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255, 99, 71, 0.7); 
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
-/*Formulario*/
-/*Info*/
-.contact h3 {
-    font-weight: 500;
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: var(--form-text-bg);
-}
-.inf {
+.card.p-2.shadow {
     background-color: var(--info-bg);
     color: var(--info-text);
-    grid-area: inf;
-    border-radius: 15px;
 }
-.inf .infoBox div{
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.inf .infoBox div span {
-    background-color: var(--icon-bg);
-    color: var(--icon-color);
-    min-width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5em;
+.list-unstyled i {
+    color: var(--icon-text); 
+    background-color: var(--icon-bg); 
+    padding: 10px;
     border-radius: 50%;
-    margin-right: 15px;
+    transition: background-color 0.3s;
 }
-.inf .infoBox div p {
-    font-size: 1.1em;
-    color: var(--info-text);
+.text-center a i {
+    background-color: var(--icon-bg);
+    color: var(--icon-text);
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
 }
-.inf .infoBox div a {
-    text-decoration: none;
-    font-size: 1.1em;
-    color: var(--info-text);
+.text-center a:hover i {
+    background-color: var(--button-hover-bg);
 }
-.sci {
-    margin-top: 40px;
-    display: flex;
-}
-.sci li {
-    list-style: none;
-    margin-right: 15px;
-}
-.sci li a {
-    font-size: 2em;
-    color: var(--icon-bg);
-}
-.sci li a i {
-    font-size: 1.3em;
-    transition: color 0.3s;
-}
-.sci li a:hover {
-    color: var(--icon-color);
-}
-/*Info*/
-/*Mapa*/
-.map {
-    padding: 0;
+.card.p-3.shadow {
     background-color: var(--map-bg);
-    grid-area: map;
-    border-radius: 15px;
-}
-.map iframe {
-    width: 100%;
-    height: 100%;
     border-radius: 10px;
-    background-color: var(--map-bg);
 }
-/*Mapa*/
+

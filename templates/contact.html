@@ -2,89 +2,89 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
 {% extends "base.html" %}
 
 {% block content %}
 
-<div class="container">
-    <div class="contactUs">
-        <div class="title">
-            <h2>!Hablemos!</h2>
-        </div>
-        <div class="box">
-            <div class="contact form">
-                <h3>Envianos un Mensaje</h3>
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">¡Hablemos!</h2>
+    </div>
+
+    <div class="row g-4">
+        <!-- Formulario de Contacto -->
+        <div class="col-lg-6 d-flex">
+            <div class="card p-1 shadow w-100 h-100">
+                <h3 class="fw-bold mb-3 text-center">Envíanos un Mensaje</h3>
                 <form>
-                    <div class="formBox">
-                        <div class="row50">
-                            <div class="inputBox">
-                            <span>Primer Nombre</span> 
-                            <input type="text" placeholder="Nombre">
-                            </div>
-                            <div class="inputBox">
-                                <span>Primer Apellido</span> 
-                                <input type="text" placeholder="Apellido">
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Primer Nombre</label>
+                            <input type="text" class="form-control" placeholder="Nombre">
                         </div>
-
-                        <div class="row50">
-                            <div class="inputBox">
-                            <span>Correo Electronico</span> 
-                            <input type="text" placeholder="example@gmail.com">
-                            </div>
-                            <div class="inputBox">
-                                <span>Teléfono</span> 
-                                <input type="text" placeholder="+593 123 456 789">
-                            </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Primer Apellido</label>
+                            <input type="text" class="form-control custom-input" placeholder="Apellido">
                         </div>
-
-                        <div class="row100">
-                            <div class="inputBox">
-                            <span>Mensaje</span> 
-                            <textarea placeholder="Escribe tu Mensaje Aqui..."></textarea>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control custom-input" placeholder="example@gmail.com">
                         </div>
-
-                        <div class="row100">
-                            <div class="inputBox">
-                                <input type="submit" value="Send">
-                            </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control custom-input" placeholder="+593 123 456 789">
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mensaje</label>
+                        <textarea class="form-control custom-input" rows="5" placeholder="Escribe tu mensaje aquí..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn">Enviar</button>
                     </div>
                 </form>
             </div>
-            <!--Caja para la info-->
-            <div class="contact inf">
-                <h3>Información de Contacto</h3>
-                <div class="infoBox">
-                    <div>
-                        <span><i class='bx bx-location-plus'></i></span>
-                        <p>Avenida Maldonado S49-106 <br> Quito</p>
-                    </div>
-                    <div>
-                        <span><i class='bx bxl-gmail'></i></span>
-                        <a href="mailto:eduagarcia985@gamil.com">licorsureno@gmail.com</a>
-                    </div>
-                    <div>
-                        <span><i class='bx bx-phone-call'></i></span>
-                        <a href="tel:+593 0983339952">+593 96 796 7369</a>
-                    </div>
-                </div>
-                <!--RedesSociales-->
-                <ul class="sci">
-                    <li><a href="#"><i class='bx bxl-facebook-circle'></i></a></li>
-                    <li><a href="#"><i class='bx bxl-instagram'></i></a></li>
-                    <li><a href="#"><i class='bx bxl-whatsapp'></i></a></li>
+        </div>
+
+        <!-- Contenedor de Información y Mapa -->
+        <div class="col-lg-6 d-flex flex-column">
+            <!-- Información de Contacto -->
+            <div class="card p-2 shadow flex-grow-1 mb-3">
+                <h3 class="fw-bold mb-3 text-center">Información de Contacto</h3>
+                <ul class="list-unstyled">
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bx bx-location-plus fs-5 me-2"></i> Avenida Maldonado S49-106, Quito
+                    </li>
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bx bxl-gmail fs-5 me-2"></i> 
+                        <a href="mailto:licorsureno@gmail.com" class="text-decoration-none">licorsureno@gmail.com</a>
+                    </li>
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bx bx-phone-call fs-5 me-2"></i> 
+                        <a href="tel:+593967967369" class="text-decoration-none">+593 96 796 7369</a>
+                    </li>
                 </ul>
+
+                <!-- Redes Sociales -->
+                <div class="text-center mt-3">
+                    <a href="#" class="me-3 text-primary"><i class="bx bxl-facebook-circle fs-4"></i></a>
+                    <a href="#" class="me-3 text-danger"><i class="bx bxl-instagram fs-4"></i></a>
+                    <a href="#" class="text-success"><i class="bx bxl-whatsapp fs-4"></i></a>
+                </div>
             </div>
-            <!--Caja para el mapa-->
-            <div class="contact map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7580915507997!2d-78.5469614!3d-0.3111159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d5a215975ccf5b%3A0xca76fe722c04ad9d!2sAv.%20Pedro%20Vicente%20Maldonado%20S46-80%2C%20Quito%20170701%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1733529137973!5m2!1ses!2sec" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+
+            <!-- Mapa -->
+            <div class="card p-3 shadow flex-grow-1">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7580915507997!2d-78.5469614!3d-0.3111159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d5a215975ccf5b%3A0xca76fe722c04ad9d!2sAv.%20Pedro%20Vicente%20Maldonado%20S46-80%2C%20Quito%20170701%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1733529137973!5m2!1ses!2sec"
+                    class="w-100" height="250" style="border:0;" allowfullscreen loading="lazy"></iframe>
             </div>
         </div>
     </div>
 </div>
+
 
 {% endblock %}
