@@ -1,7 +1,7 @@
 :root {
     --beige: #f5f1dc;
     --white: #FFFFFF;
-    --cafe: #6F4E37;
+    --cafe: #5e422e; 
     --naranja: #fc894f;
     --p-color: black;
     --boton-cafe: #906243;
@@ -10,9 +10,6 @@
     --text-color: var(--cafe);
     --title-color: var(--black);
 }
-
-
-/* Dark Theme */
 
 body.dark-mode {
     --bg-color: #1E1E1E;
@@ -39,14 +36,19 @@ body {
 }
 
 .cart-box {
-    width: 50rem;
-    margin: auto;
-    margin-top: 1.875rem;
-    margin-bottom: 1.875rem;
-    padding: 1.25rem;
-    border-radius: 0.625rem;
+    max-width: 100%;
+    width: 100%;
     background-color: var(--card);
-    box-shadow: 0 0.25rem 0.9375rem var(--box-shadow);
+}
+.cart-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+.cart-item img {
+    max-width: 9rem;
+    height: auto;
 }
 
 .cart-box h1 {
@@ -54,13 +56,6 @@ body {
     text-align: center;
     color: var(--text-color);
     margin-bottom: 1.25rem;
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.25rem;
-    color: var(--text-color);
 }
 
 .item-details p {
@@ -80,17 +75,6 @@ body {
         transform: scale(1);
         opacity: 1;
     }
-}
-
-.cart-item img {
-    width: 9.375rem;
-    height: auto;
-    border-radius: 0.625rem;
-    margin-right: 1.25rem;
-}
-
-.cart-item img:hover {
-    animation: animateLiquorCard 1s;
 }
 
 .item-details {
@@ -194,17 +178,4 @@ hr {
 .checkout-btn:hover {
     background-color: var(--button-hover-bg);
     transform: scale(1.05);
-}
-
-.btn {
-    margin: auto;
-}
-
-.btn-1 {
-    background-color: var(--boton-cafe);
-    margin: auto;
-}
-
-.btn-1:hover {
-    background-color: var(--boton-cafe-hover);
 }

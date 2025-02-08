@@ -1,6 +1,6 @@
 :root {
     /* Color Palette */
-    --cafe: rgb(95, 68, 52);          /* Rich brown */
+    --cafe: #5e422e;           /* Rich brown */
     --beige: #F5F5DC;         /* Soft beige */
     --celeste: #87CEEB;       /* Sky blue */
     --white: #FFFFFF;         /* Pure white */
@@ -131,7 +131,7 @@ body.dark-mode {
 }
 
 #aboutUs p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .section {
@@ -154,30 +154,23 @@ body.dark-mode {
 .section ul li {
     margin-bottom: 10px;
     display: block;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .section.show-products h2 {
     color: var(--beige);
 }
 
-.history, .valors {
+.history {
     display: flex;
     align-items: center; 
     justify-content: space-between; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.history p, .valors li {
-    color: var(--p-color);
-}
-
-.history {
     background-color: var(--section-1);
 }
 
-.valors {
-    background-color: var(--section-2);
+.history p {
+    color: var(--p-color);
 }
 
 .aboutUs-information {
@@ -189,6 +182,20 @@ body.dark-mode {
     margin: 0 auto;
     max-width: 70%;
     text-align: center;
+}
+
+.mission-vision {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; 
+    background-color: var(--section-2);
+    color: var(--p-color);
+}
+
+.mission, .vision {
+    flex: 1;
+    padding: 20px;
 }
 
 /* Media queries for responsive design */
@@ -208,8 +215,8 @@ body.dark-mode {
 }
 
 @media (max-width: 767px) {
-    p, li {
-        font-size: 1rem;
+    #aboutUs p, #aboutUs li {
+        font-size: 0.9rem;
     }
 
     .history, .valors {
@@ -229,5 +236,13 @@ body.dark-mode {
     
     .center-information {
         max-width: 90%;
+    }
+
+    .mission-vision {
+        flex-direction: column;
+    }
+
+    .mission {
+        order: -1;
     }
 }
