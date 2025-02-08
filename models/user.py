@@ -13,6 +13,10 @@ class UserModel:
         return str(result.inserted_id)
 
     @staticmethod
+    def get_by_email(email):
+        return db.usuarios.find_one({"email": email})
+
+    @staticmethod
     def get_by_id(user_id):
         user = db.usuarios.find_one({'_id': ObjectId(user_id)})
         return user
