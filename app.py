@@ -41,6 +41,12 @@ def contact():
 def cart():
     return render_template('cart.html')
 
+@app.route('/homeAdmin')
+def home_admin():
+    if "user_id" not in session or session.get("rol") != "administrador":
+        return redirect(url_for("login"))
+    return render_template('homeAdmin.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -54,46 +60,64 @@ def login():
                 return jsonify({"error": "Usuario no encontrado"}), 404
 
             if bcrypt.checkpw(data["password"].encode('utf-8'), user["password"].encode('utf-8')):
+                role = db.roles.find_one({"id_rol": user["id_rol"]})
+
+                if not role:
+                    return jsonify({"error": "Rol no encontrado"}), 500
+
                 session["user_id"] = str(user["_id"])
-                return jsonify({"message": "Inicio de sesión exitoso", "redirect": "/index"}), 200
-            else:
-                return jsonify({"error": "Contraseña incorrecta"}), 401
+                session["rol"] = role["rol"]
+                
+                # Redirigir según el rol
+                if user["id_rol"] == 1:  # Cliente
+                    return jsonify({"message": "Inicio de sesión exitoso", "redirect": "/index"}), 200
+                elif user["id_rol"] == 2:  # Administrador
+                    return jsonify({"message": "Inicio de sesión exitoso", "redirect": "/homeAdmin"}), 200
+                else:
+                    return jsonify({"error": "Rol no reconocido"}), 403
+
+            return jsonify({"error": "Contraseña incorrecta"}), 401
+
         except Exception as e:
             return jsonify({"error": f"Error en el servidor: {str(e)}"}), 500
 
     return render_template('login.html')
 
-# 🔹 Corregido 'signUp' en lugar de 'singUp'
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
     if request.method == 'POST':
         try:
             data = request.form
-            
             required_fields = ['email', 'nombre', 'apellido', 'password', 'cedula']
             if not all(field in data for field in required_fields):
                 return render_template('signUp.html', error="Faltan campos obligatorios"), 400
-            
+
             if db.usuarios.find_one({"email": data['email']}):
                 return render_template('signUp.html', error="El correo ya está registrado"), 400
 
-            # No hasheamos la contraseña aquí; se hará en UserModel.create
+            # Obtener el id_rol correspondiente a 'cliente'
+            role = db.roles.find_one({"rol": "cliente"})
+            if not role:
+                return render_template('signUp.html', error="Error en la configuración de roles"), 500
+
+            hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             user_data = {
                 "email": data['email'],
                 "nombre": data['nombre'],
                 "apellido": data['apellido'],
-                "password": data['password'],  # Enviar la contraseña sin hashear
+                "password": hashed_password,  # Contraseña hasheada
                 "cedula": data['cedula'],
-                "rol": "usuario"
+                "id_rol": role["id_rol"]  # Asociar el id_rol en lugar del texto
             }
 
-            inserted_id = UserModel.create(user_data)
-            return render_template('login.html')
+            inserted_id = db.usuarios.insert_one(user_data).inserted_id
+            return render_template('login')
 
         except Exception as e:
-            return render_template('signUp.html', error=str(e)), 500
+            return render_template('signUp', error=str(e)), 500
 
-    return render_template('signUp.html')
+    return render_template('signUp')
+
 
 
 register_routes(app)

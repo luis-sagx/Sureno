@@ -28,7 +28,7 @@ def upload_image(product_id):
     imagen.save(filepath)
 
     # Guardar la ruta en la base de datos
-    image_path = f"/static/img/products/{filename}"
+    image_path = f"/static/uploads/{filename}"
     updated = ProductModel.update_image(product_id, image_path)
 
     if updated:
