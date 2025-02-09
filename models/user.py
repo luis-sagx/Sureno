@@ -5,7 +5,7 @@ import bcrypt
 class UserModel:
     @staticmethod
     def create(user_data):
-        # Hashear la contraseña antes de guardar
+        # Se aplica el hash una sola vez aquí
         hashed_password = bcrypt.hashpw(user_data['password'].encode('utf-8'), bcrypt.gensalt())
         user_data['password'] = hashed_password.decode('utf-8')
         

@@ -61,7 +61,7 @@ def login():
         except Exception as e:
             return jsonify({"error": f"Error en el servidor: {str(e)}"}), 500
 
-    return render_template('login.html') 
+    return render_template('login.html')
 
 # 🔹 Corregido 'signUp' en lugar de 'singUp'
 @app.route('/signUp', methods=['GET', 'POST'])
@@ -70,20 +70,19 @@ def signUp():
         try:
             data = request.form
             
-            required_fields = ['email','nombre','apellido', 'password', 'cedula']
+            required_fields = ['email', 'nombre', 'apellido', 'password', 'cedula']
             if not all(field in data for field in required_fields):
                 return render_template('signUp.html', error="Faltan campos obligatorios"), 400
             
             if db.usuarios.find_one({"email": data['email']}):
                 return render_template('signUp.html', error="El correo ya está registrado"), 400
 
-            hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-            
+            # No hasheamos la contraseña aquí; se hará en UserModel.create
             user_data = {
                 "email": data['email'],
                 "nombre": data['nombre'],
                 "apellido": data['apellido'],
-                "password": hashed_password.decode('utf-8'),
+                "password": data['password'],  # Enviar la contraseña sin hashear
                 "cedula": data['cedula'],
                 "rol": "usuario"
             }
