@@ -25,3 +25,8 @@
 .btn-confirmation{
     padding: 0 3rem;
 }
+
+.carousel-inner img {
+    max-height: 300px;
+    object-fit: contain;
+}
