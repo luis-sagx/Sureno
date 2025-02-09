@@ -111,14 +111,12 @@ def signUp():
             }
 
             inserted_id = db.usuarios.insert_one(user_data).inserted_id
-            return render_template('login')
+            return render_template('login.html')
 
         except Exception as e:
-            return render_template('signUp', error=str(e)), 500
+            return render_template('signUp.html', error=str(e)), 500
 
-    return render_template('signUp')
-
-
+    return render_template('signUp.html')
 
 register_routes(app)
 
