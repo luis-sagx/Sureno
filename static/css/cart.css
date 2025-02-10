@@ -51,7 +51,7 @@ body {
     height: auto;
 }
 
-.cart-box h1 {
+h1 {
     font-family: 'Pacifico', cursive;
     text-align: center;
     color: var(--text-color);
@@ -178,4 +178,9 @@ hr {
 .checkout-btn:hover {
     background-color: var(--button-hover-bg);
     transform: scale(1.05);
+}
+
+.disabled-btn {
+    cursor: not-allowed !important;
+    opacity: 0.6;
 }

@@ -98,10 +98,26 @@ function actualizarCantidad(index, cambio) {
 
 function eliminarDelCarrito(index) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    carrito.splice(index, 1);  // Eliminar el producto del carrito
+    carrito.splice(index, 1); 
 
-    localStorage.setItem("carrito", JSON.stringify(carrito)); // Guardar cambios
+    localStorage.setItem("carrito", JSON.stringify(carrito)); 
     cargarCarrito(); // Volver a cargar los productos y recalcular el total
 }
 
 document.addEventListener("DOMContentLoaded", cargarCarrito);
+
+const form = document.getElementById("address-form");
+const confirmButton = document.getElementById("confirm-purchase");
+
+function checkFormValidity() {
+    if (form.checkValidity()) {
+        confirmButton.disabled = false;
+        confirmButton.classList.remove("disabled-btn");
+    } else {
+        confirmButton.disabled = true;
+        confirmButton.classList.add("disabled-btn");
+    }
+}
+
+form.addEventListener("input", checkFormValidity);
+form.addEventListener("change", checkFormValidity);
