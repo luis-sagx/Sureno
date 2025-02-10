@@ -7,6 +7,7 @@ from models.product import ProductModel
 from config import db  # Asegúrate de importar la configuración de la base de datos
 import bcrypt
 from datetime import datetime
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
@@ -18,6 +19,27 @@ app.secret_key = "supersecreto"
 def confirmacion():
     return render_template('confirmacion.html')
 
+@app.route('/confimacion')
+def confirmacion():
+    return render_template('confirmacion.html')
+
+@app.route('/api/user')
+def api_user():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "No hay usuario autenticado"}), 401
+
+    user = db.usuarios.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    return jsonify({
+        "email": user.get("email", ""),
+        "nombre": user.get("nombre", ""),
+        "apellido": user.get("apellido", ""),
+        "cedula": user.get("cedula", "")
+    })
+    
 @app.route('/index')
 def index():
     return render_template('index.html')
@@ -67,6 +89,11 @@ def login():
 
                 session["user_id"] = str(user["_id"])
                 session["rol"] = role["rol"]
+                
+                session["user_email"] = user.get("email", "")
+                session["user_nombre"] = user.get("nombre", "")
+                session["user_apellido"] = user.get("apellido", "")
+                session["user_cedula"] = user.get("cedula", "")
                 
                 # Redirigir según el rol
                 if user["id_rol"] == 1:  # Cliente
