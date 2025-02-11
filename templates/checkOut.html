@@ -1,45 +1,98 @@
-{% extends "base.html" %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/cart.css')}}"> {% extends "base.html" %} {% block content %}
 
-{% block content %}
-<div class="col-12 col-lg-5 mt-4 mt-lg-0 ">
-    <form style="margin-top: 1px;" id="address-form" class="row g-3 needs-validation p-3 rounded shadow-sm section-2" novalidate>
-        <h1 class="text-center">Dirección de Entrega</h1>
-        <div class="col-12">
-            <label class="form-label">Provincia</label>
-            <input value="Pichincha" type="text" class="form-control" required readonly>
-        </div>        
-        <div class="col-12">
-            <label class="form-label">Cantón</label>
-            <select class="form-control" required>
-                <option value="" disabled selected>Seleccione un cantón</option>
-                <option value="Quito">Quito</option>
-                <option value="Cayambe">Cayambe</option>
-                <option value="Mejia">Mejía</option>
-                <option value="Pedro Moncayo">Pedro Moncayo</option>
-                <option value="Pedro Vicente Maldonado">Pedro Vicente Maldonado</option>
-                <option value="Puerto Quito">Puerto Quito</option>
-                <option value="Rumiñahui">Rumiñahui</option>
-                <option value="San Miguel de los Bancos">San Miguel de los Bancos</option>
-            </select>
+<div class="containerCarrito">
+    <div class="row">
+        <!-- Formulario de Dirección -->
+        <div class="col-12 col-lg-6 mt-4 mt-lg-0">
+            <form style="margin-top: 1px;" id="address-form" class="row g-3 needs-validation p-4 rounded shadow-sm section-2" novalidate>
+                <h1 class="text-center mb-4">Dirección de Entrega</h1>
+
+                <!-- Provincia -->
+                <div class="col-12">
+                    <label class="form-label">Provincia</label>
+                    <input value="Pichincha" type="text" class="form-control" required readonly>
+                </div>
+
+                <!-- Cantón -->
+                <div class="col-12">
+                    <label class="form-label">Cantón</label>
+                    <select class="form-select" required>
+                        <option value="" disabled selected>Seleccione un cantón</option>
+                        <option value="Quito">Quito</option>
+                        <option value="Cayambe">Cayambe</option>
+                        <option value="Mejia">Mejía</option>
+                        <option value="Pedro Moncayo">Pedro Moncayo</option>
+                        <option value="Pedro Vicente Maldonado">Pedro Vicente Maldonado</option>
+                        <option value="Puerto Quito">Puerto Quito</option>
+                        <option value="Rumiñahui">Rumiñahui</option>
+                        <option value="San Miguel de los Bancos">San Miguel de los Bancos</option>
+                    </select>
+                </div>
+
+                <!-- Parroquia -->
+                <div class="col-12">
+                    <label class="form-label">Parroquia</label>
+                    <input type="text" class="form-control" required>
+                </div>
+
+                <!-- Calle Principal -->
+                <div class="col-12">
+                    <label class="form-label">Calle Principal</label>
+                    <input type="text" class="form-control" required>
+                </div>
+
+                <!-- Calle Secundaria -->
+                <div class="col-12">
+                    <label class="form-label">Calle Secundaria</label>
+                    <input type="text" class="form-control" required>
+                </div>
+
+                <!-- Código Postal -->
+                <div class="col-12">
+                    <label class="form-label">Código Postal</label>
+                    <input type="number" class="form-control" required>
+                </div>
+
+                <!-- Botón de Guardar -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-2 btn-lg mt-4">Guardar Dirección</button>
+                </div>
+            </form>
         </div>
-        
-        <div class="col-12">
-            <label class="form-label">Parroquia</label>
-            <input type="text" class="form-control" required>
+
+        <!-- Cuadro de Resumen de Compra -->
+        <div class="col-12 col-lg-6 mt-4 mt-lg-0">
+            <div class="p-4 rounded shadow-sm section-1" style="font-size: 1.3rem;">
+                <h1 class="text-center mb-4">Resumen de Compra</h1>
+
+                <!-- Subtotal -->
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="form-label">Subtotal</span>
+                    <span class="text-muted">$150.00</span>
+                </div>
+
+                <!-- Costo de Envío -->
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="form-label">Costo de Envío</span>
+                    <span class="text-muted">$10.00</span>
+                </div>
+
+                <!-- Línea divisoria -->
+                <hr class="my-4" id="linea">
+
+                <!-- Total -->
+                <div class="d-flex justify-content-between">
+                    <span class="form-label fw-bold">Total</span>
+                    <span class="text-primary fw-bold">$160.00</span>
+                </div>
+
+                <!-- Botón para Finalizar Compra -->
+                <div class="d-grid mt-4">
+                    <button type="button" class="btn btn-1 btn-lg">Finalizar Compra</button>
+                </div>
+            </div>
         </div>
-        <div class="col-12">
-            <label class="form-label">Calle Principal</label>
-            <input type="text" class="form-control" required>
-        </div>
-        <div class="col-12">
-            <label class="form-label">Calle Secundaria</label>
-            <input type="text" class="form-control" required>
-        </div>
-        <div class="col-12">
-            <label class="form-label">Código Postal</label>
-            <input type="number" class="form-control" required>
-        </div>
-    </form>
+    </div>
 </div>
 
 {% endblock %}
