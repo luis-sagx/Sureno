@@ -5,11 +5,11 @@
     <div class="content-banner text-center text-white py-5">
         <div class="container">
             <div class="typewriter">
-                <p class="mb-3 banner-subtitle">Envios a todo el pais</p>
+                <p class="mb-3 banner-subtitle">Envios a todo el Ecuador</p>
             </div>
             <br><br>
-            <h2 class="display-4 mb-4 banner-title">100% Natural <br>Licor de excelensia</h2>
-            <a href="products" class="btn btn-1">Comprar Ahora</a>
+            <h2 class="display-4 mb-4 banner-title animate__animated animate__zoomIn">100% Natural <br>Licor de excelensia</h2>
+            <a href="api/products" class="btn btn-1 animate__animated animate__slideInUp">Comprar Ahora <i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
@@ -37,29 +37,42 @@
             <em>"SUREÑO"</em>, la tienda de licores que transforma cualquier ocasión 
             en una experiencia inolvidable.
         </p>
-        <a href="about" class="btn btn-1">Información</a>
+        <a href="about" class="btn btn-1">Información <i class="fa-solid fa-arrow-right"></i></a>
     </div>
 </div>
 <section class="gallery container my-5">
     <div class="row g-3 justify-content-center">
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-            <img src="{{ url_for('static', filename='img/inicio_cocktailVodka.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 2">
+            <a href="https://www.tiktok.com/@licores_sureno/video/7468359868882144517?is_from_webapp=1&sender_device=pc&web_id=7469989401159828997" target="_blank">
+                <img src="{{ url_for('static', filename='img/inicio_cocktailVodka.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 2">
+            </a>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-            <img src="{{ url_for('static', filename='img/inicio_ron.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 5">
+            <a href="https://www.tiktok.com/@licores_sureno/video/7462399324262042885?is_from_webapp=1&sender_device=pc&web_id=7469989401159828997" target="_blank">
+                <img src="{{ url_for('static', filename='img/inicio_ron.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 5">
+            </a>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-            <img src="{{ url_for('static', filename='img/inicio_cannabis.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 3">
+            <a href="https://www.tiktok.com/@licores_sureno/video/7468369739534978310?is_from_webapp=1&sender_device=pc&web_id=7469989401159828997" target="_blank">
+                <img src="{{ url_for('static', filename='img/inicio_cannabis.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 3">
+            </a>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-            <img src="{{ url_for('static', filename='img/inicio_tragos.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 4">
+            <a href="https://www.tiktok.com/@licores_sureno/video/7465379561966980358?is_from_webapp=1&sender_device=pc&web_id=7469989401159828997}" target="_blank">
+                <img src="{{ url_for('static', filename='img/inicio_tragos.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 4">
+            </a>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-            <img src="{{ url_for('static', filename='img/inicio_blueVodka.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 1">
+            <a href="https://www.tiktok.com/@licores_sureno/video/7462404536716512517?is_from_webapp=1&sender_device=pc&web_id=7469989401159828997" target="_blank">
+                <img src="{{ url_for('static', filename='img/inicio_blueVodka.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 1">
+            </a>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-            <img src="{{ url_for('static', filename='img/inicio_promo.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 6">
+            <a href="{{ url_for('static', filename='img/inicio_promo.png') }}" target="_blank">
+                <img src="{{ url_for('static', filename='img/inicio_promo.png') }}" class="img-fluid rounded shadow w-100" style="aspect-ratio: 9 / 16; object-fit: cover;" alt="Galería 6">
+            </a>
         </div>
+        
     </div>
 </section>
 

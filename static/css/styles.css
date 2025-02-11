@@ -210,16 +210,19 @@ body.dark-mode .toggle-ball {
     }
 }
     
-.typewriter p{
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid var(--beige); /* The typwriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+.typewriter p {
+    overflow: hidden;
+    white-space: nowrap; 
+    margin: 0 auto;
+    width: 0;
+    animation: typing 4s steps(40, end) forwards, blink 1s infinite;
 }
 
-/* The typing effect */
 @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
 }

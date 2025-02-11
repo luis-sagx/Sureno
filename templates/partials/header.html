@@ -29,7 +29,6 @@
                       <p class="mb-1"><i class="fa-solid fa-envelope me-1"></i><strong>Correo:</strong> <span id="userEmail">--</span></p>
                       <p class="mb-1"><i class="fa-solid fa-user me-1"></i><strong>Nombre:</strong> <span id="userNombre">--</span></p>
                       <p class="mb-1"><i class="fa-solid fa-user me-1"></i><strong>Apellido:</strong> <span id="userApellido">--</span></p>
-                      <p class="mb-1"><i class="fa-solid fa-id-card me-1"></i><strong>Cédula:</strong> <span id="userCedula">--</span></p>
                     </div>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-center" href=""><i class="fa-solid fa-right-from-bracket me-1"></i> Cerrar sesión</a>
@@ -76,7 +75,6 @@
                 document.getElementById('userEmail').textContent = data.email;
                 document.getElementById('userNombre').textContent = data.nombre;
                 document.getElementById('userApellido').textContent = data.apellido;
-                document.getElementById('userCedula').textContent = data.cedula;
               }
             })
             .catch(error => console.error('Error fetching user data:', error));

@@ -19,7 +19,7 @@
                         onclick="agregarAlCarrito('{{ product._id }}', '{{ product.nombre }}', '{{ product.precio }}', '{{ product.imagen }}', '{{ product.mililitros }}')">
                         <i class="fas fa-cart-plus"></i> Agregar al carrito
                     </button>
-                    <a href="{{ url_for('product_routes.product_detail', product_id=product._id) }}" class="btn btn-1 w-100 mt-2">Ver más información</a>
+                    <a href="{{ url_for('product_routes.product_detail', product_id=product._id) }}" class="btn btn-1 w-100 mt-2"><i class="fa-solid fa-eye"></i> Ver más información</a>
                 </div>
             </div>
         </div>
