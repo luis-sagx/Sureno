@@ -11,15 +11,9 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-# 🔹 Registrar Blueprint solo una vez con el prefijo '/api'
-app.register_blueprint(user_routes, url_prefix='/api')
-app.secret_key = "supersecreto"  
+register_routes(app)
 
 @app.route('/')
-def confirmacion():
-    return render_template('confirmacion.html')
-
-@app.route('/confimacion')
 def confirmacion():
     return render_template('confirmacion.html')
 
@@ -47,13 +41,6 @@ def index():
 @app.route('/about')
 def about():
     return render_template('aboutUs.html')
-
-@app.route('/products')
-def products():
-    products = ProductModel.get_all()
-    for product in products:
-        product['_id'] = str(product['_id'])
-    return render_template('product.html', products=products)
 
 @app.route('/contact')
 def contact():
@@ -145,7 +132,7 @@ def signUp():
 
     return render_template('signUp.html')
 
-register_routes(app)
+print("Colecciones disponibles en la BD:", db.list_collection_names()) 
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)

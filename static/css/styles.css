@@ -25,6 +25,7 @@
     --checkbox-ball: var(--beige);
     --section-1: var(--beige);
     --section-2: var(--celeste);
+    
 }
 
 /* Dark Theme */
@@ -45,7 +46,7 @@ body.dark-mode {
 
 body {
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--p-color);
     transition: background-color 0.3s, color 0.3s;
     font-family: 'Times New Roman', Times, serif;
 }

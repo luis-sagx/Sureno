@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Columna izquierda: Imagen del producto -->
+        <div class="col-md-4 text-center py-2">
+            <img src="{{ product.imagen }}" alt="{{ product.nombre }}" class="img-fluid rounded">
+        </div>
+
+        <!-- Columna derecha: Información del producto -->
+        <div class="col-md-8">
+            <h1 class="site-title my-2">{{ product.nombre }}</h1>
+            <p><strong>Descripción:</strong> {{ product.descripcion }}</p>
+            <p><strong>Precio:</strong> ${{ product.precio }}</p>
+            <p><strong>Caja:</strong> 12 unidades</p>
+            <p><strong>Stock disponible:</strong> {{ product.stock }} cajas</p>
+            <p><strong>Tipo:</strong> {{ product.tipo }}</p>
+            <p><strong>Mililitros:</strong> {{ product.mililitros }} ml</p>
+
+            <a href="{{ url_for('product_routes.products') }}" class="btn btn-1 my-3 text-center">Volver a productos
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

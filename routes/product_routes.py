@@ -3,6 +3,7 @@ from models.product import ProductModel
 from bson.objectid import ObjectId
 import os
 from werkzeug.utils import secure_filename
+from config import db
 
 product_routes = Blueprint('product_routes', __name__)
 
@@ -35,24 +36,21 @@ def upload_image(product_id):
         return jsonify({"mensaje": "Imagen subida con éxito", "ruta": image_path}), 200
     else:
         return jsonify({"error": "Producto no encontrado"}), 404
-
-
-@product_routes.route('/api/products', methods=['GET'])
-def get_products():
-    products = ProductModel.get_all() 
-    # Convierte el ObjectId a string para que JSON sea serializable
-    for product in products:
-        product['_id'] = str(product['_id'])
-    return jsonify(products), 200
-
-@product_routes.route('/products', methods=['GET'])
-def show_products():
+    
+@product_routes.route('/products')
+def products():
     products = ProductModel.get_all()
-    # Convertir ObjectId a string para evitar problemas en la plantilla
     for product in products:
         product['_id'] = str(product['_id'])
-    print("Productos obtenidos:", products)
     return render_template('product.html', products=products)
+
+@product_routes.route('/products/<product_id>', methods=['GET'])
+def product_detail(product_id):
+    product = ProductModel.get_by_id(product_id)
+    if product:
+        return render_template('product_detail.html', product=product)
+    else:
+        return "Producto no encontrado", 404
 
 @product_routes.route('/products/<product_id>', methods=['GET'])
 def get_product(product_id):
@@ -68,13 +66,17 @@ def get_product(product_id):
 
 @product_routes.route('/products', methods=['POST'])
 def create_product():
-    """
-    Crea un nuevo producto.
-    Se espera que la petición incluya un JSON con la información del producto.
-    """
     data = request.get_json()
-    inserted_id = ProductModel.create(data) 
-    return jsonify({'message': 'Producto creado', 'id': inserted_id}), 201
+
+    if "categoria_id" not in data:
+        return jsonify({"error": "Debe incluir una categoría"}), 400
+
+    inserted_id = ProductModel.create(data)
+
+    if inserted_id:
+        return jsonify({'message': 'Producto creado', 'id': inserted_id}), 201
+    else:
+        return jsonify({'error': 'Categoría no válida'}), 400
 
 @product_routes.route('/products/<product_id>', methods=['PUT'])
 def update_product(product_id):

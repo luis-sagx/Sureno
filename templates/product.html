@@ -10,18 +10,16 @@
         {% for product in products %}
         <div class="col-md-3 mb-4">
             <div class="card shadow-sm border-0 section-2">
-                <img src="{{ product.imagen }}" class="card-img-top img-fluid" alt="{{ product.nombre }}" style="height: 20rem; object-fit: cover;">
+                <img src="{{ product.imagen }}" class="card-img-top img-fluid" alt="{{ product.nombre }}" style="height: 24rem; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{{ product.nombre }}</h5>
-                    <p class="card-text text-muted">{{ product.descripcion }}</p>
                     <p>Caja: 12 unidades</p>
                     <p class="fw-bold">Precio: ${{ product.precio }}</p>
-                    <p class="badge section-1">{{ product.tipo }}</p>
-                    <p class="badge section-2">{{ product.militros }} ml</p>
                     <button class="btn btn-2 w-100 mt-2" 
-                        onclick="agregarAlCarrito('{{ product._id }}', '{{ product.nombre }}', '{{ product.precio }}', '{{ product.imagen }}', '{{ product.militros }}')">
+                        onclick="agregarAlCarrito('{{ product._id }}', '{{ product.nombre }}', '{{ product.precio }}', '{{ product.imagen }}', '{{ product.mililitros }}')">
                         <i class="fas fa-cart-plus"></i> Agregar al carrito
                     </button>
+                    <a href="{{ url_for('product_routes.product_detail', product_id=product._id) }}" class="btn btn-1 w-100 mt-2">Ver más información</a>
                 </div>
             </div>
         </div>

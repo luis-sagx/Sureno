@@ -56,7 +56,7 @@ body.dark-mode {
 
 .gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 1rem;
     padding: 2rem;
     background-color: var(--bg-color);
@@ -64,7 +64,9 @@ body.dark-mode {
 
 .gallery img {
     width: 100%;
-    height: 250px;
+    height: auto;
+    max-height: 500px;
+    aspect-ratio: 9 / 16;
     object-fit: cover;
     transition: transform 0.3s;
 }
