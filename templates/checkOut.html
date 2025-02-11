@@ -4,19 +4,19 @@
     <div class="row">
         <!-- Formulario de Dirección -->
         <div class="col-12 col-lg-6 mt-4 mt-lg-0">
-            <form style="margin-top: 1px;" id="address-form" class="row g-3 needs-validation p-4 rounded shadow-sm section-2" novalidate>
+            <form id="address-form" class="row g-3 needs-validation p-4 rounded shadow-sm section-2" novalidate>
                 <h1 class="text-center mb-4">Dirección de Entrega</h1>
 
                 <!-- Provincia -->
                 <div class="col-12">
                     <label class="form-label">Provincia</label>
-                    <input value="Pichincha" type="text" class="form-control" required readonly>
+                    <input id="provincia" value="Pichincha" type="text" class="form-control" required readonly>
                 </div>
 
                 <!-- Cantón -->
                 <div class="col-12">
                     <label class="form-label">Cantón</label>
-                    <select class="form-select" required>
+                    <select id="canton" class="form-select" required>
                         <option value="" disabled selected>Seleccione un cantón</option>
                         <option value="Quito">Quito</option>
                         <option value="Cayambe">Cayambe</option>
@@ -32,25 +32,25 @@
                 <!-- Parroquia -->
                 <div class="col-12">
                     <label class="form-label">Parroquia</label>
-                    <input type="text" class="form-control" required>
+                    <input id="parroquia" type="text" class="form-control" required>
                 </div>
 
                 <!-- Calle Principal -->
                 <div class="col-12">
                     <label class="form-label">Calle Principal</label>
-                    <input type="text" class="form-control" required>
+                    <input id="calle_principal" type="text" class="form-control" required>
                 </div>
 
                 <!-- Calle Secundaria -->
                 <div class="col-12">
                     <label class="form-label">Calle Secundaria</label>
-                    <input type="text" class="form-control" required>
+                    <input id="calle_secundaria" type="text" class="form-control" required>
                 </div>
 
                 <!-- Código Postal -->
                 <div class="col-12">
                     <label class="form-label">Código Postal</label>
-                    <input type="number" class="form-control" required>
+                    <input id="codigo_postal" type="number" class="form-control" required>
                 </div>
 
                 <!-- Botón de Guardar -->
@@ -58,6 +58,7 @@
                     <button type="submit" class="btn btn-2 btn-lg mt-4">Guardar Dirección</button>
                 </div>
             </form>
+
         </div>
 
         <!-- Cuadro de Resumen de Compra -->
@@ -94,5 +95,5 @@
         </div>
     </div>
 </div>
-
+<script src="{{ url_for('static', filename='js/checkOut.js') }}"></script>
 {% endblock %}

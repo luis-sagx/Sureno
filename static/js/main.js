@@ -1,12 +1,70 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Funciones y eventos del carrito (ya existentes)
     actualizarCarritoUI();
+    cargarCarrito();
+
+    // Evento para confirmar el carrito (ya implementado)
+    const confirmarBtn = document.getElementById("confirmar-productos");
+    if (confirmarBtn) {
+        confirmarBtn.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevenir comportamiento por defecto
+            enviarCarrito();
+        });
+    }
+
+    // Nuevo: Asignar el evento submit al formulario de dirección
+    const addressForm = document.getElementById("address-form");
+    if (addressForm) {
+        addressForm.addEventListener("submit", function(e) {
+            e.preventDefault(); // Evita el envío tradicional del formulario
+
+            // Extraer los valores de cada campo del formulario
+            const provincia = document.getElementById("provincia").value;
+            const canton = document.getElementById("canton").value;
+            const parroquia = document.getElementById("parroquia").value;
+            const calle_principal = document.getElementById("calle_principal").value;
+            const calle_secundaria = document.getElementById("calle_secundaria").value;
+            const codigo_postal = document.getElementById("codigo_postal").value;
+
+            // Construir el objeto que se enviará al backend
+            const addressData = {
+                provincia: provincia,
+                canton: canton,
+                parroquia: parroquia,
+                calle_principal: calle_principal,
+                calle_secundaria: calle_secundaria,
+                codigo_postal: parseInt(codigo_postal)
+            };
+
+            // Enviar la petición POST al backend para guardar la dirección
+            fetch('/addresses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(addressData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Dirección guardada:', data);
+                    // Opcional:
+                    // Aquí puedes redirigir, notificar al usuario o limpiar el formulario.
+                    // Por ejemplo, redirigir de nuevo a la página del carrito:
+                    window.location.href = "/cart";
+                })
+                .catch(error => {
+                    console.error('Error al guardar la dirección:', error);
+                });
+        });
+    }
 });
+
+// --- Funciones existentes para el carrito ---
 
 function agregarAlCarrito(id, nombre, precio, imagen, mililitros) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
     let productoExistente = carrito.find(p => p.id === id);
-
     if (productoExistente) {
         productoExistente.cantidad++;
     } else {
@@ -14,16 +72,14 @@ function agregarAlCarrito(id, nombre, precio, imagen, mililitros) {
     }
 
     localStorage.setItem("carrito", JSON.stringify(carrito));
-
-    // Actualizar el icono del carrito
     actualizarCarritoUI();
 
-    // Animación en el icono del carrito
     let cartIcon = document.getElementById("cart-icon");
-    cartIcon.classList.add("cart-animate");
-    setTimeout(() => cartIcon.classList.remove("cart-animate"), 300);
+    if (cartIcon) {
+        cartIcon.classList.add("cart-animate");
+        setTimeout(() => cartIcon.classList.remove("cart-animate"), 300);
+    }
 
-    // Notificación con SweetAlert
     Swal.fire({
         title: "Producto agregado",
         text: `"${nombre}" ha sido añadido al carrito.`,
@@ -36,29 +92,29 @@ function agregarAlCarrito(id, nombre, precio, imagen, mililitros) {
 function actualizarCarritoUI() {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     let totalProductos = carrito.reduce((total, p) => total + p.cantidad, 0);
-
     let cartCount = document.getElementById("cart-count");
-    cartCount.innerText = totalProductos;
-    cartCount.style.display = totalProductos > 0 ? "inline-block" : "none";
+    if (cartCount) {
+        cartCount.innerText = totalProductos;
+        cartCount.style.display = totalProductos > 0 ? "inline-block" : "none";
+    }
 }
-
 
 function cargarCarrito() {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     let cartItemsContainer = document.getElementById("cart-items");
     let totalPrice = 0;
+    if (!cartItemsContainer) return;
 
     cartItemsContainer.innerHTML = "";
 
     if (carrito.length === 0) {
-        contenedor.innerHTML += `<p class="empty-cart">Tu carrito está vacío.</p>`;
-        actualizarTotal(0); // Asegurar que el total sea $0.00
+        cartItemsContainer.innerHTML = `<p class="empty-cart">Tu carrito está vacío.</p>`;
+        document.getElementById("total-price").innerText = "$0.00";
         return;
     }
 
     carrito.forEach((producto, index) => {
         totalPrice += producto.precio * producto.cantidad;
-
         cartItemsContainer.innerHTML += `
             <div class="cart-item">
                 <img src="${producto.imagen}" alt="${producto.nombre}">
@@ -85,13 +141,11 @@ function cargarCarrito() {
 
 function actualizarCantidad(index, cambio) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
     if (carrito[index].cantidad + cambio > 0) {
         carrito[index].cantidad += cambio;
     } else {
-        carrito.splice(index, 1); // Si la cantidad es 0, se elimina el producto
+        carrito.splice(index, 1);
     }
-
     localStorage.setItem("carrito", JSON.stringify(carrito));
     cargarCarrito();
 }
@@ -99,9 +153,27 @@ function actualizarCantidad(index, cambio) {
 function eliminarDelCarrito(index) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     carrito.splice(index, 1);
-
     localStorage.setItem("carrito", JSON.stringify(carrito));
-    cargarCarrito(); // Volver a cargar los productos y recalcular el total
+    cargarCarrito();
 }
 
-document.addEventListener("DOMContentLoaded", cargarCarrito);
+function enviarCarrito() {
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    let total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+    fetch('/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productos: carrito, total: total })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Carrito guardado:', data);
+            localStorage.removeItem("carrito");
+            window.location.href = "/checkOut";
+        })
+        .catch(error => {
+            console.error('Error al guardar el carrito:', error);
+        });
+}

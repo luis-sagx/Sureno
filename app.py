@@ -8,6 +8,8 @@ from config import db  # Asegúrate de importar la configuración de la base de 
 import bcrypt
 from datetime import datetime
 from bson.objectid import ObjectId
+from models.cart import CartModel
+from models.address import AddressModel 
 
 app = Flask(__name__)
 
@@ -46,11 +48,25 @@ def about():
 def contact():
     return render_template('contact.html')
 
-@app.route('/cart')
+@app.route('/cart',methods=['GET', 'POST'])
 def cart():
+    if request.method == 'POST':
+        # Recibe los datos del carrito desde el frontend
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No se enviaron datos'}), 400
+
+        # Valida que se hayan enviado los campos requeridos
+        if 'productos' not in data or 'total' not in data:
+            return jsonify({'error': 'Faltan campos requeridos: productos y total'}), 400
+
+        # Guarda el carrito en la base de datos
+        inserted_id = CartModel.create(data)
+        return jsonify({'message': 'Carrito guardado exitosamente', 'id': inserted_id}), 201
+
     return render_template('cart.html')
 
-@app.route('/checkOut')
+@app.route('/checkOut', methods=['GET', 'POST'])
 def checkOut():
     return render_template('checkOut.html')
 
@@ -138,5 +154,42 @@ def signUp():
 
 print("Colecciones disponibles en la BD:", db.list_collection_names()) 
 
+
+@app.route('/addresses', methods=['POST'])
+def create_address():
+    try:
+        # Extraer los datos enviados en formato JSON
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No se enviaron datos"}), 400
+
+        # Validación básica de los campos requeridos
+        required_fields = [
+            "provincia", 
+            "canton", 
+            "parroquia", 
+            "calle_principal", 
+            "calle_secundaria", 
+            "codigo_postal"
+        ]
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Falta el campo '{field}'"}), 400
+
+        # Llamamos al método create del modelo para guardar la dirección
+        inserted_id = AddressModel.create(data)
+        
+        # Retornamos una respuesta JSON con el ID insertado y un mensaje de éxito
+        return jsonify({
+            "message": "Dirección guardada exitosamente", 
+            "id": inserted_id
+        }), 201
+
+    except Exception as e:
+        # Imprime el error en consola para facilitar la depuración
+        print("Error al guardar la dirección:", e)
+        return jsonify({"error": "Error al guardar la dirección"}), 500
+    
+    
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
