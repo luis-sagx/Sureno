@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-12 col-lg-5 mt-4 mt-lg-0 ">
+    <form style="margin-top: 1px;" id="address-form" class="row g-3 needs-validation p-3 rounded shadow-sm section-2" novalidate>
+        <h1 class="text-center">Dirección de Entrega</h1>
+        <div class="col-12">
+            <label class="form-label">Provincia</label>
+            <input value="Pichincha" type="text" class="form-control" required readonly>
+        </div>        
+        <div class="col-12">
+            <label class="form-label">Cantón</label>
+            <select class="form-control" required>
+                <option value="" disabled selected>Seleccione un cantón</option>
+                <option value="Quito">Quito</option>
+                <option value="Cayambe">Cayambe</option>
+                <option value="Mejia">Mejía</option>
+                <option value="Pedro Moncayo">Pedro Moncayo</option>
+                <option value="Pedro Vicente Maldonado">Pedro Vicente Maldonado</option>
+                <option value="Puerto Quito">Puerto Quito</option>
+                <option value="Rumiñahui">Rumiñahui</option>
+                <option value="San Miguel de los Bancos">San Miguel de los Bancos</option>
+            </select>
+        </div>
+        
+        <div class="col-12">
+            <label class="form-label">Parroquia</label>
+            <input type="text" class="form-control" required>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Calle Principal</label>
+            <input type="text" class="form-control" required>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Calle Secundaria</label>
+            <input type="text" class="form-control" required>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Código Postal</label>
+            <input type="number" class="form-control" required>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

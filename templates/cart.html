@@ -6,52 +6,17 @@
 
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-md-10 col-lg-8">
             <div class="cart-box p-4 rounded shadow-sm">
                 <h1 class="text-center">Carrito de Compras</h1>
                 <div id="cart-items" class="d-flex flex-column gap-3"></div>
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
                     <h3>Total:</h3>
-                    <h4><span id="total-price" class="fw-bold">$0.00</span></h4>
+                    <span id="total-price" class="fw-bold">$0.00</span>
                 </div>
+                <a href="/checkOut" class="btn btn-1 w-100 mt-3">Confirmar Productos</a>
             </div>
-        </div>
-
-        <div class="col-12 col-lg-5 mt-4 mt-lg-0 ">
-            <form style="margin-top: 1px;" id="address-form" class="row g-3 needs-validation p-3 rounded shadow-sm section-2" novalidate>
-                <h1 class="text-center">Dirección de Entrega</h1>
-                <div class="col-12">
-                    <label class="form-label">Provincia</label>
-                    <input type="text" class="form-control" required>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Cantón</label>
-                    <input type="text" class="form-control" required>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Parroquia</label>
-                    <input type="text" class="form-control" required>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Calle Principal</label>
-                    <input type="text" class="form-control" required>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Calle Secundaria</label>
-                    <input type="text" class="form-control" required>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Código Postal</label>
-                    <input type="number" class="form-control" required>
-                </div>
-            </form>
-        </div>
-
-        <!-- Botón Confirmar Compra -->
-        <div class="col-12 text-center mt-4">
-            <button id="confirm-purchase" class="btn btn-1 disabled-button" disabled>Confirmar Compra</button>
-        </div>
     </div>
 </div>
 

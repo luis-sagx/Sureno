@@ -50,6 +50,10 @@ def contact():
 def cart():
     return render_template('cart.html')
 
+@app.route('/checkOut')
+def checkOut():
+    return render_template('checkOut.html')
+
 @app.route('/homeAdmin')
 def home_admin():
     if "user_id" not in session or session.get("rol") != "administrador":

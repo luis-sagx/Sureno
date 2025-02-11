@@ -1,12 +1,12 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     actualizarCarritoUI();
 });
 
 function agregarAlCarrito(id, nombre, precio, imagen, mililitros) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    
+
     let productoExistente = carrito.find(p => p.id === id);
-    
+
     if (productoExistente) {
         productoExistente.cantidad++;
     } else {
@@ -36,7 +36,7 @@ function agregarAlCarrito(id, nombre, precio, imagen, mililitros) {
 function actualizarCarritoUI() {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     let totalProductos = carrito.reduce((total, p) => total + p.cantidad, 0);
-    
+
     let cartCount = document.getElementById("cart-count");
     cartCount.innerText = totalProductos;
     cartCount.style.display = totalProductos > 0 ? "inline-block" : "none";
@@ -47,7 +47,7 @@ function cargarCarrito() {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     let cartItemsContainer = document.getElementById("cart-items");
     let totalPrice = 0;
-    
+
     cartItemsContainer.innerHTML = "";
 
     if (carrito.length === 0) {
@@ -98,26 +98,10 @@ function actualizarCantidad(index, cambio) {
 
 function eliminarDelCarrito(index) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    carrito.splice(index, 1); 
+    carrito.splice(index, 1);
 
-    localStorage.setItem("carrito", JSON.stringify(carrito)); 
+    localStorage.setItem("carrito", JSON.stringify(carrito));
     cargarCarrito(); // Volver a cargar los productos y recalcular el total
 }
 
 document.addEventListener("DOMContentLoaded", cargarCarrito);
-
-const form = document.getElementById("address-form");
-const confirmButton = document.getElementById("confirm-purchase");
-
-function checkFormValidity() {
-    if (form.checkValidity()) {
-        confirmButton.disabled = false;
-        confirmButton.classList.remove("disabled-btn");
-    } else {
-        confirmButton.disabled = true;
-        confirmButton.classList.add("disabled-btn");
-    }
-}
-
-form.addEventListener("input", checkFormValidity);
-form.addEventListener("change", checkFormValidity);
