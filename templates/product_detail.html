@@ -18,9 +18,16 @@
             <p><strong>Tipo:</strong> {{ product.tipo }}</p>
             <p><strong>Cantidad:</strong> {{ product.mililitros }} ml</p>
 
-            <a href="{{ url_for('product_routes.products') }}" class="btn btn-1 my-3 text-center">Volver a productos
-            </a>
+            <a href="{{ url_for('product_routes.products') }}" class="btn btn-1 my-3 text-center"><i class="fa-solid fa-arrow-left"></i> Volver a productos
+            </a><br>
+            <button class="btn btn-2 mt-2" 
+                onclick="agregarAlCarrito('{{ product._id }}', '{{ product.nombre }}', '{{ product.precio }}', '{{ product.imagen }}', '{{ product.mililitros }}')">
+                <i class="fas fa-cart-plus"></i> Agregar al carrito
+            </button>
         </div>
     </div>
 </div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
 {% endblock %}
