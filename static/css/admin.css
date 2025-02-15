@@ -1,0 +1,23 @@
+@media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      width: 200px;
+      height: 100vh;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+    }
+    .sidebar.active {
+      transform: translateX(0);
+    }
+    .menu-btn {
+      display: block;
+      margin-bottom: 15px;
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-btn {
+      display: none;
+    }
+}

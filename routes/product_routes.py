@@ -52,18 +52,6 @@ def product_detail(product_id):
     else:
         return "Producto no encontrado", 404
 
-@product_routes.route('/products/<product_id>', methods=['GET'])
-def get_product(product_id):
-    """
-    Devuelve un producto específico dado su id.
-    """
-    product = ProductModel.get_by_id(product_id)  # Usamos get_by_id()
-    if product:
-        product['_id'] = str(product['_id'])
-        return jsonify(product), 200
-    else:
-        return jsonify({'error': 'Producto no encontrado'}), 404
-
 @product_routes.route('/products', methods=['POST'])
 def create_product():
     data = request.get_json()

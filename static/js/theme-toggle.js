@@ -18,3 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+function toggleSidebarAdmin() {
+    document.querySelector('.sidebar').classList.toggle('active');
+}

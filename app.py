@@ -70,12 +70,6 @@ def cart():
 def checkOut():
     return render_template('checkOut.html')
 
-@app.route('/homeAdmin')
-def home_admin():
-    if "user_id" not in session or session.get("rol") != "administrador":
-        return redirect(url_for("login"))
-    return render_template('homeAdmin.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -106,7 +100,7 @@ def login():
                 if user["id_rol"] == 1:  # Cliente
                     return jsonify({"message": "Inicio de sesión exitoso", "redirect": "/index"}), 200
                 elif user["id_rol"] == 2:  # Administrador
-                    return jsonify({"message": "Inicio de sesión exitoso", "redirect": "/homeAdmin"}), 200
+                    return jsonify({"message": "Inicio de sesión exitoso", "redirect": "/admin/home"}), 200
                 else:
                     return jsonify({"error": "Rol no reconocido"}), 403
 
