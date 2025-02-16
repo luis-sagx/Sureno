@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template
 from config import db
+from models.category import CategoryModel 
+from models.product import ProductModel 
 
 admin_routes = Blueprint('admin_routes', __name__)
 
@@ -16,8 +18,9 @@ def admin_orders():
     return render_template('admin/orders.html', pedidos=pedidos)
 
 @admin_routes.route('/products')
-def admin_product_list():  # 🔹 Nombre cambiado para evitar conflicto
-    productos = list(db.productos.find())
-    for producto in productos:
-        producto['_id'] = str(producto['_id'])  # Convertir ObjectId a string
-    return render_template('admin/admin_products.html', productos=productos)
+def admin_product_list():
+    productos = ProductModel.get_all()  # Usar el modelo en lugar de acceder directamente a la BD
+    categorias = CategoryModel.get_all()
+    return render_template('admin/admin_products.html', 
+                         productos=productos, 
+                         categorias=categorias)

@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from routes import register_routes
-from models.user import UserModel
 from routes.user_routes import user_routes 
-from models.product import ProductModel
 from config import db  # Asegúrate de importar la configuración de la base de datos
 import bcrypt
 from datetime import datetime
@@ -12,6 +10,9 @@ from models.cart import CartModel
 from models.address import AddressModel 
 
 app = Flask(__name__)
+
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
 
 register_routes(app)
 

@@ -4,10 +4,12 @@ from bson.objectid import ObjectId
 class ProductModel:
     @staticmethod
     def create(product_data):
-        categoria = db.categorias.find_one({"_id": ObjectId(product_data["categoria_id"])})
-        if not categoria:
-            return None  # No crear si la categoría no existe
+        if "categoria_id" in product_data:
+            product_data["categoria_id"] = ObjectId(product_data["categoria_id"])
 
+        if "imagen" not in product_data or not product_data["imagen"]:
+            product_data["imagen"] = "/static/img/default-product.png"
+            
         result = db.productos.insert_one(product_data)
         return str(result.inserted_id)
 
@@ -34,7 +36,24 @@ class ProductModel:
 
     @staticmethod
     def update(product_id, update_data):
-        result = db.productos.update_one({'_id': ObjectId(product_id)}, {'$set': update_data})
+        # Convertir categoria_id a ObjectId si está presente
+        if "categoria_id" in update_data:
+            update_data["categoria_id"] = ObjectId(update_data["categoria_id"])
+            
+        result = db.productos.update_one(
+            {'_id': ObjectId(product_id)}, 
+            {'$set': update_data}
+        )
+        return result.modified_count
+    
+    @staticmethod
+    def update_image(product_id, image_path):
+        if not image_path:
+            return 0
+        result = db.productos.update_one(
+            {'_id': ObjectId(product_id)}, 
+            {'$set': {'imagen': image_path}}
+        )
         return result.modified_count
 
     @staticmethod

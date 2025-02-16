@@ -48,6 +48,7 @@
                     <th>Precio</th>
                     <th>Stock</th>
                     <th>Mililitros</th>
+                    <th>Categoría</th> <!-- Nueva columna -->
                     <th>Imagen</th>
                     <th>Acciones</th>
                 </tr>
@@ -60,11 +61,15 @@
                     <td>{{ producto.stock }}</td>
                     <td>{{ producto.mililitros }} ml</td>
                     <td>
+                        {% set categoria = categorias | selectattr("_id", "equalto", producto.categoria_id) | first %}
+                        {{ categoria.nombre if categoria else "Desconocido" }}
+                    </td>
+                    <td>
                         <img src="{{ producto.imagen }}" alt="Imagen del producto" class="img-thumbnail" width="50">
                     </td>
                     <td>
                         <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditar"
-                                onclick="cargarProducto('{{ producto._id }}', '{{ producto.nombre }}', '{{ producto.precio }}', '{{ producto.stock }}', '{{ producto.mililitros }}', '{{ producto.imagen }}')">
+                                onclick="cargarProducto('{{ producto._id }}', '{{ producto.nombre }}', '{{ producto.precio }}', '{{ producto.stock }}', '{{ producto.mililitros }}', '{{ producto.imagen }}', '{{ producto.categoria_id }}')">
                             <i class="fas fa-edit"></i> Modificar
                         </button>
                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar"
@@ -84,85 +89,103 @@
     </div>
   </div>
 
-  <!-- MODAL AGREGAR PRODUCTO -->
+<!-- MODAL AGREGAR PRODUCTO -->
 <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Agregar Producto</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <form id="formAgregarProducto">
-              <div class="modal-body">
-                  <div class="mb-3">
-                      <label class="form-label">Nombre</label>
-                      <input type="text" class="form-control" id="addNombre" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Precio</label>
-                      <input type="number" class="form-control" id="addPrecio" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Stock</label>
-                      <input type="number" class="form-control" id="addStock" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Mililitros</label>
-                      <input type="number" class="form-control" id="addMililitros" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Imagen URL</label>
-                      <input type="text" class="form-control" id="addImagen" required>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-success">Agregar</button>
-              </div>
-          </form>
-      </div>
-  </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="formAgregarProducto">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="addNombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="addPrecio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="addStock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mililitros</label>
+                        <input type="number" class="form-control" id="addMililitros" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-select" id="addCategoriaId" required>
+                            <option value="">Seleccione una categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria._id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="addImagen" name="imagen" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- MODAL EDITAR PRODUCTO -->
 <div class="modal fade" id="modalEditar">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Editar Producto</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <form id="formEditarProducto">
-              <div class="modal-body">
-                  <input type="hidden" id="editProductId">
-                  <div class="mb-3">
-                      <label class="form-label">Nombre</label>
-                      <input type="text" class="form-control" id="editNombre" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Precio</label>
-                      <input type="number" class="form-control" id="editPrecio" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Stock</label>
-                      <input type="number" class="form-control" id="editStock" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Mililitros</label>
-                      <input type="number" class="form-control" id="editMililitros" required>
-                  </div>
-                  <div class="mb-3">
-                      <label class="form-label">Imagen URL</label>
-                      <input type="text" class="form-control" id="editImagen" required>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-              </div>
-          </form>
-      </div>
-  </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="formEditarProducto">
+                <div class="modal-body">
+                    <input type="hidden" id="editProductId">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="editNombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="editPrecio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="editStock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mililitros</label>
+                        <input type="number" class="form-control" id="editMililitros" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-select" id="editCategoriaId" required>
+                            <option value="">Seleccione una categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria._id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="editImagen" name="imagen">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- MODAL ELIMINAR PRODUCTO -->
@@ -185,54 +208,8 @@
   </div>
 </div>
 
-<script>
-   document.getElementById('formAgregarProducto').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        let producto = {
-            nombre: document.getElementById('addNombre').value,
-            precio: parseFloat(document.getElementById('addPrecio').value),
-            stock: parseInt(document.getElementById('addStock').value),
-            mililitros: parseInt(document.getElementById('addMililitros').value),
-            imagen: document.getElementById('addImagen').value
-        };
-
-        fetch('/api/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(producto)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Respuesta del servidor:", data);
-            alert(data.message || "Producto agregado exitosamente");
-            location.reload();
-        })
-        .catch(error => {
-            console.error("Error al agregar producto:", error);
-            alert("Error al agregar producto");
-        });
-    });
-    
-  function eliminarProducto() {
-      let id = document.getElementById('deleteProductId').value;
-      if (!id) {
-          alert("Error: ID de producto no encontrado");
-          return;
-      }
-      fetch(`/api/products/${id}`, { method: "DELETE" })
-      .then(response => response.json())
-      .then(data => {
-          alert(data.message || "Producto eliminado");
-          location.reload();
-      })
-      .catch(error => alert("Error al eliminar"));
-  }
-</script>
-
-  <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/adminProduct.js') }}"></script>
+<script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
