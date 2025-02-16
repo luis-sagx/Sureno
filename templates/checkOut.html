@@ -66,16 +66,14 @@
             <div class="p-4 rounded shadow-sm section-1" style="font-size: 1.3rem;">
                 <h1 class="text-center mb-4">Resumen de Compra</h1>
 
-                <!-- Subtotal -->
                 <div class="d-flex justify-content-between mb-3">
                     <span class="form-label">Subtotal</span>
-                    <span class="text-muted">$150.00</span>
+                    <span class="text-muted" id="subtotal">$0.00</span>
                 </div>
 
-                <!-- Costo de Envío -->
                 <div class="d-flex justify-content-between mb-3">
                     <span class="form-label">Costo de Envío</span>
-                    <span class="text-muted">$10.00</span>
+                    <span class="text-muted" id="envio">$3.00</span>
                 </div>
 
                 <!-- Línea divisoria -->
@@ -84,12 +82,11 @@
                 <!-- Total -->
                 <div class="d-flex justify-content-between">
                     <span class="form-label fw-bold">Total</span>
-                    <span class="text-primary fw-bold">$160.00</span>
+                    <span class="text-primary fw-bold" id="total">$3.00</span>
                 </div>
-
                 <!-- Botón para Finalizar Compra -->
                 <div class="d-grid mt-4">
-                    <button type="button" class="btn btn-1 btn-lg">Finalizar Compra</button>
+                    <button type="button" class="btn btn-1 btn-lg" id="finalizar-compra">Finalizar Compra</button>
                 </div>
             </div>
         </div>

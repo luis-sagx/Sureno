@@ -158,22 +158,25 @@ function eliminarDelCarrito(index) {
 }
 
 function enviarCarrito() {
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    let total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+
     fetch('/cart', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ productos: carrito, total: total })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                productos: carrito,
+                total: total
+            })
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Carrito guardado:', data);
-            localStorage.removeItem("carrito");
-            window.location.href = "/checkOut";
+            if (data.error) throw new Error(data.error);
+
+            // Redirigir con ID del carrito
+            window.location.href = `/checkOut?cart_id=${data.id}`;
         })
         .catch(error => {
-            console.error('Error al guardar el carrito:', error);
+            Swal.fire('Error', error.message, 'error');
         });
 }

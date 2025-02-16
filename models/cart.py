@@ -1,9 +1,11 @@
 from config import db
 from bson.objectid import ObjectId
+from datetime import datetime
 
 class CartModel:
     @staticmethod
     def create(cart_data):
+        cart_data["fecha_creacion"] = datetime.now()
         """ Crea un nuevo carrito en la base de datos """
         result = db.carritos.insert_one(cart_data)
         return str(result.inserted_id)

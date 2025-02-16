@@ -8,11 +8,13 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from models.cart import CartModel
 from models.address import AddressModel 
+from routes.order_routes import order_routes
 
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
+app.register_blueprint(order_routes)
 
 register_routes(app)
 
@@ -49,22 +51,35 @@ def about():
 def contact():
     return render_template('contact.html')
 
-@app.route('/cart',methods=['GET', 'POST'])
+@app.route('/cart', methods=['GET', 'POST'])
 def cart():
     if request.method == 'POST':
-        # Recibe los datos del carrito desde el frontend
         data = request.get_json()
         if not data:
-            return jsonify({'error': 'No se enviaron datos'}), 400
+            return jsonify({'error': 'Datos no recibidos'}), 400
 
-        # Valida que se hayan enviado los campos requeridos
-        if 'productos' not in data or 'total' not in data:
-            return jsonify({'error': 'Faltan campos requeridos: productos y total'}), 400
+        # Validar usuario autenticado
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({'error': 'Usuario no autenticado'}), 401
 
-        # Guarda el carrito en la base de datos
-        inserted_id = CartModel.create(data)
-        return jsonify({'message': 'Carrito guardado exitosamente', 'id': inserted_id}), 201
+        # Crear documento del carrito
+        cart_data = {
+            "user_id": ObjectId(user_id),
+            "productos": data['productos'],
+            "total": data['total'],
+            "fecha_creacion": datetime.now()
+        }
 
+        # Insertar en MongoDB
+        result = db.carrito.insert_one(cart_data)
+        return jsonify({
+            'message': 'Carrito guardado',
+            'id': str(result.inserted_id),
+            'total': data['total']
+        }), 201
+
+    # GET: Renderizar plantilla
     return render_template('cart.html')
 
 @app.route('/checkOut', methods=['GET', 'POST'])
@@ -149,42 +164,40 @@ def signUp():
 
 print("Colecciones disponibles en la BD:", db.list_collection_names()) 
 
+@app.route('/api/cart/<cart_id>')
+def get_cart(cart_id):
+    try:
+        cart = db.carrito.find_one({"_id": ObjectId(cart_id)})
+        if not cart:
+            return jsonify({"error": "Carrito no encontrado"}), 404
+            
+        return jsonify({
+            "_id": str(cart["_id"]),
+            "total": cart["total"],
+            "productos": cart["productos"]
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+# En la ruta /addresses
 @app.route('/addresses', methods=['POST'])
 def create_address():
     try:
-        # Extraer los datos enviados en formato JSON
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"error": "Debes iniciar sesión"}), 401
+
         data = request.get_json()
-        if not data:
-            return jsonify({"error": "No se enviaron datos"}), 400
-
-        # Validación básica de los campos requeridos
-        required_fields = [
-            "provincia", 
-            "canton", 
-            "parroquia", 
-            "calle_principal", 
-            "calle_secundaria", 
-            "codigo_postal"
-        ]
-        for field in required_fields:
-            if field not in data:
-                return jsonify({"error": f"Falta el campo '{field}'"}), 400
-
-        # Llamamos al método create del modelo para guardar la dirección
-        inserted_id = AddressModel.create(data)
+        data['user_id'] = ObjectId(user_id)
         
-        # Retornamos una respuesta JSON con el ID insertado y un mensaje de éxito
+        inserted_id = db.addresses.insert_one(data).inserted_id
         return jsonify({
             "message": "Dirección guardada exitosamente", 
-            "id": inserted_id
+            "id": str(inserted_id)  # Convertir a string
         }), 201
 
     except Exception as e:
-        # Imprime el error en consola para facilitar la depuración
-        print("Error al guardar la dirección:", e)
-        return jsonify({"error": "Error al guardar la dirección"}), 500
-    
+        return jsonify({"error": str(e)}), 500
     
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)

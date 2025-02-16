@@ -1,40 +1,84 @@
-document.getElementById('address-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita el envío tradicional del formulario
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const cartId = urlParams.get('cart_id');
+    let addressId = null;
 
-    // Extraer los valores de cada campo
-    const provincia = document.getElementById('provincia').value;
-    const canton = document.getElementById('canton').value;
-    const parroquia = document.getElementById('parroquia').value;
-    const calle_principal = document.getElementById('calle_principal').value;
-    const calle_secundaria = document.getElementById('calle_secundaria').value;
-    const codigo_postal = document.getElementById('codigo_postal').value;
+    // Cargar datos del carrito
+    const loadCart = async() => {
+        try {
+            const response = await fetch(`/api/cart/${cartId}`);
+            const cart = await response.json();
 
-    // Construir el objeto que se enviará al backend
-    const addressData = {
-        provincia: provincia,
-        canton: canton,
-        parroquia: parroquia,
-        calle_principal: calle_principal,
-        calle_secundaria: calle_secundaria,
-        codigo_postal: parseInt(codigo_postal)
+            if (cart.error) throw new Error(cart.error);
+
+            // Actualizar UI
+            document.getElementById('subtotal').textContent = `$${cart.total.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${(cart.total + 3).toFixed(2)}`;
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+            window.location.href = '/cart';
+        }
     };
 
-    // Enviar la petición POST al backend para guardar la dirección
-    fetch('/addresses', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(addressData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Dirección guardada:', data);
-            // Opcional: Notificar al usuario, redirigir o limpiar el formulario
-            // Por ejemplo, redireccionar a otra sección de checkout:
-            // window.location.href = '/checkout-final';
-        })
-        .catch(error => {
-            console.error('Error al guardar la dirección:', error);
-        });
+    // Guardar dirección
+    document.getElementById('address-form').addEventListener('submit', async(e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('/addresses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    provincia: document.getElementById('provincia').value,
+                    canton: document.getElementById('canton').value,
+                    parroquia: document.getElementById('parroquia').value,
+                    calle_principal: document.getElementById('calle_principal').value,
+                    calle_secundaria: document.getElementById('calle_secundaria').value,
+                    codigo_postal: document.getElementById('codigo_postal').value
+                })
+            });
+
+            const data = await response.json();
+            if (data.error) throw new Error(data.error);
+
+            addressId = data.id; // ID de la dirección guardada
+            alert('Dirección guardada!');
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+
+    // Finalizar compra
+    // Dentro del evento click de 'finalizar-compra'
+    document.getElementById('finalizar-compra').addEventListener('click', async() => {
+        try {
+            if (!cartId || !addressId) {
+                alert('Primero guarda tu dirección');
+                return;
+            }
+
+            const response = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    address_id: addressId,
+                    cart_id: cartId
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Error al crear pedido');
+
+            // Limpiar datos y redirigir
+            localStorage.removeItem('carrito');
+            window.location.href = '/index'; // Cambia esta línea
+
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    });
+
+    // Iniciar
+    if (cartId) loadCart();
+    else window.location.href = '/cart';
 });
