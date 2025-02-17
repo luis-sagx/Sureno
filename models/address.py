@@ -1,12 +1,23 @@
+from bson import ObjectId
 from config import db
-from bson.objectid import ObjectId
 
 class AddressModel:
     @staticmethod
-    def create(direccion_data):
-        result = db.direcciones.insert_one(direccion_data)
-        return str(result.inserted_id)
+    def create(data):
+        # Validar campos requeridos
+        required_fields = ['provincia', 'canton', 'parroquia', 'calle_principal', 'calle_secundaria', 'codigo_postal', 'user_id']
+        for field in required_fields:
+            if field not in data:
+                raise ValueError(f"Campo requerido faltante: {field}")
 
+        # Insertar en la base de datos
+        result = db.addresses.insert_one({
+            **data,
+            "user_id": ObjectId(data['user_id'])
+        })
+        
+        return str(result.inserted_id)  # Devolver ID como string
+    
     @staticmethod
     def get_by_id(direccion_id):
         direccion = db.direcciones.find_one({'_id': ObjectId(direccion_id)})

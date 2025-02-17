@@ -179,7 +179,6 @@ def get_cart(cart_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# En la ruta /addresses
 @app.route('/addresses', methods=['POST'])
 def create_address():
     try:
@@ -188,12 +187,12 @@ def create_address():
             return jsonify({"error": "Debes iniciar sesión"}), 401
 
         data = request.get_json()
-        data['user_id'] = ObjectId(user_id)
-        
-        inserted_id = db.addresses.insert_one(data).inserted_id
+        data['user_id'] = user_id  # Agregar user_id desde la sesión
+
+        inserted_id = AddressModel.create(data)
         return jsonify({
             "message": "Dirección guardada exitosamente", 
-            "id": str(inserted_id)  # Convertir a string
+            "id": inserted_id  # ID ya convertido a string
         }), 201
 
     except Exception as e:
