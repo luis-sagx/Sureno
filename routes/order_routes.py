@@ -9,7 +9,6 @@ order_routes = Blueprint('orders', __name__)
 @order_routes.route('/api/orders', methods=['POST'])
 def create_order():
     try:
-        # Verificar autenticación
         user_id = session.get("user_id")
         if not user_id:
             return jsonify({"error": "Debes iniciar sesión"}), 401
@@ -18,21 +17,17 @@ def create_order():
         if not data:
             return jsonify({"error": "Datos inválidos"}), 400
 
-        # Validar campos requeridos
         required_fields = ['address_id', 'cart_id']
         for field in required_fields:
             if field not in data:
                 return jsonify({"error": f"Falta el campo: {field}"}), 400
 
-        # Obtener el carrito
         cart = db.carrito.find_one({"_id": ObjectId(data['cart_id'])})
         if not cart:
             return jsonify({"error": "Carrito no encontrado"}), 404
 
-        # Calcular total final
         total_final = cart['total'] + 3  # Añadir costo de envío
 
-        # Crear objeto del pedido
         order_data = {
             "user_id": ObjectId(user_id),
             "address_id": ObjectId(data['address_id']),
@@ -42,7 +37,6 @@ def create_order():
             "fecha": datetime.now()
         }
 
-        # Guardar en la base de datos
         order_id = OrderModel.create(order_data)
         
         return jsonify({
@@ -50,5 +44,37 @@ def create_order():
             "order_id": order_id
         }), 201
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@order_routes.route('/api/orders', methods=['GET'])
+def get_all_orders():
+    try:
+        orders = OrderModel.get_all()
+        return jsonify(orders), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@order_routes.route('/api/orders/<order_id>', methods=['PUT'])
+def update_order_status(order_id):
+    try:
+        data = request.get_json()
+        if not data or "estado" not in data:
+            return jsonify({"error": "Estado no proporcionado"}), 400
+
+        if OrderModel.update_status(order_id, data["estado"]):
+            return jsonify({"message": "Estado del pedido actualizado"}), 200
+        else:
+            return jsonify({"error": "Pedido no encontrado o sin cambios"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@order_routes.route('/api/orders/<order_id>', methods=['DELETE'])
+def delete_order(order_id):
+    try:
+        if OrderModel.delete(order_id):
+            return jsonify({"message": "Pedido eliminado"}), 200
+        else:
+            return jsonify({"error": "Pedido no encontrado"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500

@@ -1,6 +1,6 @@
 :root {
     /* Color Palette */
-    --cafe: #5e422e;           /* Rich brown */
+    --cafe: #5a402e;           /* Rich brown */
     --beige: #F5F5DC;         /* Soft beige */
     --celeste: #87CEEB;       /* Sky blue */
     --white: #FFFFFF;         /* Pure white */
@@ -198,6 +198,14 @@ body.dark-mode {
 .mission, .vision {
     flex: 1;
     padding: 20px;
+}
+
+.mission{
+    border-left: 2px solid var(--p-color);
+}
+
+.vision{
+    border-left: 2px solid var(--p-color);
 }
 
 /* Media queries for responsive design */

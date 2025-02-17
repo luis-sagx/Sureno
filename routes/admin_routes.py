@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, render_template
 from config import db
 from models.category import CategoryModel 
 from models.product import ProductModel 
+from models.order import OrderModel 
 
 admin_routes = Blueprint('admin_routes', __name__)
 
@@ -14,7 +15,7 @@ def admin_home():
 
 @admin_routes.route('/orders')
 def admin_orders():
-    pedidos = list(db.pedidos.find())
+    pedidos = OrderModel.get_all()
     return render_template('admin/orders.html', pedidos=pedidos)
 
 @admin_routes.route('/products')
