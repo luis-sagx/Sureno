@@ -39,6 +39,9 @@ class OrderModel:
         return result.modified_count > 0
 
     @staticmethod
-    def delete(order_id):
-        result = db.orders.delete_one({"_id": ObjectId(order_id)})
+    def delete(order_id, user_id):
+        result = db.orders.delete_one({
+            "_id": ObjectId(order_id),
+            "user_id": ObjectId(user_id)
+        })
         return result.deleted_count > 0
