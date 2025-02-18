@@ -10,7 +10,7 @@ admin_routes = Blueprint('admin_routes', __name__)
 def admin_home():
     total_clientes = db.usuarios.count_documents({})
     total_productos = db.productos.count_documents({})
-    total_pedidos = db.pedidos.count_documents({})
+    total_pedidos = db.orders.count_documents({})
     return render_template('admin/home.html', total_clientes=total_clientes, total_productos=total_productos, total_pedidos=total_pedidos)
 
 @admin_routes.route('/orders')
