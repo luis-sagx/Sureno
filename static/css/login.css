@@ -17,12 +17,15 @@ body.dark-mode {
 }
 
 body {
-    background-color: var(--beige);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    margin: 0;
 }
 
 .login-container {
-    max-width: 35rem;
-    margin: 3rem auto;
+    width: 35rem;
     padding: 30px;
     background: var(--section-1);
     border-radius: 10px;

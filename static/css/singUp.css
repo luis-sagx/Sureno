@@ -11,14 +11,16 @@
     --section-1: var(--beige);
 }
 
-body.dark-mode {
-    --section-1: var(--cafe);
-    --text-color: var(--beige);
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    margin: 0;
 }
 
 .register-container {
-    max-width: 35rem;
-    margin: 3rem auto;
+    width: 35rem;
     padding: 30px;
     background: var(--section-1);
     border-radius: 10px;

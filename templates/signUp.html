@@ -1,41 +1,50 @@
-<link rel="stylesheet" href="{{url_for('static', filename='css/singUp.css')}}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
-/>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> {% extends "base.html" %} {% block content %}
-
-<div class="register-container">
-    <h2 class="register-title">Registro</h2>
-    <form method="POST" action="/signUp">
-        <div class="mb-3">
-            <label for="cedula" class="form-label">Cédula</label>
-            <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingrese su cédula" required>
-        </div>
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
-        </div>
-        <div class="mb-3">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingrese su apellido" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required>
-        </div>
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-1">Registrarse</button>
-            <a href="{{ url_for('login') }}" class="btn btn-2">Volver</a>
-        </div>
-    </form>
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ url_for('static', filename='js/signUp.js') }}"></script>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/singUp.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
+    <title>sureño</title>
+</head>
+<body class="bg-dark">
+    <div class="register-container">
+        <h2 class="register-title">Registro</h2>
+        <form method="POST" action="/signUp">
+            <div class="mb-3">
+                <label for="cedula" class="form-label">Cédula</label>
+                <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingrese su cédula" required>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingrese su apellido" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-1">Registrarse</button>
+                <a href="{{ url_for('login') }}" class="btn btn-2">Volver</a>
+            </div>
+        </form>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/signUp.js') }}"></script>
+    
+</body>
+</html>
