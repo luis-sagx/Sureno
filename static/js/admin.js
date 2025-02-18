@@ -97,3 +97,87 @@ function eliminarProducto() {
     })
     .catch(error => alert("Error al eliminar"));
 }
+
+function updateOrderStatus(orderId, newStatus) {
+    fetch(`/api/orders/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ estado: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message) {
+        alert(data.message);
+      } else {
+        alert(data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function deleteOrder(orderId) {
+    if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
+        fetch(`/api/orders/${orderId}`, {
+        method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+        if (data.message) {
+            alert(data.message);
+            window.location.reload();
+        } else {
+            alert(data.error);
+        }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+function abrirModalBuscarDireccion() {
+    document.getElementById('txtDireccionId').value = '';
+    document.getElementById('resultadoDireccion').innerHTML = '';
+    const modal = new bootstrap.Modal(document.getElementById('modalBuscarDireccion'));
+    modal.show();
+}
+
+function buscarDireccion() {
+    const direccionId = document.getElementById('txtDireccionId').value.trim();
+    if (!direccionId) {
+      alert('Por favor, ingresa un ID válido.');
+      return;
+    }
+  
+    fetch(`/api/addresses/${direccionId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const resultadoDiv = document.getElementById('resultadoDireccion');
+        if (data.error) {
+          resultadoDiv.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+        } else {
+          resultadoDiv.innerHTML = `
+            <div class="alert alert-success">
+              <strong>Dirección encontrada:</strong><br>
+              <strong>Provincia:</strong> ${data.provincia}<br>
+              <strong>Cantón:</strong> ${data.canton}<br>
+              <strong>Parroquia:</strong> ${data.parroquia}<br>
+              <strong>Calle Principal:</strong> ${data.calle_principal}<br>
+              <strong>Calle Secundaria:</strong> ${data.calle_secundaria}<br>
+              <strong>Código Postal:</strong> ${data.codigo_postal}<br>
+            </div>
+          `;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('resultadoDireccion').innerHTML = `
+          <div class="alert alert-danger">Error al buscar la dirección: ${error.message}</div>
+        `;
+    });
+}

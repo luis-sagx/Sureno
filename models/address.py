@@ -20,8 +20,14 @@ class AddressModel:
     
     @staticmethod
     def get_by_id(direccion_id):
-        direccion = db.direcciones.find_one({'_id': ObjectId(direccion_id)})
-        return direccion
+        try:
+            if isinstance(direccion_id, str):
+                direccion_id = ObjectId(direccion_id)
+            direccion = db.addresses.find_one({'_id': direccion_id})
+            return direccion
+        except Exception as e:
+            print(f"Error en get_by_id: {e}")
+            return None
 
     @staticmethod
     def get_all():

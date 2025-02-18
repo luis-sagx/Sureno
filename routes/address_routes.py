@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template
 from models.address import AddressModel
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
 
 address_routes = Blueprint('address_routes', __name__)
 
@@ -22,20 +23,24 @@ def show_addresses():
 
 @address_routes.route('/addresses/<address_id>', methods=['GET'])
 def get_address(address_id):
-    """ Obtiene una dirección por su ID """
-    address = AddressModel.get_by_id(address_id)
-    if address:
-        address['_id'] = str(address['_id'])
-        return jsonify(address), 200
-    else:
-        return jsonify({'error': 'Dirección no encontrada'}), 404
-
-@address_routes.route('/addresses', methods=['POST'])
-def create_address():
-    """ Crea una nueva dirección """
-    data = request.get_json()
-    inserted_id = AddressModel.create(data)
-    return jsonify({'message': 'Dirección creada', 'id': inserted_id}), 201
+    try:
+        object_id = ObjectId(address_id)
+        address = AddressModel.get_by_id(object_id)
+        if address:
+            address['_id'] = str(address['_id'])
+            address['user_id'] = str(address['user_id'])
+            return jsonify(address), 200
+        else:
+            return jsonify({'error': 'Dirección no encontrada'}), 404
+    except Exception as e:
+        return jsonify({'error': 'Error en el servidor'}), 500
+    
+# @address_routes.route('/addresses', methods=['POST'])
+# def create_address():
+#     """ Crea una nueva dirección """
+#     data = request.get_json()
+#     inserted_id = AddressModel.create(data)
+#     return jsonify({'message': 'Dirección creada', 'id': inserted_id}), 201
 
 @address_routes.route('/addresses/<address_id>', methods=['PUT'])
 def update_address(address_id):

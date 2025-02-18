@@ -18,6 +18,18 @@ class OrderModel:
             order["user_id"] = str(order["user_id"])
             order["address_id"] = str(order["address_id"])
             order["cart_id"] = str(order["cart_id"])
+
+            # Obtener datos del usuario
+            user = db.usuarios.find_one({"_id": ObjectId(order["user_id"])})
+            if user:
+                order["nombre_cliente"] = user.get("nombre", "N/A")
+                order["apellido_cliente"] = user.get("apellido", "N/A")
+                order["cedula_cliente"] = user.get("cedula", "N/A")
+            else:
+                order["nombre_cliente"] = "N/A"
+                order["apellido_cliente"] = "N/A"
+                order["cedula_cliente"] = "N/A"
+
         return orders
 
     @staticmethod
@@ -28,6 +40,18 @@ class OrderModel:
             order["user_id"] = str(order["user_id"])
             order["address_id"] = str(order["address_id"])
             order["cart_id"] = str(order["cart_id"])
+
+            # Obtener datos del usuario
+            user = db.usuarios.find_one({"_id": ObjectId(order["user_id"])})
+            if user:
+                order["nombre_cliente"] = user.get("nombre", "N/A")
+                order["apellido_cliente"] = user.get("apellido", "N/A")
+                order["cedula_cliente"] = user.get("cedula", "N/A")
+            else:
+                order["nombre_cliente"] = "N/A"
+                order["apellido_cliente"] = "N/A"
+                order["cedula_cliente"] = "N/A"
+
         return order
 
     @staticmethod
