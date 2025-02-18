@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Blueprint
 from routes import register_routes
 from routes.user_routes import user_routes 
 from config import db  # Asegúrate de importar la configuración de la base de datos
@@ -15,7 +15,6 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
 app.register_blueprint(order_routes)
-
 register_routes(app)
 
 @app.route('/')
@@ -86,6 +85,87 @@ def cart():
 def checkOut():
     return render_template('checkOut.html')
 
+@app.route('/compras')
+def compras():
+    # Verificar autenticación
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    user_id = session['user_id']
+    
+    try:
+        # Pipeline de agregación
+        pipeline = [
+            # Paso 1: Filtrar órdenes del usuario actual
+            {
+                "$match": {
+                    "user_id": ObjectId(user_id)
+                }
+            },
+            # Paso 2: Buscar información del carrito
+            {
+                "$lookup": {
+                    "from": "carrito",
+                    "localField": "cart_id",
+                    "foreignField": "_id",
+                    "as": "carrito_info"
+                }
+            },
+            # Paso 3: Descomponer el array de carrito
+            {
+                "$unwind": "$carrito_info"
+            },
+            # Paso 4: Buscar información de la dirección
+            {
+                "$lookup": {
+                    "from": "addresses",
+                    "localField": "address_id",
+                    "foreignField": "_id",
+                    "as": "direccion_info"
+                }
+            },
+            # Paso 5: Descomponer el array de dirección
+            {
+                "$unwind": "$direccion_info"
+            },
+            # Paso 6: Ordenar por fecha descendente
+            {
+                "$sort": {"fecha": -1}
+            },
+            # Paso 7: Proyectar los campos necesarios
+            {
+                "$project": {
+                    "_id": 0,
+                    "fecha_formateada": {
+                        "$dateToString": {
+                            "format": "%d/%m/%Y %H:%M",
+                            "date": "$fecha"
+                        }
+                    },
+                    "total": 1,
+                    "estado": 1,
+                    "productos": "$carrito_info.productos",
+                    "direccion": {
+                        "provincia": "$direccion_info.provincia",
+                        "canton": "$direccion_info.canton",
+                        "parroquia": "$direccion_info.parroquia"
+                    }
+                }
+            }
+        ]
+
+        # Ejecutar la consulta
+        pedidos = list(db.orders.aggregate(pipeline))
+        
+        # Formatear precios
+        for pedido in pedidos:
+            pedido['total'] = f"${pedido['total']:.2f}"
+            
+        return render_template('compras.html', pedidos=pedidos)
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -178,7 +258,7 @@ def get_cart(cart_id):
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 @app.route('/addresses', methods=['POST'])
 def create_address():
     try:

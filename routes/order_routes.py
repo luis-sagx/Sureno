@@ -28,7 +28,7 @@ def create_order():
 
         total_final = cart['total'] + 3  # Añadir costo de envío
 
-        order_data = {
+        order_data = { 
             "user_id": ObjectId(user_id),
             "address_id": ObjectId(data['address_id']),
             "cart_id": ObjectId(data['cart_id']),
@@ -72,9 +72,25 @@ def update_order_status(order_id):
 @order_routes.route('/api/orders/<order_id>', methods=['DELETE'])
 def delete_order(order_id):
     try:
-        if OrderModel.delete(order_id):
-            return jsonify({"message": "Pedido eliminado"}), 200
-        else:
-            return jsonify({"error": "Pedido no encontrado"}), 404
+        # Verificar autenticación
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"error": "Debes iniciar sesión"}), 401
+
+        # Validar formato del ID
+        if not ObjectId.is_valid(order_id):
+            return jsonify({"error": "ID inválido"}), 400
+
+        # Eliminar de MongoDB
+        result = db.orders.delete_one({
+            "_id": ObjectId(order_id),
+            "user_id": ObjectId(user_id)
+        })
+
+        if result.deleted_count == 0:
+            return jsonify({"error": "Pedido no encontrado o no autorizado"}), 404
+
+        return jsonify({"message": "Pedido eliminado exitosamente"}), 200
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": f"Error del servidor: {str(e)}"}), 500

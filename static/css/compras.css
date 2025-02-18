@@ -1,0 +1,113 @@
+:root {
+    --cafe-principal: #f5f1dc;
+    --cafe-claro: #E1D5C9;
+    --cafe-oscuro: #6F4E37;
+    --cafe-accent: #8B7356;
+    --white: #FFFFFF;
+    --cafe: #5e422e;
+    /* Rich brown */
+    --bg-color: var(--white);
+    --beige: #f5f1dc;
+    --text-color: var(--cafe);
+    --header-bg: var(--beige);
+}
+
+body.dark-mode {
+    --text-color: var(--beige);
+    --p-color: white;
+    --header-bg: var(--ca);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--p-color);
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.compras-container {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.table-custom {
+    border-color: var(--cafe);
+    color: var(--p-color);
+}
+
+.table-custom thead {
+    background-color: var(--nav-bg);
+    color: var(--link-color);
+}
+
+.table-custom th {
+    border-bottom: 2px solid var(--cafe);
+}
+
+.table-custom td {
+    border-color: var(--cafe);
+}
+
+.badge-estado {
+    background-color: var(--section-2);
+    color: var(--celeste-oscuro);
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.btn-cancelar {
+    background-color: var(--boton-cafe);
+    color: var(--beige);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: var(--boton-cafe-hover);
+    color: var(--beige);
+    transform: translateY(-1px);
+}
+
+.producto-item {
+    border-left: 3px solid var(--naranja);
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+}
+
+.total-destacado {
+    color: var(--naranja);
+    font-weight: 700;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: -300px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification.show {
+    right: 20px;
+}
+
+.notification.success {
+    background-color: var(--boton-cafe);
+    border: 1px solid var(--boton-cafe-hover);
+}
+
+.notification.error {
+    background-color: var(--naranja);
+    border: 1px solid #e63757;
+}
+
+tr {
+    transition: all 0.3s ease-out;
+}
