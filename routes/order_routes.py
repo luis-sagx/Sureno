@@ -4,7 +4,9 @@ from models.order import OrderModel
 from config import db
 from datetime import datetime
 
-order_routes = Blueprint('orders', __name__)
+order_routes = Blueprint("orders", __name__)
+
+
 
 @order_routes.route('/api/orders', methods=['POST'])
 def create_order():
@@ -69,7 +71,7 @@ def update_order_status(order_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@order_routes.route('/api/orders/<order_id>', methods=['DELETE'])
+@order_routes.route('/orders/<order_id>', methods=['DELETE'])
 def delete_order(order_id):
     try:
         # Verificar autenticación
@@ -91,6 +93,27 @@ def delete_order(order_id):
             return jsonify({"error": "Pedido no encontrado o no autorizado"}), 404
 
         return jsonify({"message": "Pedido eliminado exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error del servidor: {str(e)}"}), 500
+    
+@order_routes.route('/orders/<order_id>/cancelar', methods=['PUT'])
+def cancelar_pedido(order_id):
+    try:
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"error": "Debes iniciar sesión"}), 401
+
+        # Actualizar estado a 'cancelado'
+        result = db.orders.update_one(
+            {"_id": ObjectId(order_id), "user_id": ObjectId(user_id)},
+            {"$set": {"estado": "cancelado"}}
+        )
+
+        if result.modified_count == 0:
+            return jsonify({"error": "Pedido no encontrado o no autorizado"}), 404
+
+        return jsonify({"message": "Pedido cancelado exitosamente"}), 200
 
     except Exception as e:
         return jsonify({"error": f"Error del servidor: {str(e)}"}), 500

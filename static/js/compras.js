@@ -22,30 +22,38 @@ function showNotification(message, type = 'success') {
 // Función principal para cancelar pedido
 async function cancelOrder(orderId) {
     try {
-        const response = await fetch(`/api/orders/${orderId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+        const { isConfirmed } = await Swal.fire({
+            title: '¿Cancelar pedido?',
+            text: "El pedido se marcará como cancelado",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5e422e',
+            cancelButtonColor: '#fc894f',
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'Volver'
+        });
+
+        if (!isConfirmed) return;
+
+        const response = await fetch(`/api/orders/${orderId}/cancelar`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
         });
 
         const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(data.error || 'Error al eliminar');
-        }
+        if (!response.ok) throw new Error(data.error || 'Error al cancelar');
 
-        // Eliminar fila de la tabla
-        document.querySelector(`[data-order-id="${orderId}"]`).closest('tr').remove();
+        // Actualizar la tabla
+        const row = document.querySelector(`[data-order-id="${orderId}"]`).closest('tr');
+        row.remove();
 
-        // Mostrar notificación
         Swal.fire({
             icon: 'success',
-            title: '¡Eliminado!',
-            text: 'El pedido fue eliminado correctamente',
-            confirmButtonColor: 'var(--boton-cafe)'
+            title: '¡Cancelado!',
+            text: 'El pedido ha sido marcado como cancelado',
+            confirmButtonColor: '#5e422e'
         });
 
     } catch (error) {
@@ -53,7 +61,7 @@ async function cancelOrder(orderId) {
             icon: 'error',
             title: 'Error',
             text: error.message,
-            confirmButtonColor: 'var(--naranja)'
+            confirmButtonColor: '#fc894f'
         });
     }
 }

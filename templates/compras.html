@@ -84,14 +84,14 @@
                                 </td>
 
                                 <td class="py-3 px-4 text-end">
-                                    {% if pedido.estado|lower in ['pendiente', 'enviado'] %}
-                                    <button class="btn btn-cancelar" 
-                                    data-order-id="{{ pedido._id }}" 
-                                    onclick="cancelOrder('{{ pedido._id }}')">
-                                    <i class="fas fa-trash"></i> Eliminar
+                                    {% if pedido.estado|lower in ['pendiente'] %}
+                                    <button class="btn btn-sm btn-danger cancel-btn" 
+                                            data-order-id="{{ pedido._id }}" 
+                                            onclick="cancelOrder('{{ pedido._id }}')">
+                                        <i class="fas fa-times-circle me-2"></i>Cancelar
                                     </button>
                                     {% else %}
-                                    <span class="text-muted small">No disponible</span>
+                                    <span class="text-muted small">No cancelable</span>
                                     {% endif %}
                                 </td>
                             </tr>

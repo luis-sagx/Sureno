@@ -111,3 +111,17 @@ body {
 tr {
     transition: all 0.3s ease-out;
 }
+
+.btn-danger {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b !important;
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    transition: all 0.3s ease;
+}
