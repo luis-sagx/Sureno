@@ -1,5 +1,19 @@
-from pymongo import MongoClient 
+"""
+Database Configuration
+"""
+from pymongo import MongoClient
+from constants import Config
 
-mongo_uri = "mongodb+srv://lsagnay:Ur9EcG84r3GJNegi@cluster0.ljtbc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-client = MongoClient(mongo_uri)
-db = client['Sureno']
+# Initialize MongoDB connection
+client = MongoClient(Config.MONGO_URI)
+db = client[Config.DATABASE_NAME]
+
+
+def get_db():
+    """Get database instance"""
+    return db
+
+
+def close_db():
+    """Close database connection"""
+    client.close()
