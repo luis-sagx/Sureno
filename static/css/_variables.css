@@ -1,0 +1,157 @@
+/**
+ * CSS Variables - Design System
+ * Centralized color palette, typography, and spacing system
+ */
+
+:root {
+  /* ========== COLOR PALETTE ========== */
+
+  /* Primary Colors */
+  --color-primary: #5e422e; /* Rich brown (cafe) */
+  --color-primary-light: #906243;
+  --color-primary-dark: #3d2a1f;
+
+  /* Secondary Colors */
+  --color-secondary: #8fc1d4; /* Sky blue (celeste) */
+  --color-secondary-dark: #316168; /* Dark blue */
+
+  /* Accent Colors */
+  --color-accent: #fc894f; /* Orange (naranja) */
+  --color-accent-hover: #ff9a5f;
+
+  /* Neutral Colors */
+  --color-neutral-light: #f5f1dc; /* Beige */
+  --color-neutral-white: #ffffff;
+  --color-neutral-black: #000000;
+  --color-neutral-gray: #6c757d;
+
+  /* ========== LIGHT THEME (DEFAULT) ========== */
+  --bg-primary: var(--color-neutral-white);
+  --bg-secondary: var(--color-neutral-light);
+  --bg-tertiary: var(--color-secondary);
+
+  --text-primary: var(--color-primary);
+  --text-secondary: var(--color-neutral-black);
+  --text-muted: var(--color-neutral-gray);
+  --text-inverse: var(--color-neutral-white);
+
+  --border-color: var(--color-primary);
+  --border-light: rgba(94, 66, 46, 0.2);
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+  /* ========== TYPOGRAPHY ========== */
+  --font-family-primary: "Times New Roman", Times, serif;
+  --font-family-secondary: "Pacifico", cursive;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 2rem; /* 32px */
+  --font-size-4xl: 2.5rem; /* 40px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ========== SPACING ========== */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 2rem; /* 32px */
+  --spacing-2xl: 2.5rem; /* 40px */
+  --spacing-3xl: 3rem; /* 48px */
+  --spacing-4xl: 4rem; /* 64px */
+
+  /* ========== BORDER RADIUS ========== */
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
+  --radius-xl: 1rem; /* 16px */
+  --radius-full: 9999px;
+
+  /* ========== TRANSITIONS ========== */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* ========== Z-INDEX ========== */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* ========== COMPONENT SPECIFIC ========== */
+
+  /* Buttons */
+  --btn-primary-bg: var(--color-primary-light);
+  --btn-primary-hover: var(--color-accent);
+  --btn-secondary-bg: #408791;
+  --btn-secondary-hover: #00b1c9;
+
+  /* Cards */
+  --card-bg: var(--color-neutral-light);
+  --card-border: transparent;
+  --card-shadow: var(--shadow-md);
+
+  /* Navbar */
+  --navbar-bg: var(--color-primary);
+  --navbar-link: var(--color-neutral-white);
+  --navbar-link-hover: #ffffdd;
+
+  /* Header */
+  --header-bg: var(--color-neutral-light);
+
+  /* Forms */
+  --input-bg: var(--color-neutral-white);
+  --input-border: var(--color-primary);
+  --input-focus: var(--color-secondary);
+  --input-placeholder: var(--color-neutral-gray);
+}
+
+/* ========== DARK THEME ========== */
+body.dark-mode {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: var(--color-primary);
+  --bg-tertiary: var(--color-secondary-dark);
+
+  --text-primary: var(--color-neutral-light);
+  --text-secondary: var(--color-neutral-white);
+  --text-muted: #a0a0a0;
+  --text-inverse: var(--color-primary);
+
+  --border-color: var(--color-neutral-light);
+  --border-light: rgba(245, 241, 220, 0.2);
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+  /* Component overrides */
+  --card-bg: var(--color-primary);
+  --header-bg: #2b2a2a;
+  --input-bg: #2b2a2a;
+  --input-border: var(--color-neutral-light);
+}
+
+/* ========== MEDIA QUERY BREAKPOINTS ========== */
+/* Use these in media queries:
+   - Mobile: max-width: 576px
+   - Tablet: 577px - 768px
+   - Desktop: 769px - 1200px
+   - Large: 1201px+
+*/

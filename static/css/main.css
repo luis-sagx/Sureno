@@ -1,0 +1,229 @@
+/**
+ * Main Stylesheet
+ * Imports all modular CSS files in correct order
+ * 
+ * Usage in HTML:
+ * <link rel="stylesheet" href="/static/css/main.css">
+ */
+
+/* 1. Variables and Design System */
+@import url("_variables.css");
+
+/* 2. Base and Reset */
+@import url("_base.css");
+
+/* 3. Typography */
+@import url("_typography.css");
+
+/* 4. Layout */
+@import url("_layout.css");
+
+/* 5. Components */
+@import url("_buttons.css");
+@import url("_forms.css");
+@import url("_cards.css");
+@import url("_navbar.css");
+
+/* 6. Utilities */
+@import url("_utilities.css");
+
+/* 7. Theme Toggle specific styles */
+.theme-toggle {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.theme-toggle input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-primary);
+  transition: var(--transition-base);
+  border-radius: var(--radius-full);
+}
+
+.theme-slider:before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--color-neutral-light);
+  transition: var(--transition-base);
+  border-radius: 50%;
+}
+
+input:checked + .theme-slider {
+  background-color: var(--color-neutral-light);
+}
+
+input:checked + .theme-slider:before {
+  transform: translateX(30px);
+  background-color: var(--color-primary);
+}
+
+/* Header specific */
+.header {
+  background-color: var(--header-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.site-logo {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.site-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xl);
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+/* Gallery */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-2xl);
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-base);
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Banner */
+.banner {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+
+.banner-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--text-inverse);
+  padding: var(--spacing-4xl) var(--spacing-lg);
+}
+
+.banner-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-lg);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-subtitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-lg);
+  text-shadow: 0 0 10px rgba(255, 237, 221, 0.556);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--color-primary);
+  color: var(--text-inverse);
+  padding: var(--spacing-2xl) 0;
+  margin-top: var(--spacing-4xl);
+}
+
+.footer a {
+  color: var(--text-inverse);
+}
+
+.footer a:hover {
+  color: var(--color-accent);
+}
+
+/* Animations */
+@keyframes cart-animate {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.cart-animate {
+  animation: cart-animate 0.3s ease;
+}
+
+@keyframes liquorCard {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-liquor {
+  animation: liquorCard 0.5s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .site-title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .banner-title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .banner-subtitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .gallery {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-lg);
+  }
+}

@@ -1,0 +1,274 @@
+/**
+ * Utilities - Helper classes
+ */
+
+/* Shadow utilities */
+.shadow-none {
+  box-shadow: none !important;
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.shadow {
+  box-shadow: var(--shadow-md) !important;
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Border utilities */
+.border {
+  border: 1px solid var(--border-light) !important;
+}
+
+.border-top {
+  border-top: 1px solid var(--border-light) !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--border-light) !important;
+}
+
+.border-left {
+  border-left: 1px solid var(--border-light) !important;
+}
+
+.border-right {
+  border-right: 1px solid var(--border-light) !important;
+}
+
+.border-0 {
+  border: none !important;
+}
+
+/* Rounded utilities */
+.rounded {
+  border-radius: var(--radius-md) !important;
+}
+
+.rounded-sm {
+  border-radius: var(--radius-sm) !important;
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg) !important;
+}
+
+.rounded-full {
+  border-radius: var(--radius-full) !important;
+}
+
+.rounded-0 {
+  border-radius: 0 !important;
+}
+
+/* Overflow utilities */
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.overflow-scroll {
+  overflow: scroll !important;
+}
+
+/* Position utilities */
+.position-relative {
+  position: relative !important;
+}
+
+.position-absolute {
+  position: absolute !important;
+}
+
+.position-fixed {
+  position: fixed !important;
+}
+
+.position-sticky {
+  position: sticky !important;
+}
+
+/* Cursor utilities */
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+
+/* Opacity utilities */
+.opacity-0 {
+  opacity: 0 !important;
+}
+.opacity-25 {
+  opacity: 0.25 !important;
+}
+.opacity-50 {
+  opacity: 0.5 !important;
+}
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+.opacity-100 {
+  opacity: 1 !important;
+}
+
+/* Animation utilities */
+.transition {
+  transition: all var(--transition-base) !important;
+}
+
+.transition-fast {
+  transition: all var(--transition-fast) !important;
+}
+
+.transition-slow {
+  transition: all var(--transition-slow) !important;
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-scale {
+  transition: transform var(--transition-base);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-shadow:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-sm {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 60px;
+  height: 60px;
+  border-width: 6px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade animations */
+.fade-in {
+  animation: fadeIn var(--transition-base);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-out {
+  animation: fadeOut var(--transition-base);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Slide animations */
+.slide-in-up {
+  animation: slideInUp var(--transition-slow);
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Visibility utilities */
+.visible {
+  visibility: visible !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+/* User select */
+.select-none {
+  user-select: none !important;
+}
+
+.select-all {
+  user-select: all !important;
+}
+
+/* Pointer events */
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
+/* Scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}

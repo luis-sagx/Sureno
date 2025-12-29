@@ -1,0 +1,149 @@
+/**
+ * Typography - Text styles and headings
+ */
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  font-family: var(--font-family-secondary);
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+}
+
+h5 {
+  font-size: var(--font-size-lg);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-secondary);
+}
+
+/* Text utilities */
+.text-primary {
+  color: var(--text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-inverse {
+  color: var(--text-inverse) !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+/* Font weights */
+.font-normal {
+  font-weight: var(--font-weight-normal) !important;
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium) !important;
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+.font-bold {
+  font-weight: var(--font-weight-bold) !important;
+}
+
+/* Font sizes */
+.text-xs {
+  font-size: var(--font-size-xs) !important;
+}
+.text-sm {
+  font-size: var(--font-size-sm) !important;
+}
+.text-base {
+  font-size: var(--font-size-base) !important;
+}
+.text-lg {
+  font-size: var(--font-size-lg) !important;
+}
+.text-xl {
+  font-size: var(--font-size-xl) !important;
+}
+.text-2xl {
+  font-size: var(--font-size-2xl) !important;
+}
+.text-3xl {
+  font-size: var(--font-size-3xl) !important;
+}
+.text-4xl {
+  font-size: var(--font-size-4xl) !important;
+}
+
+/* Text decorations */
+.text-italic {
+  font-style: italic;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(255, 252, 221, 0.5);
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+}
