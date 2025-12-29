@@ -3,20 +3,163 @@
  * All common variables, utilities, and components are now in main.css
  */
 
-/* Only page-specific styles remain here */
+/* Variables CSS */
+:root {
+  /* Color Palette */
+  --cafe: #5e422e;
+  --beige: #f5f1dc;
+  --celeste: #8fc1d4;
+  --white: #ffffff;
+  --black: #000000;
+  --naranja: #fc894f;
+  --celeste-oscuro: #316168;
+  --boton-cafe: #906243;
+  --boton-cafe-hover: var(--naranja);
+  --boton-celeste: #408791;
+  --boton-celeste-hover: #00b1c9;
+  --p-color: black;
+
+  /* Light Theme */
+  --bg-color: var(--white);
+  --text-color: var(--cafe);
+  --header-bg: var(--beige);
+  --nav-bg: var(--cafe);
+  --link-color: var(--white);
+  --hover-link-color: rgb(255, 255, 221);
+  --icon-color: var(--cafe);
+  --checkbox-bg: var(--cafe);
+  --checkbox-ball: var(--beige);
+  --section-1: var(--beige);
+  --section-2: var(--celeste);
+}
+
+/* Dark Theme */
+body.dark-mode {
+  --p-color: white;
+  --bg-color: #1e1e1e;
+  --text-color: var(--beige);
+  --header-bg: #2b2a2a;
+  --nav-bg: var(--cafe);
+  --link-color: var(--beige);
+  --hover-link-color: rgb(255, 255, 221);
+  --icon-color: var(--beige);
+  --checkbox-bg: var(--beige);
+  --checkbox-ball: var(--cafe);
+  --section-1: var(--cafe);
+  --section-2: var(--celeste-oscuro);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--p-color);
+  transition: background-color 0.3s, color 0.3s;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* Header Styles */
+.bg-custom {
+  background-color: var(--header-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 3.5rem;
+  object-fit: cover;
+}
+
+.site-title {
+  font-style: italic;
+  font-family: "Pacifico";
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: var(--text-color);
+}
+
+/* Navigation Styles */
+.navbar {
+  background-color: var(--nav-bg) !important;
+  padding: 0.5rem 0;
+}
+
+.navbar-nav .nav-link {
+  color: var(--link-color) !important;
+  transition: color 0.3s;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--hover-link-color) !important;
+  text-shadow: 0px 0px 10px rgba(255, 252, 221, 0.5);
+}
+
+.icono-nav {
+  color: var(--icon-color) !important;
+  transition: color 0.3s;
+}
+
+.icono-nav:hover {
+  color: var(--naranja) !important;
+}
+
+/* Dropdown styles */
+.dropdown-menu {
+  background-color: var(--beige);
+  border: 2px solid var(--cafe);
+}
+
+.dropdown-item {
+  color: var(--cafe);
+}
+
+.dropdown-item:hover {
+  background-color: var(--cafe);
+  color: var(--white);
+}
+
+.btn-1 {
+  background-color: var(--boton-cafe);
+  color: var(--white);
+  border: 2px solid var(--boton-cafe);
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-1:hover {
+  background-color: var(--boton-cafe-hover);
+  border-color: var(--boton-cafe-hover);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
 
 .btn-2 {
   background-color: var(--boton-celeste);
+  color: var(--white);
+  border: 2px solid var(--boton-celeste);
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  display: inline-block;
 }
 
 .btn-2:hover {
   background-color: var(--boton-celeste-hover);
-}
-
-.btn-1,
-.btn-2 {
+  border-color: var(--boton-celeste-hover);
   color: var(--white);
-  font-size: 1.2rem;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 #cart-count {
@@ -42,20 +185,42 @@
 /* Footer Styles */
 footer {
   background-color: var(--nav-bg);
+  color: var(--white);
+  padding: 2rem 0;
+}
+
+footer h3,
+footer h4 {
+  color: var(--white);
+  font-weight: bold;
+}
+
+footer p {
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+footer i {
+  color: var(--white);
 }
 
 .social-icons {
   margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 .social-icons a {
   color: var(--white);
   font-size: 2rem;
-  transition: color 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
 }
 
 .social-icons a:hover {
-  color: var(--beige);
+  color: var(--naranja);
+  transform: scale(1.2);
 }
 
 .section-1 {

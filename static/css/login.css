@@ -1,7 +1,24 @@
 /**
  * Login Page Styles
- * Uses modular CSS system from main.css
  */
+
+:root {
+  --cafe: #6f4e37;
+  --beige: #f5f1dc;
+  --celeste: #8fc1d4;
+  --celeste-oscuro: #316168;
+  --boton-cafe: #906243;
+  --boton-cafe-hover: #fc894f;
+  --boton-celeste: #408791;
+  --boton-celeste-hover: #00b1c9;
+  --text-color: var(--cafe);
+  --section-1: var(--beige);
+}
+
+body.dark-mode {
+  --section-1: var(--cafe);
+  --text-color: var(--beige);
+}
 
 /* Login Page Layout */
 body {
@@ -10,25 +27,74 @@ body {
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  background-color: #1e1e1e;
 }
 
 /* Login Container */
 .login-container {
   width: 100%;
   max-width: 35rem;
-  padding: var(--spacing-6);
-  background: var(--color-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  padding: 2.5rem;
+  background: var(--section-1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 #inputLogin {
-  margin-top: var(--spacing-5);
+  margin-top: 2rem;
 }
 
 .login-title {
-  color: var(--color-text);
-  font-weight: var(--font-bold);
+  color: var(--text-color);
+  font-weight: bold;
   text-align: center;
-  margin-bottom: var(--spacing-4);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.form-label {
+  color: var(--text-color);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+}
+
+.form-control:focus {
+  border-color: var(--boton-cafe);
+  box-shadow: 0 0 0 0.2rem rgba(144, 98, 67, 0.25);
+}
+
+.btn-1 {
+  background-color: var(--boton-cafe);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-1:hover {
+  background-color: var(--boton-cafe-hover);
+  color: white;
+}
+
+.btn-2 {
+  background-color: var(--boton-celeste);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-2:hover {
+  background-color: var(--boton-celeste-hover);
+  color: white;
 }
