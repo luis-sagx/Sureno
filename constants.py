@@ -26,9 +26,7 @@ class Config:
     
     if not MONGO_URI:
         raise ValueError(
-            "MONGO_URI no está configurado. Por favor, crea un archivo .env "
-            "en la raíz del proyecto con tu URI de MongoDB Atlas.\n"
-            "Ejemplo: MONGO_URI=mongodb+srv://usuario:password@cluster.mongodb.net/"
+            "MONGO_URI no está configurado."
         )
     
     # Roles
