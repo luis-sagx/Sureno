@@ -2,6 +2,10 @@
 
 Sureño es un sitio web de comercio electrónico para la empresa Sureño, la cual se encarga de vender licores de su marca. El proyecto fue desarrollado utilizando el framework Flask de Python con una arquitectura modular y escalable. Este proyecto proporciona una plataforma donde los usuarios pueden explorar, seleccionar y comprar productos de manera sencilla y eficiente.
 
+![alt text](public/home.png)
+![alt text](public/who_is.png)
+![alt text](public/products.png)
+
 ## Arquitectura del Proyecto
 
 Este proyecto sigue una **arquitectura en capas** (Layered Architecture) con separación clara de responsabilidades:
@@ -247,123 +251,9 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
    - Eliminar: Haz clic en el ícono de eliminar
 4. **Gestión de Pedidos**: Ver y actualizar pedidos en `/admin/orders`
 
-## Desarrollo
-
-### Estructura de Servicios
-
-```python
-# Ejemplo de uso de un servicio
-from services.product_service import ProductService
-
-# Obtener todos los productos
-success, products, status = ProductService.get_all_products()
-
-if success:
-    # Procesar productos
-    pass
-else:
-    # Manejar error
-    error_message = products
-```
-
-### Uso de Decoradores
-
-```python
-from utils.decorators import login_required, admin_required
-
-@product_bp.route('/admin/products', methods=['GET'])
-@admin_required
-def get_admin_products():
-    # Solo accesible para administradores
-    pass
-```
-
-### Frontend - Uso de Utilidades
-
-```javascript
-// API
-const products = await API.get("/api/products");
-
-// Storage
-Storage.set("theme", "dark");
-const theme = Storage.get("theme", "light");
-
-// Validation
-const isValid = Validator.isValidEmail("user@example.com");
-
-// Notifications
-Notify.success("Producto agregado al carrito");
-const confirmed = await Notify.confirm("¿Eliminar este producto?");
-```
-
-## Testing
-
-```bash
-# Ejecutar tests (cuando estén disponibles)
-python -m pytest tests/
-
-# Con coverage
-python -m pytest --cov=. tests/
-```
-
-## Despliegue
-
-### Producción
-
-1. Configura `FLASK_ENV=production` en tu `.env`
-2. Usa un servidor WSGI como Gunicorn:
-
-   ```bash
-   gunicorn -w 4 -b 0.0.0.0:8000 app:app
-   ```
-
-3. Configura un proxy inverso (Nginx):
-   ```nginx
-   location / {
-       proxy_pass http://127.0.0.1:8000;
-       proxy_set_header Host $host;
-       proxy_set_header X-Real-IP $remote_addr;
-   }
-   ```
-
-### Variables de Entorno
-
-Asegúrate de configurar todas las variables necesarias:
-
-- `SECRET_KEY`: Clave secreta para sesiones (genera una segura)
-- `MONGO_URI`: URI de conexión a MongoDB Atlas
-- `DATABASE_NAME`: Nombre de la base de datos
-- `FLASK_ENV`: `development` o `production`
-
-## Contribuir
-
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## Mejores Prácticas
-
-### Backend
-
-- Siempre usa servicios para lógica de negocio
-- Valida todos los inputs del usuario
-- Usa decoradores para autenticación/autorización
-- Maneja errores apropiadamente
-- Usa ResponseHandler para respuestas consistentes
-
-### Frontend
-
-- Importa `main.css` en todas las páginas para estilos base
-- Usa variables CSS en lugar de valores hardcoded
-- Utiliza las clases utilitarias de Bootstrap y custom
-- Valida formularios antes de enviar
-- Muestra feedback al usuario con Notify
-
 ## Licencia
 
-Este proyecto es privado y pertenece a Sureño.
+Este proyecto esta bajo [MIT License](LICENSE).
 
 ## Contacto
 
