@@ -1,258 +1,237 @@
-:root {
-    /* Color Palette */
-    --cafe: #5a402e;           /* Rich brown */
-    --beige: #F5F5DC;         /* Soft beige */
-    --celeste: #87CEEB;       /* Sky blue */
-    --white: #FFFFFF;         /* Pure white */
-    --black: #000000;         /* Pure black */
-    --celeste-oscuro: #316168;
-    --p-color: black;
-    
-    /* Light Theme */
-    --bg-color: var(--white);
-    --text-color: var(--cafe);
-    --section-1: var(--beige);
-    --section-2: var(--celeste);
-}
+/**
+ * Index Page Styles
+ * Uses modular CSS system from main.css
+ */
 
-/* Dark Theme */
-body.dark-mode {
-    --p-color: white;
-    --bg-color: #1E1E1E;
-    --text-color: var(--beige);
-    --section-1: var(--cafe);
-    --section-2: var(--celeste-oscuro);
-}
-
-/* Index */
+/* Banner Section */
 .banner {
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)
-    ), url('../img/Fondo-main.webp'); 
-    background-size: cover;
-    background-position: center;
-    position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/Fondo-main.webp");
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }
 
 .content-banner {
-    background-color: rgba(0,0,0,0.5);
-    padding: 4rem 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 4rem 0;
 }
 
 .banner-subtitle {
-    font-size: 1.5rem;
-    color: var(--white);
-    font-weight: bold;
-    padding: 1.5rem;
-    text-shadow: 0px 0px 10px rgba(255, 237, 221, 0.556);
+  font-size: 1.5rem;
+  color: var(--white);
+  font-weight: bold;
+  padding: 1.5rem;
+  text-shadow: 0px 0px 10px rgba(255, 237, 221, 0.556);
 }
 
 .banner-title {
-    font-weight: bold;
-    color: var(--white);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  font-weight: bold;
+  color: var(--white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 1rem;
-    padding: 2rem;
-    background-color: var(--bg-color);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1rem;
+  padding: 2rem;
+  background-color: var(--bg-color);
 }
 
 .gallery img {
-    width: 100%;
-    height: auto;
-    max-height: 500px;
-    aspect-ratio: 9 / 16;
-    object-fit: cover;
-    transition: transform 0.3s;
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  transition: transform 0.3s;
 }
 
 .gallery img:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .services {
-    background-color: var(--section-1);
-    padding: 4rem 0;
+  background-color: var(--section-1);
+  padding: 4rem 0;
 }
 
 .services-content {
-    text-align: center;
+  text-align: center;
 }
 
 .services-group {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
 }
 
 .services-1 {
-    text-align: center;
-    padding: 1rem;
-    transition: transform 0.3s;
+  text-align: center;
+  padding: 1rem;
+  transition: transform 0.3s;
 }
 
 .services-1:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .services-1 img {
-    width: 7rem;
-    margin-bottom: 1rem;
+  width: 7rem;
+  margin-bottom: 1rem;
 }
 
 /* About US */
-.phrase-container, .section.show-products {
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.7),
-        rgba(0, 0, 0, 0.7)
-    ), 
-    url('../img/Fondo-main.webp');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed; 
-    width: 100%; 
-    padding: 100px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    color: #fff;
+.phrase-container,
+.section.show-products {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../img/Fondo-main.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100%;
+  padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 
 .phrase-info {
-    font-style: italic;
-    width: 70%;
-    color: white; 
-    text-align: center;
-    font-size: 1.2rem;
+  font-style: italic;
+  width: 70%;
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 #aboutUs p {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 .section {
-    margin: 50px auto;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .section h2 {
-    font-family: 'Pacifico', cursive;
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: var(--text-color);
+  font-family: "Pacifico", cursive;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
 }
 
 .section ul {
-    list-style-type: none; 
-    padding: 0; 
+  list-style-type: none;
+  padding: 0;
 }
 
 .section ul li {
-    margin-bottom: 10px;
-    display: block;
-    font-size: 1.1rem;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 1.1rem;
 }
 
 .section.show-products h2 {
-    color: var(--beige);
+  color: var(--beige);
 }
 
 .history {
-    display: flex;
-    align-items: center; 
-    justify-content: space-between; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: var(--section-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: var(--section-1);
 }
 
 .history p {
-    color: var(--p-color);
+  color: var(--p-color);
 }
 
 .aboutUs-information {
-    flex: 1; 
-    justify-content: center; 
+  flex: 1;
+  justify-content: center;
 }
 
 .center-information {
-    margin: 0 auto;
-    max-width: 70%;
-    text-align: center;
+  margin: 0 auto;
+  max-width: 70%;
+  text-align: center;
 }
 
 .mission-vision {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px; 
-    background-color: var(--section-2);
-    color: var(--p-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--section-2);
+  color: var(--p-color);
 }
 
-.mission, .vision {
-    flex: 1;
-    padding: 20px;
+.mission,
+.vision {
+  flex: 1;
+  padding: 20px;
 }
 
-.mission{
-    border-left: 2px solid var(--p-color);
+.mission {
+  border-left: 2px solid var(--p-color);
 }
 
-.vision{
-    border-left: 2px solid var(--p-color);
+.vision {
+  border-left: 2px solid var(--p-color);
 }
 
 /* Media queries for responsive design */
 @media (min-width: 768px) {
-    .history, .valors {
-        flex-direction: row;
-    }
-    
-    #aboutUs img {
-        width: 50%;
-        max-width: 50%;
-    }
-    
-    .aboutUs-information {
-        width: 50%;
-    }
+  .history,
+  .valors {
+    flex-direction: row;
+  }
+
+  #aboutUs img {
+    width: 50%;
+    max-width: 50%;
+  }
+
+  .aboutUs-information {
+    width: 50%;
+  }
 }
 
 @media (max-width: 767px) {
-    #aboutUs p, #aboutUs li {
-        font-size: 0.9rem;
-    }
+  #aboutUs p,
+  #aboutUs li {
+    font-size: 0.9rem;
+  }
 
-    .history, .valors {
-        flex-direction: column;
-    }
-    
-    #aboutUs img {
-        width: 100%;
-        max-width: 100%;
-        order: -1; /* Asegura que la imagen siempre aparezca primero en móvil */
-    }
-    
-    .aboutUs-information {
-        width: 100%;
-        padding: 20px 0;
-    }
-    
-    .center-information {
-        max-width: 90%;
-    }
+  .history,
+  .valors {
+    flex-direction: column;
+  }
 
-    .mission-vision {
-        flex-direction: column;
-    }
+  #aboutUs img {
+    width: 100%;
+    max-width: 100%;
+    order: -1; /* Asegura que la imagen siempre aparezca primero en móvil */
+  }
 
-    .mission {
-        order: -1;
-    }
+  .aboutUs-information {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .center-information {
+    max-width: 90%;
+  }
+
+  .mission-vision {
+    flex-direction: column;
+  }
+
+  .mission {
+    order: -1;
+  }
 }
