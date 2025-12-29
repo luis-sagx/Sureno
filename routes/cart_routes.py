@@ -19,6 +19,7 @@ def get_carts():
 
 
 @cart_routes.route('/carts/<cart_id>', methods=['GET'])
+@login_required
 def get_cart(cart_id):
     """Get cart by ID"""
     success, result, status_code = CartService.get_cart_by_id(cart_id)

@@ -26,6 +26,7 @@ class CartService:
             cart = CartModel.get_by_id(cart_id)
             if cart:
                 cart['_id'] = str(cart['_id'])
+                cart['user_id'] = str(cart['user_id'])
                 return True, cart, 200
             return False, "Carrito no encontrado", 404
         except Exception as e:
@@ -48,7 +49,7 @@ class CartService:
                 "fecha_creacion": datetime.now()
             }
 
-            result = db.carrito.insert_one(cart_document)
+            result = db.carritos.insert_one(cart_document)
             return True, {
                 'message': 'Carrito guardado',
                 'id': str(result.inserted_id),

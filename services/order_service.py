@@ -32,7 +32,7 @@ class OrderService:
                     return False, f"Falta el campo: {field}", 400
 
             # Validate cart exists
-            cart = db.carrito.find_one({"_id": ObjectId(order_data['cart_id'])})
+            cart = db.carritos.find_one({"_id": ObjectId(order_data['cart_id'])})
             if not cart:
                 return False, "Carrito no encontrado", 404
 
@@ -127,7 +127,7 @@ class OrderService:
                 {"$match": {"user_id": ObjectId(user_id)}},
                 {
                     "$lookup": {
-                        "from": "carrito",
+                        "from": "carritos",
                         "localField": "cart_id",
                         "foreignField": "_id",
                         "as": "carrito_info"
