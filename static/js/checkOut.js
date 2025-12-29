@@ -4,9 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let addressId = null;
 
     // Cargar datos del carrito
-    const loadCart = async() => {
+    const loadCart = async () => {
         try {
-            const response = await fetch(`/api/cart/${cartId}`);
+            const response = await fetch(`/api/carts/${cartId}`);
+
+            if (response.status === 401) {
+                alert('Sesión expirada. Por favor inicia sesión nuevamente');
+                window.location.href = '/login';
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+
             const cart = await response.json();
 
             if (cart.error) throw new Error(cart.error);
@@ -21,11 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Guardar dirección
-    document.getElementById('address-form').addEventListener('submit', async(e) => {
+    document.getElementById('address-form').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('/addresses', {
+            const response = await fetch('/api/addresses', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -38,10 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
 
+            if (response.status === 401) {
+                alert('Sesión expirada. Por favor inicia sesión nuevamente');
+                window.location.href = '/login';
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+
             const data = await response.json();
             if (data.error) throw new Error(data.error);
 
-            addressId = data.id; // ID de la dirección guardada
+            addressId = data.data.id; // ID de la dirección guardada
             alert('Dirección guardada!');
         } catch (error) {
             alert(error.message);
@@ -50,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Finalizar compra
     // Dentro del evento click de 'finalizar-compra'
-    document.getElementById('finalizar-compra').addEventListener('click', async() => {
+    document.getElementById('finalizar-compra').addEventListener('click', async () => {
         try {
             if (!cartId || !addressId) {
                 alert('Primero guarda tu dirección');

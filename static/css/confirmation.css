@@ -1,32 +1,112 @@
 :root {
-    /* Color Palette */
-    --cafe: #5e422e;       /* Rich brown */
-    --beige: #f5f1dc;         /* Soft beige */
-    --celeste: #8FC1D4;       /* Sky blue */
-    --p-color: rgba(36, 36, 36, 0.842);
+  /* Color Palette */
+  --cafe: #5e422e; /* Rich brown */
+  --beige: #f5f1dc; /* Soft beige */
+  --celeste: #8fc1d4; /* Sky blue */
+  --white: #ffffff;
+  --black: #000000;
+  --p-color: rgba(36, 36, 36, 0.842);
+  --boton-cafe: #906243;
+  --boton-cafe-hover: #fc894f;
+}
+
+/* Eliminar fondo gris */
+.modal-content,
+.confirmation-container {
+  background-color: transparent !important;
+  border: none;
 }
 
 .h-confirmation {
-    color: var(--cafe);
-    font-family: "Pacifico", cursive;
-    font-size: 2.5rem;
+  color: var(--cafe);
+  font-family: "Pacifico", cursive;
+  font-size: 2.5rem;
 }
 
 .p-confirmation {
-    color: var(--p-color);
-    font-size: 1rem;
+  color: var(--p-color);
+  font-size: 1rem;
 }
 
 .footer-box p {
-    color: var(--p-color);
-    font-weight: bold;
+  color: var(--p-color);
+  font-weight: bold;
 }
 
-.btn-confirmation{
-    padding: 0 3rem;
+/* Estilos de botones mejorados */
+.btn-confirmation {
+  padding: 0.75rem 3rem;
+  background-color: var(--boton-cafe);
+  color: var(--white);
+  border: 2px solid var(--boton-cafe);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-confirmation:hover {
+  background-color: var(--boton-cafe-hover);
+  border-color: var(--boton-cafe-hover);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-confirmation:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones Sí y No en la página principal */
+.btn-yes,
+.btn-no {
+  padding: 0.75rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 1rem;
+}
+
+.btn-yes {
+  background-color: var(--boton-cafe);
+  border-color: var(--boton-cafe);
+  color: var(--white);
+}
+
+.btn-yes:hover {
+  background-color: var(--boton-cafe-hover);
+  border-color: var(--boton-cafe-hover);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-no {
+  background-color: #666;
+  border-color: #666;
+  color: var(--white);
+}
+
+.btn-no:hover {
+  background-color: #444;
+  border-color: #444;
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-inner img {
-    max-height: 300px;
-    object-fit: contain;
+  max-height: 300px;
+  object-fit: contain;
 }

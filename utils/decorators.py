@@ -15,7 +15,12 @@ def login_required(f):
         user_id = session.get('user_id')
         if not user_id:
             # Check if it's an API request (JSON) or web request
-            if request.is_json or request.path.startswith('/api/'):
+            is_api = (request.is_json or 
+                     request.path.startswith('/api/') or 
+                     request.headers.get('Accept') == 'application/json' or
+                     request.headers.get('Content-Type') == 'application/json')
+            
+            if is_api:
                 return jsonify({"error": "No hay usuario autenticado"}), 401
             return redirect(url_for('login'))
         return f(*args, **kwargs)

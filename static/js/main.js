@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Funciones y eventos del carrito (ya existentes)
     actualizarCarritoUI();
     cargarCarrito();
@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Evento para confirmar el carrito (ya implementado)
     const confirmarBtn = document.getElementById("confirmar-productos");
     if (confirmarBtn) {
-        confirmarBtn.addEventListener("click", function(event) {
+        confirmarBtn.addEventListener("click", function (event) {
             event.preventDefault(); // Prevenir comportamiento por defecto
             enviarCarrito();
         });
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Nuevo: Asignar el evento submit al formulario de dirección
     const addressForm = document.getElementById("address-form");
     if (addressForm) {
-        addressForm.addEventListener("submit", function(e) {
+        addressForm.addEventListener("submit", function (e) {
             e.preventDefault(); // Evita el envío tradicional del formulario
 
             // Extraer los valores de cada campo del formulario
@@ -38,12 +38,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Enviar la petición POST al backend para guardar la dirección
             fetch('/addresses', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(addressData)
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(addressData)
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Dirección guardada:', data);
@@ -161,15 +161,32 @@ function enviarCarrito() {
     const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
 
-    fetch('/cart', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                productos: carrito,
-                total: total
-            })
+    fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            productos: carrito,
+            total: total
         })
-        .then(response => response.json())
+    })
+        .then(response => {
+            if (response.status === 401) {
+                // Usuario no autenticado, redirigir al login
+                Swal.fire({
+                    title: 'Sesión requerida',
+                    text: 'Debes iniciar sesión para continuar',
+                    icon: 'warning',
+                    confirmButtonText: 'Ir a Login'
+                }).then(() => {
+                    window.location.href = '/login';
+                });
+                throw new Error('No autenticado');
+            }
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.error) throw new Error(data.error);
 
@@ -177,6 +194,8 @@ function enviarCarrito() {
             window.location.href = `/checkOut?cart_id=${data.id}`;
         })
         .catch(error => {
-            Swal.fire('Error', error.message, 'error');
+            if (error.message !== 'No autenticado') {
+                Swal.fire('Error', error.message, 'error');
+            }
         });
 }
