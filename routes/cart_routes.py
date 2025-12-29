@@ -1,49 +1,71 @@
-from flask import Blueprint, request, jsonify
-from models.cart import CartModel
-from bson.objectid import ObjectId
+"""
+Cart Routes - API endpoints for shopping cart
+"""
+from flask import Blueprint, request, session, jsonify
+from services.cart_service import CartService
+from utils.decorators import login_required
+from utils.response_handler import ResponseHandler
+
 
 cart_routes = Blueprint('cart_routes', __name__)
 
-@cart_routes.route('/api/carts', methods=['GET'])
+
+@cart_routes.route('/carts', methods=['GET'])
+@login_required
 def get_carts():
-    """ Obtiene todos los carritos """
-    carts = CartModel.get_all()
-    for cart in carts:
-        cart['_id'] = str(cart['_id'])
+    """Get all carts"""
+    carts = CartService.get_all_carts()
     return jsonify(carts), 200
+
 
 @cart_routes.route('/carts/<cart_id>', methods=['GET'])
 def get_cart(cart_id):
-    """ Obtiene un carrito por su ID """
-    cart = CartModel.get_by_id(cart_id)
-    if cart:
-        cart['_id'] = str(cart['_id'])
-        return jsonify(cart), 200
-    else:
-        return jsonify({'error': 'Carrito no encontrado'}), 404
+    """Get cart by ID"""
+    success, result, status_code = CartService.get_cart_by_id(cart_id)
+    
+    if not success:
+        return ResponseHandler.error(result, status_code)
+    
+    return jsonify(result), status_code
 
-@cart_routes.route('/carts', methods=['POST'])
+
+@cart_routes.route('/cart', methods=['POST'])
+@login_required
 def create_cart():
-    """ Crea un nuevo carrito """
-    data = request.get_json()
-    inserted_id = CartModel.create(data)
-    return jsonify({'message': 'Carrito creado', 'id': inserted_id}), 201
+    """Create or save a cart for current user"""
+    user_id = session.get("user_id")
+    cart_data = request.get_json()
+    
+    success, result, status_code = CartService.create_cart(user_id, cart_data)
+    
+    if not success:
+        return ResponseHandler.error(result, status_code)
+    
+    return jsonify(result), status_code
+
 
 @cart_routes.route('/carts/<cart_id>', methods=['PUT'])
+@login_required
 def update_cart(cart_id):
-    """ Actualiza un carrito existente """
+    """Update cart"""
     update_data = request.get_json()
-    modified_count = CartModel.update(cart_id, update_data)
-    if modified_count:
-        return jsonify({'message': 'Carrito actualizado'}), 200
-    else:
-        return jsonify({'error': 'Carrito no encontrado o sin cambios'}), 404
+    
+    success, result, status_code = CartService.update_cart(cart_id, update_data)
+    
+    if not success:
+        return ResponseHandler.error(result, status_code)
+    
+    return ResponseHandler.success(message=result)
+
 
 @cart_routes.route('/carts/<cart_id>', methods=['DELETE'])
+@login_required
 def delete_cart(cart_id):
-    """ Elimina un carrito existente """
-    deleted_count = CartModel.delete(cart_id)
-    if deleted_count:
-        return jsonify({'message': 'Carrito eliminado'}), 200
-    else:
-        return jsonify({'error': 'Carrito no encontrado'}), 404
+    """Delete cart"""
+    success, result, status_code = CartService.delete_cart(cart_id)
+    
+    if not success:
+        return ResponseHandler.error(result, status_code)
+    
+    return ResponseHandler.success(message=result)
+

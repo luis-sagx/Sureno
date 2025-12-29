@@ -1,135 +1,153 @@
+"""
+Product Routes - API and web endpoints for product management
+"""
 from flask import Blueprint, request, jsonify, render_template
-from models.product import ProductModel
-from bson.objectid import ObjectId
-import os
-from werkzeug.utils import secure_filename
-from config import db
+from services.product_service import ProductService
+from utils.file_handler import FileHandler
+from utils.response_handler import ResponseHandler
+from utils.decorators import admin_required
+from utils.validators import Validator
+
 
 product_routes = Blueprint('product_routes', __name__)
 
-UPLOAD_FOLDER = "static/uploads"
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @product_routes.route('/upload-image/<product_id>', methods=['POST'])
+@admin_required
 def upload_image(product_id):
-    if "imagen" not in request.files:
-        return jsonify({"error": "No se envió ninguna imagen"}), 400
+    """Upload image for a product"""
+    image_file = FileHandler.get_file_from_request(request, 'imagen')
     
-    imagen = request.files["imagen"]
-    if imagen.filename == "" or not allowed_file(imagen.filename):
-        return jsonify({"error": "Formato no permitido"}), 400
+    if not image_file:
+        return ResponseHandler.bad_request("No se envió ninguna imagen")
     
-    filename = secure_filename(imagen.filename)
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
-    imagen.save(filepath)
+    # Save image
+    success, result = FileHandler.save_image(image_file)
+    if not success:
+        return ResponseHandler.bad_request(result)
+    
+    # Update product
+    success, data, status_code = ProductService.update_product_image(product_id, result)
+    
+    if not success:
+        return ResponseHandler.error(data, status_code)
+    
+    return jsonify(data), status_code
 
-    # Guardar la ruta en la base de datos
-    image_path = f"/static/uploads/{filename}"
-    updated = ProductModel.update_image(product_id, image_path)
 
-    if updated:
-        return jsonify({"mensaje": "Imagen subida con éxito", "ruta": image_path}), 200
-    else:
-        return jsonify({"error": "Producto no encontrado"}), 404
-    
 @product_routes.route('/products')
 def products():
-    products = ProductModel.get_all()
-    for product in products:
-        product['_id'] = str(product['_id'])
+    """Show products page"""
+    products = ProductService.get_all_products()
     return render_template('product.html', products=products)
+
 
 @product_routes.route('/products/<product_id>', methods=['GET'])
 def product_detail(product_id):
-    product = ProductModel.get_by_id(product_id)
-    if product:
-        return render_template('product_detail.html', product=product)
-    else:
+    """Show product detail page"""
+    success, product, status_code = ProductService.get_product_by_id(product_id)
+    
+    if not success:
         return "Producto no encontrado", 404
+    
+    return render_template('product_detail.html', product=product)
+
 
 @product_routes.route('/products', methods=['POST'])
+@admin_required
 def create_product():
-    # Obtener datos del producto
-    nombre = request.form.get('nombre')
-    precio = float(request.form.get('precio'))
-    stock = int(request.form.get('stock'))
-    mililitros = int(request.form.get('mililitros'))
-    categoria_id = request.form.get('categoria_id')
-    
-    # Manejar la imagen
-    imagen = request.files.get('imagen')
-    image_path = ""
-    
-    if imagen and allowed_file(imagen.filename):
-        filename = secure_filename(imagen.filename)
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
-        imagen.save(filepath)
-        image_path = f"/static/uploads/{filename}"
-
-    # Crear el producto
+    """Create a new product"""
+    # Get form data
     product_data = {
-        "nombre": nombre,
-        "precio": precio,
-        "stock": stock,
-        "mililitros": mililitros,
-        "categoria_id": categoria_id,
-        "imagen": image_path
+        'nombre': request.form.get('nombre'),
+        'precio': request.form.get('precio'),
+        'stock': request.form.get('stock'),
+        'mililitros': request.form.get('mililitros'),
+        'categoria_id': request.form.get('categoria_id')
     }
+    
+    # Validate product data
+    is_valid, error = Validator.validate_product_data(product_data)
+    if not is_valid:
+        return ResponseHandler.bad_request(error)
+    
+    # Convert numeric fields
+    product_data['precio'] = float(product_data['precio'])
+    product_data['stock'] = int(product_data['stock'])
+    product_data['mililitros'] = int(product_data['mililitros'])
+    
+    # Handle image upload
+    image_path = None
+    image_file = FileHandler.get_file_from_request(request, 'imagen')
+    if image_file:
+        success, result = FileHandler.save_image(image_file)
+        if success:
+            image_path = result
+        else:
+            return ResponseHandler.bad_request(result)
+    
+    # Create product
+    success, result, status_code = ProductService.create_product(product_data, image_path)
+    
+    if not success:
+        return ResponseHandler.error(result, status_code)
+    
+    return ResponseHandler.created({'id': result}, 'Producto creado')
 
-    inserted_id = ProductModel.create(product_data)
-    if inserted_id:
-        return jsonify({'message': 'Producto creado', 'id': inserted_id}), 201
-    return jsonify({'error': 'Error al crear el producto'}), 400
 
 @product_routes.route('/products/<product_id>', methods=['PUT'])
+@admin_required
 def update_product(product_id):
+    """Update product"""
     try:
-        # Obtener datos del formulario
-        nombre = request.form.get('nombre')
-        precio = float(request.form.get('precio'))
-        stock = int(request.form.get('stock'))
-        mililitros = int(request.form.get('mililitros'))
-        categoria_id = request.form.get('categoria_id')
-        
-        # Preparar los datos de actualización
+        # Get form data
         update_data = {
-            "nombre": nombre,
-            "precio": precio,
-            "stock": stock,
-            "mililitros": mililitros,
-            "categoria_id": categoria_id
+            'nombre': request.form.get('nombre'),
+            'precio': float(request.form.get('precio')),
+            'stock': int(request.form.get('stock')),
+            'mililitros': int(request.form.get('mililitros')),
+            'categoria_id': request.form.get('categoria_id')
         }
-
-        # Manejar la imagen si se proporcionó una nueva
-        if 'imagen' in request.files:
-            imagen = request.files['imagen']
-            if imagen and allowed_file(imagen.filename):
-                filename = secure_filename(imagen.filename)
-                filepath = os.path.join(UPLOAD_FOLDER, filename)
-                imagen.save(filepath)
-                update_data['imagen'] = f"/static/uploads/{filename}"
-
-        # Actualizar el producto
-        modified_count = ProductModel.update(product_id, update_data)
         
-        if modified_count:
-            return jsonify({'message': 'Producto actualizado exitosamente'}), 200
-        return jsonify({'error': 'Producto no encontrado o no hubo cambios'}), 404
+        # Validate
+        is_valid, error = Validator.validate_product_data(update_data)
+        if not is_valid:
+            return ResponseHandler.bad_request(error)
+        
+        # Handle image upload if provided
+        image_path = None
+        image_file = FileHandler.get_file_from_request(request, 'imagen')
+        if image_file:
+            success, result = FileHandler.save_image(image_file)
+            if success:
+                image_path = result
+            else:
+                return ResponseHandler.bad_request(result)
+        
+        # Update product
+        success, result, status_code = ProductService.update_product(
+            product_id, 
+            update_data, 
+            image_path
+        )
+        
+        if not success:
+            return ResponseHandler.error(result, status_code)
+        
+        return ResponseHandler.success(message=result)
+        
+    except (ValueError, KeyError) as e:
+        return ResponseHandler.bad_request(f"Datos inválidos: {str(e)}")
 
-    except Exception as e:
-        print(f"Error al actualizar producto: {str(e)}")
-        return jsonify({'error': 'Error al actualizar producto'}), 500
 
 @product_routes.route('/products/<product_id>', methods=['DELETE'])
+@admin_required
 def delete_product(product_id):
-    """
-    Elimina un producto existente.
-    """
-    deleted_count = ProductModel.delete(product_id) 
-    if deleted_count:
-        return jsonify({'message': 'Producto eliminado'}), 200
-    else:
-        return jsonify({'error': 'Producto no encontrado'}), 404
+    """Delete product"""
+    success, result, status_code = ProductService.delete_product(product_id)
+    
+    if not success:
+        return ResponseHandler.error(result, status_code)
+    
+    return ResponseHandler.success(message=result)
+
