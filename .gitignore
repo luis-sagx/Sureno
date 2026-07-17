@@ -1,3 +1,4 @@
 # Ignorar todos los directorios __pycache__
 **/__pycache__/
 *.py[cod]
+coverage.xml

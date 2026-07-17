@@ -52,3 +52,24 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
   ```bash
    python app.py
   ```
+
+## SonarQube Cloud sin tests
+
+Si el proyecto usa **Automatic analysis** en SonarQube Cloud, la cobertura **no está soportada** y por eso no aparece `0%`; en su lugar, Sonar muestra que falta configurar coverage.
+
+Para que se vea `0%` de cobertura en este proyecto:
+
+1. Desactiva `Automatic analysis` en SonarQube Cloud y usa análisis por scanner/CI.
+2. Genera un reporte vacío de cobertura:
+   ```bash
+   python scripts/generate_empty_coverage.py
+   ```
+3. Ejecuta el análisis de Sonar con el archivo `coverage.xml` generado.
+
+El archivo `sonar-project.properties` ya apunta a:
+
+```properties
+sonar.python.coverage.reportPaths=coverage.xml
+```
+
+Si ejecutas `sonar-scanner` o el workflow de GitHub Actions con ese reporte, SonarQube Cloud podrá importar cobertura y mostrará el proyecto con cobertura en `0%` mientras no existan tests.
