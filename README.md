@@ -41,17 +41,22 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
    git clone https://github.com/luis-sagx/Sureno.git
    ```
 2. Navega al directorio del proyecto:
-  ```bash
-   cd Sureno
-  ```
+
+```bash
+ cd Sureno
+```
+
 3. Instala las dependencias:
-  ```bash
-   pip install -r requirements.txt
-  ```
+
+```bash
+ pip install -r requirements.txt
+```
+
 4. Ejecuta la aplicación:
-  ```bash
-   python app.py
-  ```
+
+```bash
+ python app.py
+```
 
 ## SonarQube Cloud sin tests
 
@@ -73,25 +78,3 @@ sonar.python.coverage.reportPaths=coverage.xml
 ```
 
 Si ejecutas `sonar-scanner` o el workflow de GitHub Actions con ese reporte, SonarQube Cloud podrá importar cobertura y mostrará el proyecto con cobertura en `0%` mientras no existan tests.
-
-### GitHub Actions
-
-El repositorio ya incluye el workflow:
-
-```text
-.github/workflows/sonar.yml
-```
-
-Antes de usarlo, en GitHub debes configurar:
-
-- `Settings > Secrets and variables > Actions > Secrets`
-  - `SONAR_TOKEN`
-- `Settings > Secrets and variables > Actions > Variables`
-  - `SONAR_PROJECT_KEY`
-  - `SONAR_ORGANIZATION`
-
-Luego:
-
-1. Desactiva `Automatic Analysis` en SonarQube Cloud.
-2. Haz commit y push de estos cambios.
-3. GitHub Actions ejecutará el análisis y enviará el resultado a SonarQube Cloud.
