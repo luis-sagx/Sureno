@@ -1,4 +1,42 @@
-# Ignorar todos los directorios __pycache__
+# Bytecode / cache
 **/__pycache__/
 *.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+
+# Variables de entorno / secretos (Fase 8: MONGO_URI, FLASK_SECRET_KEY)
+.env
+.env.*
+*.env
+
+# Pytest / cobertura
+.pytest_cache/
+.coverage
+.coverage.*
 coverage.xml
+htmlcov/
+
+# Nota: Tests/evidencias/ (screenshots + reportes html) SI se versiona:
+# es entregable del proyecto. Solo se ignora el html de cobertura (pesado).
+Tests/evidencias/coverage_html/
+
+# Artefactos varios
+*.log
+requirements-dev.txt
+
+# Backups de regeneracion
+requirements.txt.original_utf16.bak
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# SO
+.DS_Store
+Thumbs.db
