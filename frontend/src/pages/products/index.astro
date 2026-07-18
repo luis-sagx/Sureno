@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { apiServer } from '@/lib/api';
 
 interface Product {
@@ -30,13 +31,15 @@ const error = !res.ok;
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {productos.map((p) => (
-        <div class="section-2 flex flex-col overflow-hidden rounded-lg shadow-sm">
-          <img
-            src={p.imagen || '/static/img/producto.png'}
-            alt={p.nombre}
-            class="h-96 w-full object-cover"
-            onerror="this.src='/static/img/producto.png'"
-          />
+        <div class="section-2 card-hover flex flex-col overflow-hidden rounded-lg shadow-sm">
+          <div class="overflow-hidden bg-white/30">
+            <img
+              src={p.imagen || '/static/img/producto.png'}
+              alt={p.nombre}
+              class="h-96 w-full object-cover transition-transform duration-300 hover:scale-105"
+              onerror="this.src='/static/img/producto.png'"
+            />
+          </div>
           <div class="flex flex-1 flex-col p-4">
             <h5 class="text-lg font-bold">{p.nombre}</h5>
             <p class="mt-1 text-sm">Caja: 12 unidades</p>
@@ -51,9 +54,11 @@ const error = !res.ok;
               data-imagen={p.imagen || '/static/img/producto.png'}
               data-mililitros={p.mililitros ?? ''}
             >
-              Agregar al carrito
+              <Icon name="lucide:shopping-cart" class="h-4 w-4" /> Agregar al carrito
             </button>
-            <a href={`/products/${p._id}`} class="btn-1 mt-2 w-full">Ver más información</a>
+            <a href={`/products/${p._id}`} class="btn-1 mt-2 w-full">
+              <Icon name="lucide:eye" class="h-4 w-4" /> Ver más información
+            </a>
           </div>
         </div>
       ))}

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <BaseLayout title="Sureño — Crear cuenta" bare>
@@ -16,11 +17,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <label class="block"><span class="mb-1 block">Cédula</span><input type="text" name="cedula" required inputmode="numeric" class="field" /></label>
       <label class="block"><span class="mb-1 block">Correo</span><input type="email" name="email" required autocomplete="email" class="field" /></label>
       <label class="block"><span class="mb-1 block">Contraseña</span><input type="password" name="password" required minlength="6" autocomplete="new-password" class="field" /></label>
-      <button type="submit" class="btn-2 w-full text-lg">Registrarme</button>
+      <button type="submit" class="btn-2 w-full text-lg"><Icon name="lucide:user-plus" class="h-5 w-5" /> Registrarme</button>
     </form>
 
     <p class="mt-4 text-center">
-      ¿Ya tienes cuenta? <a href="/login" class="font-bold underline">Inicia sesión</a>
+      ¿Ya tienes cuenta? <a href="/login" class="link">Inicia sesión</a>
     </p>
   </div>
 </BaseLayout>

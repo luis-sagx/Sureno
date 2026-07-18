@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 // Cabecera en una sola fila: marca + navegación + acciones de usuario.
 const links = [
   { href: '/', label: 'Inicio' },
@@ -29,8 +30,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
               class:list={[
                 'rounded-md px-3 py-2 font-medium transition-colors',
                 isActive(href)
-                  ? 'bg-celeste-dark text-white'
-                  : 'text-cafe hover:text-celeste-dark dark:text-beige dark:hover:text-celeste',
+                  ? 'bg-celeste-dark text-white shadow-sm'
+                  : 'text-cafe hover:bg-cafe/10 hover:text-celeste-dark dark:text-beige dark:hover:bg-white/10 dark:hover:text-celeste',
               ]}
             >
               {label}
@@ -44,10 +45,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     <div class="flex items-center gap-3">
       <!-- Usuario -->
       <details class="relative">
-        <summary class="grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-boton-celeste text-white marker:content-none">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-          </svg>
+        <summary class="grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-boton-celeste text-white transition-colors hover:bg-boton-celeste-hover marker:content-none">
+          <Icon name="lucide:user" class="h-5 w-5" />
           <span class="sr-only">Perfil</span>
         </summary>
         <div class="panel absolute right-0 z-20 mt-2 w-64 p-4 text-sm">
@@ -64,18 +63,18 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       </details>
 
       <!-- Carrito -->
-      <a href="/cart" class="relative grid h-10 w-10 place-items-center rounded-full hover:bg-celeste/30" aria-label="Carrito">
-        <svg class="h-6 w-6 text-cafe dark:text-beige" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-        </svg>
-        <span data-cart-count class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-naranja px-1 text-center text-xs font-bold text-white"></span>
+      <a href="/cart" class="relative grid h-10 w-10 place-items-center rounded-full text-cafe transition-colors hover:bg-celeste/40 dark:text-beige" aria-label="Carrito">
+        <Icon name="lucide:shopping-cart" class="h-6 w-6" />
+        <span data-cart-count class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-naranja px-1 text-center text-xs font-bold text-white shadow"></span>
       </a>
 
-      <!-- Toggle de tema (estilo switch original) -->
+      <!-- Toggle de tema (switch con icono sol/luna) -->
       <button type="button" data-theme-toggle role="switch" aria-label="Cambiar tema"
-        class="relative h-6 w-12 rounded-full bg-cafe transition-colors dark:bg-beige">
-        <span data-toggle-ball class="absolute left-[3px] top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-beige transition-[left] dark:left-[27px] dark:bg-cafe"></span>
+        class="relative grid h-8 w-14 place-items-center rounded-full bg-cafe transition-colors dark:bg-beige">
+        <span data-toggle-ball class="absolute left-[3px] top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full bg-beige text-cafe transition-[left] dark:left-[29px] dark:bg-cafe dark:text-beige">
+          <Icon name="lucide:sun" class="h-4 w-4 dark:hidden" />
+          <Icon name="lucide:moon" class="hidden h-4 w-4 dark:block" />
+        </span>
       </button>
     </div>
   </div>

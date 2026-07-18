@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 
 const servicios = [
   { img: '/static/img/Elaboracion.png', t: 'Elaboración' },
@@ -28,7 +29,7 @@ const galeria = [
       <h2 class="mt-6 text-4xl font-bold md:text-5xl [text-shadow:2px_2px_4px_rgba(0,0,0,0.5)]">
         100% Natural<br />Licor de excelencia
       </h2>
-      <a href="/products" class="btn-1 mt-8 text-lg">Comprar Ahora →</a>
+      <a href="/products" class="btn-1 mt-8 text-lg">Comprar Ahora <Icon name="lucide:arrow-right" class="h-5 w-5" /></a>
     </div>
   </section>
 
@@ -49,7 +50,7 @@ const galeria = [
         buenos momentos flota en el aire, se encuentra <em>«Sureño»</em>, la tienda de
         licores que transforma cualquier ocasión en una experiencia inolvidable.
       </p>
-      <a href="/about" class="btn-1 mt-6 text-lg">Información →</a>
+      <a href="/about" class="btn-1 mt-6 text-lg">Información <Icon name="lucide:arrow-right" class="h-5 w-5" /></a>
     </div>
   </section>
 

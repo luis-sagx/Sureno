@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <BaseLayout title="Sureño — Iniciar sesión" bare>
@@ -13,11 +14,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         <input type="email" name="email" required autocomplete="email" class="field" /></label>
       <label class="block"><span class="mb-1 block">Contraseña</span>
         <input type="password" name="password" required autocomplete="current-password" class="field" /></label>
-      <button type="submit" class="btn-2 w-full text-lg">Entrar</button>
+      <button type="submit" class="btn-2 w-full text-lg"><Icon name="lucide:log-in" class="h-5 w-5" /> Entrar</button>
     </form>
 
     <p class="mt-4 text-center">
-      ¿No tienes cuenta? <a href="/signup" class="font-bold underline">Regístrate</a>
+      ¿No tienes cuenta? <a href="/signup" class="link">Regístrate</a>
     </p>
   </div>
 </BaseLayout>

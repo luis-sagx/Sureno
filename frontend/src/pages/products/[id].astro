@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { apiServer } from '@/lib/api';
 
 interface Product {
@@ -47,13 +48,13 @@ if (!res.ok || !p) Astro.response.status = 404;
           {p.mililitros && <p><strong>Cantidad:</strong> {p.mililitros} ml</p>}
 
           <div class="mt-5 flex flex-wrap gap-3">
-            <a href="/products" class="btn-1">← Volver a productos</a>
+            <a href="/products" class="btn-1"><Icon name="lucide:arrow-left" class="h-4 w-4" /> Volver a productos</a>
             <button
               type="button" class="btn-2" data-add
               data-id={p._id} data-nombre={p.nombre} data-precio={p.precio}
               data-imagen={p.imagen || '/static/img/producto.png'} data-mililitros={p.mililitros ?? ''}
             >
-              Agregar al carrito
+              <Icon name="lucide:shopping-cart" class="h-4 w-4" /> Agregar al carrito
             </button>
           </div>
         </div>

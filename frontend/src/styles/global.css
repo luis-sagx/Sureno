@@ -56,19 +56,35 @@
   /* Botones originales */
   .btn-1,
   .btn-2 {
-    @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium text-white transition-colors;
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
   }
   .btn-1 {
     background-color: var(--color-boton-cafe);
+    --tw-ring-color: var(--color-naranja);
   }
   .btn-1:hover {
     background-color: var(--color-naranja);
   }
   .btn-2 {
     background-color: var(--color-boton-celeste);
+    --tw-ring-color: var(--color-boton-celeste-hover);
   }
   .btn-2:hover {
     background-color: var(--color-boton-celeste-hover);
+  }
+  .btn-1:disabled,
+  .btn-2:disabled {
+    @apply cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-sm;
+  }
+
+  /* Tarjeta con realce al pasar el cursor */
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  /* Enlace de texto */
+  .link {
+    @apply font-semibold text-boton-celeste underline-offset-2 transition-colors hover:text-boton-celeste-hover hover:underline;
   }
 
   /* Secciones de fondo (beige / celeste) */

@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
+import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 
 // URL del backend Flask (API JSON). Configurable por entorno.
@@ -10,6 +11,7 @@ const FLASK_API = process.env.FLASK_API_URL || 'http://localhost:5000';
 export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
+  integrations: [icon()],
   server: { port: 4321 },
   // El proxy reenvía formularios multipart a Flask, que ya valida CSRF
   // (Flask-WTF). La verificación de origen de Astro bloquearía esos POST.

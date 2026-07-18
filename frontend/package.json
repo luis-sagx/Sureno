@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@astrojs/node": "^9.1.3",
-    "astro": "^5.6.1"
+    "@iconify-json/lucide": "^1.2.118",
+    "astro": "^5.6.1",
+    "astro-icon": "^1.1.5"
   },
   "devDependencies": {
     "@fontsource/inter": "^5.1.1",
