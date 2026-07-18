@@ -5,12 +5,13 @@ import pacificoLatinUrl from '@fontsource/pacifico/files/pacifico-latin-400-norm
 
 interface Props {
   title?: string;
-  active?: 'home' | 'orders' | 'products';
+  active?: 'home' | 'orders' | 'products' | 'clients';
 }
 const { title = 'Panel — Sureño', active = 'home' } = Astro.props;
 
 const links = [
   { key: 'home', href: '/admin/home', label: 'Dashboard', icon: 'lucide:layout-dashboard' },
+  { key: 'clients', href: '/admin/clients', label: 'Clientes', icon: 'lucide:users' },
   { key: 'products', href: '/admin/products', label: 'Productos', icon: 'lucide:package' },
   { key: 'orders', href: '/admin/orders', label: 'Pedidos', icon: 'lucide:clipboard-list' },
 ];
