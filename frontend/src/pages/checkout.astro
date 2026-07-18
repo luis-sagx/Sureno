@@ -1,44 +1,50 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
-const inputClass =
-  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
+const cantones = [
+  'Quito', 'Cayambe', 'Mejía', 'Pedro Moncayo', 'Pedro Vicente Maldonado',
+  'Puerto Quito', 'Rumiñahui', 'San Miguel de los Bancos',
+];
 ---
 
 <BaseLayout title="Sureño — Checkout">
-  <h1 class="brand-title mb-6 text-3xl">Finalizar compra</h1>
+  <div class="mx-auto max-w-6xl px-4 py-8">
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- Dirección -->
+      <form id="address-form" class="section-2 space-y-4 rounded p-6 shadow-sm" novalidate>
+        <h1 class="site-title text-center text-2xl">Dirección de Entrega</h1>
 
-  <div class="grid gap-8 lg:grid-cols-3">
-    <!-- Dirección -->
-    <section class="card p-6 lg:col-span-2">
-      <h2 class="mb-4 text-lg font-semibold">Dirección de envío</h2>
-      <form id="address-form" class="grid gap-4 sm:grid-cols-2" novalidate>
-        <label class="block text-sm"><span class="mb-1 block font-medium">Provincia</span><input id="provincia" required class={inputClass} /></label>
-        <label class="block text-sm"><span class="mb-1 block font-medium">Cantón</span><input id="canton" required class={inputClass} /></label>
-        <label class="block text-sm"><span class="mb-1 block font-medium">Parroquia</span><input id="parroquia" required class={inputClass} /></label>
-        <label class="block text-sm"><span class="mb-1 block font-medium">Código postal</span><input id="codigo_postal" inputmode="numeric" required class={inputClass} /></label>
-        <label class="block text-sm"><span class="mb-1 block font-medium">Calle principal</span><input id="calle_principal" required class={inputClass} /></label>
-        <label class="block text-sm"><span class="mb-1 block font-medium">Calle secundaria</span><input id="calle_secundaria" required class={inputClass} /></label>
-        <div class="sm:col-span-2">
-          <button type="submit" class="btn-secondary">Guardar dirección</button>
-          <span data-address-ok class="ml-3 hidden text-sm text-green-600">✓ Dirección guardada</span>
+        <label class="block"><span class="mb-1 block">Provincia</span>
+          <input id="provincia" value="Pichincha" type="text" class="field" readonly /></label>
+        <label class="block"><span class="mb-1 block">Cantón</span>
+          <select id="canton" class="field" required>
+            <option value="" disabled selected>Seleccione un cantón</option>
+            {cantones.map((c) => <option value={c}>{c}</option>)}
+          </select></label>
+        <label class="block"><span class="mb-1 block">Parroquia</span><input id="parroquia" type="text" class="field" required /></label>
+        <label class="block"><span class="mb-1 block">Calle Principal</span><input id="calle_principal" type="text" class="field" required /></label>
+        <label class="block"><span class="mb-1 block">Calle Secundaria</span><input id="calle_secundaria" type="text" class="field" required /></label>
+        <label class="block"><span class="mb-1 block">Código Postal</span><input id="codigo_postal" type="number" class="field" required /></label>
+
+        <div class="text-center">
+          <button type="submit" class="btn-2 text-lg">Guardar Dirección</button>
+          <span data-address-ok class="ml-3 hidden text-green-700">✓ Dirección guardada</span>
         </div>
       </form>
-    </section>
 
-    <!-- Resumen -->
-    <aside class="card h-fit p-6">
-      <h2 class="mb-4 text-lg font-semibold">Resumen del pedido</h2>
-      <div class="flex justify-between py-1 text-sm"><span>Subtotal</span><span data-subtotal>$0.00</span></div>
-      <div class="flex justify-between py-1 text-sm"><span>Envío</span><span>$3.00</span></div>
-      <div class="mt-2 flex justify-between border-t border-black/10 pt-2 font-semibold dark:border-white/10">
-        <span>Total</span><span data-total>$0.00</span>
+      <!-- Resumen -->
+      <div class="section-1 h-fit rounded p-6 text-lg shadow-sm">
+        <h1 class="site-title mb-4 text-center text-2xl">Resumen de Compra</h1>
+        <div class="mb-3 flex justify-between"><span>Subtotal</span><span data-subtotal>$0.00</span></div>
+        <div class="mb-3 flex justify-between"><span>Costo de Envío</span><span>$3.00</span></div>
+        <hr class="my-4 border-cafe/25" />
+        <div class="flex justify-between font-bold"><span>Total</span><span data-total>$3.00</span></div>
+        <button type="button" id="finalizar-compra" class="btn-1 mt-6 w-full text-lg disabled:opacity-50">
+          Finalizar Compra
+        </button>
+        <p data-msg class="mt-3 hidden text-center"></p>
       </div>
-      <button type="button" id="finalizar-compra" class="btn-primary mt-6 w-full disabled:opacity-50">
-        Confirmar pedido
-      </button>
-      <p data-msg class="mt-3 hidden text-center text-sm"></p>
-    </aside>
+    </div>
   </div>
 </BaseLayout>
 
@@ -60,19 +66,15 @@ const inputClass =
   if (!cartId) {
     location.href = '/cart';
   } else {
-    // Cargar resumen del carrito guardado
     fetch(`/api/cart/${cartId}`, { credentials: 'same-origin' })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error('carrito'))))
       .then((cart) => {
         if (subtotalEl) subtotalEl.textContent = `$${Number(cart.total).toFixed(2)}`;
         if (totalEl) totalEl.textContent = `$${(Number(cart.total) + 3).toFixed(2)}`;
       })
-      .catch(() => {
-        location.href = '/cart';
-      });
+      .catch(() => { location.href = '/cart'; });
   }
 
-  // Guardar dirección
   $('#address-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const body = {
@@ -94,13 +96,9 @@ const inputClass =
     }
   });
 
-  // Confirmar pedido
   finalizeBtn?.addEventListener('click', async () => {
     if (!cartId || !addressId) {
-      if (msg) {
-        msg.textContent = 'Primero guarda tu dirección.';
-        msg.className = 'mt-3 text-center text-sm text-red-600';
-      }
+      if (msg) { msg.textContent = 'Primero guarda tu dirección.'; msg.className = 'mt-3 text-center text-red-600'; }
       return;
     }
     finalizeBtn.disabled = true;
@@ -114,10 +112,7 @@ const inputClass =
       clearCart();
       location.href = '/compras';
     } catch (err) {
-      if (msg) {
-        msg.textContent = (err as Error).message;
-        msg.className = 'mt-3 text-center text-sm text-red-600';
-      }
+      if (msg) { msg.textContent = (err as Error).message; msg.className = 'mt-3 text-center text-red-600'; }
       finalizeBtn.disabled = false;
     }
   });

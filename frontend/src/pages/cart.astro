@@ -3,27 +3,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Sureño — Carrito">
-  <h1 class="brand-title mb-6 text-3xl">Tu carrito</h1>
+  <div class="mx-auto max-w-3xl px-4 py-8">
+    <div class="section-1 rounded p-6 shadow-sm">
+      <h1 class="site-title mb-4 text-center text-3xl">Carrito de Compras</h1>
 
-  <div class="grid gap-8 lg:grid-cols-3">
-    <div class="lg:col-span-2">
-      <div data-cart-items class="space-y-4"></div>
-      <p data-empty class="card hidden p-8 text-center opacity-80">Tu carrito está vacío.</p>
-    </div>
+      <div data-cart-items class="flex flex-col gap-3"></div>
+      <p data-empty class="hidden py-6 text-center">Tu carrito está vacío.</p>
 
-    <aside class="card h-fit p-6">
-      <h2 class="mb-4 text-lg font-semibold">Resumen</h2>
-      <div class="flex justify-between border-b border-black/10 py-2 text-sm dark:border-white/10">
-        <span>Total productos</span>
-        <span data-total class="font-semibold">$0.00</span>
+      <hr class="my-4 border-cafe/20" />
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold">Subtotal:</h3>
+        <span data-total class="text-xl font-bold">$0.00</span>
       </div>
-      <button type="button" data-checkout class="btn-primary mt-6 w-full disabled:opacity-50">
-        Proceder al pago
+
+      <button type="button" data-checkout class="btn-1 mt-4 w-full text-lg disabled:opacity-50">
+        Confirmar Productos
       </button>
-      <a href="/products" class="mt-3 block text-center text-sm text-brand-teal-dark hover:underline dark:text-brand-teal-light">
-        Seguir comprando
-      </a>
-    </aside>
+      <a href="/products" class="mt-3 block text-center underline">Seguir comprando</a>
+    </div>
   </div>
 </BaseLayout>
 
@@ -46,18 +43,18 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     list.innerHTML = '';
     cart.forEach((item, i) => {
       const row = document.createElement('div');
-      row.className = 'card flex items-center gap-4 p-4';
+      row.className = 'flex items-center gap-4 rounded border border-cafe/15 bg-white/60 p-3 dark:bg-white/5';
       row.innerHTML = `
-        <img src="${item.imagen}" alt="${item.nombre}" class="h-16 w-16 rounded object-contain bg-white" onerror="this.src='/static/img/default-product.png'" />
+        <img src="${item.imagen}" alt="${item.nombre}" class="h-16 w-16 rounded object-cover" onerror="this.src='/static/img/producto.png'" />
         <div class="flex-1">
-          <h3 class="font-semibold">${item.nombre}</h3>
-          ${item.mililitros ? `<p class="text-xs opacity-70">${item.mililitros} ml</p>` : ''}
-          <p class="mt-1 font-bold text-brand-teal-dark dark:text-brand-teal-light">$${(item.precio * item.cantidad).toFixed(2)}</p>
+          <h2 class="font-bold">${item.nombre}</h2>
+          ${item.mililitros ? `<p class="text-sm opacity-70">${item.mililitros} ml</p>` : ''}
+          <span class="font-bold">$${(item.precio * item.cantidad).toFixed(2)}</span>
         </div>
         <div class="flex items-center gap-2">
-          <button data-dec="${i}" class="btn-secondary h-8 w-8 !px-0" aria-label="Menos">−</button>
+          <button data-dec="${i}" class="btn-2 h-8 w-8 !px-0" aria-label="Menos">−</button>
           <span class="w-8 text-center">${item.cantidad}</span>
-          <button data-inc="${i}" class="btn-secondary h-8 w-8 !px-0" aria-label="Más">+</button>
+          <button data-inc="${i}" class="btn-2 h-8 w-8 !px-0" aria-label="Más">+</button>
         </div>
         <button data-del="${i}" class="ml-2 text-red-600 hover:text-red-700" aria-label="Eliminar">✕</button>`;
       list.appendChild(row);

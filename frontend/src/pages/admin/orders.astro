@@ -17,12 +17,12 @@ const estados = ['pendiente', 'enviado', 'entregado', 'cancelado'];
 ---
 
 <AdminLayout title="Pedidos — Sureño" active="orders">
-  <h1 class="brand-title mb-6 text-3xl">Administración de Pedidos</h1>
+  <h1 class="site-title mb-6 text-3xl">Administración de Pedidos</h1>
 
   {pedidos.length === 0 ? (
-    <p class="card p-8 text-center opacity-80">No hay pedidos.</p>
+    <p class="panel p-8 text-center opacity-80">No hay pedidos.</p>
   ) : (
-    <div class="card overflow-x-auto">
+    <div class="panel overflow-x-auto">
       <table class="w-full text-left text-sm">
         <thead class="border-b border-black/10 text-xs uppercase opacity-60 dark:border-white/10">
           <tr>

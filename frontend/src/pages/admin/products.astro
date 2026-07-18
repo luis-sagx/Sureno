@@ -22,14 +22,14 @@ const categorias = cRes.data ?? [];
 const catName = (id?: string) => categorias.find((c) => c._id === id)?.nombre ?? '—';
 
 const inputClass =
-  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
+  'w-full rounded-lg field';
 ---
 
 <AdminLayout title="Productos — Sureño" active="products">
-  <h1 class="brand-title mb-6 text-3xl">Administración de Productos</h1>
+  <h1 class="site-title mb-6 text-3xl">Administración de Productos</h1>
 
   <!-- Formulario alta/edición -->
-  <section class="card mb-8 p-6">
+  <section class="panel mb-8 p-6">
     <h2 data-form-title class="mb-4 text-lg font-semibold">Agregar producto</h2>
     <form id="product-form" class="grid gap-4 sm:grid-cols-2" enctype="multipart/form-data">
       <input type="hidden" name="_id" />
@@ -46,17 +46,17 @@ const inputClass =
       </label>
       <label class="block text-sm"><span class="mb-1 block font-medium">Imagen</span><input name="imagen" type="file" accept="image/*" class={inputClass} /></label>
       <div class="sm:col-span-2">
-        <button type="submit" class="btn-primary">Guardar</button>
-        <button type="button" data-reset class="btn-secondary ml-2 hidden">Cancelar edición</button>
+        <button type="submit" class="btn-2">Guardar</button>
+        <button type="button" data-reset class="btn-1 ml-2 hidden">Cancelar edición</button>
       </div>
     </form>
   </section>
 
   <!-- Tabla -->
   {productos.length === 0 ? (
-    <p class="card p-8 text-center opacity-80">No hay productos.</p>
+    <p class="panel p-8 text-center opacity-80">No hay productos.</p>
   ) : (
-    <div class="card overflow-x-auto">
+    <div class="panel overflow-x-auto">
       <table class="w-full text-left text-sm">
         <thead class="border-b border-black/10 text-xs uppercase opacity-60 dark:border-white/10">
           <tr>
@@ -74,7 +74,7 @@ const inputClass =
               <td class="p-3">{catName(p.categoria_id)}</td>
               <td class="p-3">
                 <button
-                  class="text-brand-teal-dark hover:underline dark:text-brand-teal-light"
+                  class="text-cafe hover:underline dark:text-beige"
                   data-edit={p._id}
                   data-nombre={p.nombre}
                   data-precio={p.precio}

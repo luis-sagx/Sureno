@@ -6,38 +6,32 @@ const social = [
 ];
 ---
 
-<footer class="mt-16 bg-brand-teal-dark text-white">
-  <div class="mx-auto max-w-6xl px-4 py-10">
-    <div class="mb-8 text-center">
-      <h3 class="brand-title text-2xl !text-white">Sobre Nosotros</h3>
-      <p class="mx-auto mt-2 max-w-2xl text-sm text-white/80">
-        Empresa dedicada a ofrecer licores de alta calidad a precios accesibles para todo el público.
+<footer class="mt-12 text-white" style="background-color: var(--color-cafe)">
+  <div class="mx-auto max-w-6xl px-4 py-8">
+    <div class="mb-6 text-center">
+      <h3 class="text-2xl font-bold">Sobre Nosotros</h3>
+      <p class="mx-auto mt-2 max-w-2xl">
+        Somos una empresa dedicada a ofrecer licores de alta calidad a precios accesibles para todo el público.
       </p>
     </div>
 
-    <div class="grid gap-8 sm:grid-cols-2">
-      <div class="text-center sm:text-left">
-        <h4 class="mb-2 font-semibold">Información de Contacto</h4>
-        <ul class="space-y-1 text-sm text-white/80">
-          <li>ventas@licorsureno.com</li>
-          <li>Avenida Maldonado S29-106, Quito</li>
-          <li>+593 96 796 7369</li>
-        </ul>
+    <div class="flex flex-col justify-center gap-8 md:flex-row md:gap-20">
+      <div class="text-center">
+        <h4 class="mb-2 text-lg font-semibold">Información de Contacto</h4>
+        <p class="mb-1">ventas@licorsureno.com</p>
+        <p class="mb-1">Avenida Maldonado S29-106, Quito</p>
+        <p class="mb-1">+593 96 796 7369</p>
       </div>
-      <div class="text-center sm:text-right">
-        <h4 class="mb-2 font-semibold">Síguenos</h4>
-        <div class="flex justify-center gap-4 sm:justify-end">
+      <div class="text-center">
+        <h4 class="mb-2 text-lg font-semibold">Síguenos</h4>
+        <div class="mt-1 flex justify-center gap-4">
           {social.map(({ href, label, d }) => (
-            <a href={href} target="_blank" rel="noopener" aria-label={label} class="grid h-9 w-9 place-items-center rounded-full bg-white/10 hover:bg-white/20">
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={d} /></svg>
+            <a href={href} target="_blank" rel="noopener" aria-label={label} class="transition-colors hover:text-beige">
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={d} /></svg>
             </a>
           ))}
         </div>
       </div>
     </div>
-
-    <p class="mt-8 border-t border-white/10 pt-4 text-center text-xs text-white/60">
-      © {new Date().getFullYear()} Licores Sureño. Todos los derechos reservados.
-    </p>
   </div>
 </footer>

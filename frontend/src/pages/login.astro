@@ -1,48 +1,32 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-
-const inputClass =
-  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
 ---
 
 <BaseLayout title="Sureño — Iniciar sesión" bare>
-  <div class="mx-auto max-w-md">
-    <div class="card p-8">
-      <h1 class="brand-title mb-6 text-center text-3xl">Iniciar sesión</h1>
+  <div class="section-1 w-full max-w-lg rounded-xl p-8 shadow-lg">
+    <h1 class="site-title mb-6 text-center text-3xl">Iniciar sesión</h1>
 
-      <p data-error class="mb-4 hidden rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700"></p>
+    <p data-error class="mb-4 hidden rounded-md bg-red-100 px-3 py-2 text-red-700"></p>
 
-      <form id="login-form" class="space-y-4" novalidate>
-        <label class="block text-sm">
-          <span class="mb-1 block font-medium">Correo</span>
-          <input type="email" name="email" required autocomplete="email" class={inputClass} />
-        </label>
-        <label class="block text-sm">
-          <span class="mb-1 block font-medium">Contraseña</span>
-          <input type="password" name="password" required autocomplete="current-password" class={inputClass} />
-        </label>
-        <button type="submit" class="btn-primary w-full">Entrar</button>
-      </form>
+    <form id="login-form" class="space-y-4" novalidate>
+      <label class="block"><span class="mb-1 block">Correo</span>
+        <input type="email" name="email" required autocomplete="email" class="field" /></label>
+      <label class="block"><span class="mb-1 block">Contraseña</span>
+        <input type="password" name="password" required autocomplete="current-password" class="field" /></label>
+      <button type="submit" class="btn-2 w-full text-lg">Entrar</button>
+    </form>
 
-      <p class="mt-4 text-center text-sm opacity-80">
-        ¿No tienes cuenta?
-        <a href="/signup" class="font-medium text-brand-teal-dark hover:underline dark:text-brand-teal-light">Regístrate</a>
-      </p>
-    </div>
+    <p class="mt-4 text-center">
+      ¿No tienes cuenta? <a href="/signup" class="font-bold underline">Regístrate</a>
+    </p>
   </div>
 </BaseLayout>
 
 <script>
   import { apiFetch } from '@/lib/csrf';
-
   const form = document.getElementById('login-form') as HTMLFormElement;
   const errBox = document.querySelector<HTMLElement>('[data-error]');
-
-  function showError(msg: string) {
-    if (!errBox) return;
-    errBox.textContent = msg;
-    errBox.classList.remove('hidden');
-  }
+  const showError = (m: string) => { if (errBox) { errBox.textContent = m; errBox.classList.remove('hidden'); } };
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -56,11 +40,8 @@ const inputClass =
         body: JSON.stringify({ email: fd.get('email'), password: fd.get('password') }),
       });
       const data = await res.json().catch(() => ({}));
-      if (res.ok) {
-        window.location.href = data.redirect || '/';
-      } else {
-        showError(data.error || 'No se pudo iniciar sesión');
-      }
+      if (res.ok) window.location.href = data.redirect || '/';
+      else showError(data.error || 'No se pudo iniciar sesión');
     } catch {
       showError('Error de conexión con el servidor');
     } finally {

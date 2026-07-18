@@ -1,74 +1,52 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-
-const inputClass =
-  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
 ---
 
 <BaseLayout title="Sureño — Contacto">
-  <div class="mb-6 text-center">
-    <h1 class="brand-title text-3xl">¡Hablemos!</h1>
-  </div>
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <div class="mb-6 text-center">
+      <h1 class="site-title text-4xl">¡Hablemos!</h1>
+    </div>
 
-  <div class="grid gap-6 lg:grid-cols-2">
-    <!-- Formulario -->
-    <section class="card p-6">
-      <h2 class="mb-4 text-center text-xl font-semibold">Envíanos un Mensaje</h2>
-      <form action="https://formsubmit.co/ventas@licorsureno.com" method="POST" class="space-y-4">
-        <div class="grid gap-4 sm:grid-cols-2">
-          <label class="block text-sm">
-            <span class="mb-1 block font-medium">Nombre</span>
-            <input type="text" name="Nombres" placeholder="Nombre" class={inputClass} />
-          </label>
-          <label class="block text-sm">
-            <span class="mb-1 block font-medium">Apellido</span>
-            <input type="text" name="Apellidos" placeholder="Apellido" class={inputClass} />
-          </label>
-          <label class="block text-sm">
-            <span class="mb-1 block font-medium">Correo</span>
-            <input type="email" name="E-mail" placeholder="example@gmail.com" class={inputClass} />
-          </label>
-          <label class="block text-sm">
-            <span class="mb-1 block font-medium">Teléfono</span>
-            <input type="tel" name="Teléfono" placeholder="+593 123 456 789" class={inputClass} />
-          </label>
-        </div>
-        <label class="block text-sm">
-          <span class="mb-1 block font-medium">Mensaje</span>
-          <textarea name="Mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." class={inputClass}></textarea>
-        </label>
-        <input type="hidden" name="_captcha" value="false" />
-        <div class="text-center">
-          <button type="submit" class="btn-primary">Enviar</button>
-        </div>
-      </form>
-    </section>
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- Formulario -->
+      <section class="section-1 rounded p-6 shadow-sm">
+        <h3 class="mb-4 text-center text-xl font-bold">Envíanos un Mensaje</h3>
+        <form action="https://formsubmit.co/ventas@licorsureno.com" method="POST" class="space-y-4">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <label class="block"><span class="mb-1 block">Nombre</span><input type="text" name="Nombres" placeholder="Nombre" class="field" /></label>
+            <label class="block"><span class="mb-1 block">Apellido</span><input type="text" name="Apellidos" placeholder="Apellido" class="field" /></label>
+            <label class="block"><span class="mb-1 block">Correo</span><input type="email" name="E-mail" placeholder="example@gmail.com" class="field" /></label>
+            <label class="block"><span class="mb-1 block">Teléfono</span><input type="tel" name="Teléfono" placeholder="+593 123 456 789" class="field" /></label>
+          </div>
+          <label class="block"><span class="mb-1 block">Mensaje</span><textarea name="Mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." class="field"></textarea></label>
+          <input type="hidden" name="_captcha" value="false" />
+          <div class="text-center"><button type="submit" class="btn-2">Enviar</button></div>
+        </form>
+      </section>
 
-    <!-- Info + mapa -->
-    <section class="flex flex-col gap-6">
-      <div class="card p-6">
-        <h2 class="mb-4 text-center text-xl font-semibold">Información de Contacto</h2>
-        <ul class="space-y-2 text-sm opacity-90">
-          <li>📍 Avenida Maldonado S49-106, Quito</li>
-          <li>✉️ licorsureno@gmail.com</li>
-          <li>📞 +593 96 796 7369</li>
-        </ul>
-        <div class="mt-4 flex justify-center gap-4">
-          <a href="https://www.facebook.com/licorsureno" class="text-brand-teal-dark hover:underline dark:text-brand-teal-light">Facebook</a>
-          <a href="https://www.instagram.com/licores_sureno_ec/" class="text-brand-teal-dark hover:underline dark:text-brand-teal-light">Instagram</a>
-          <a href="tel:+593967967369" class="text-brand-teal-dark hover:underline dark:text-brand-teal-light">WhatsApp</a>
+      <!-- Info + mapa -->
+      <section class="flex flex-col gap-6">
+        <div class="section-1 rounded p-6 shadow-sm">
+          <h3 class="mb-4 text-center text-xl font-bold">Información de Contacto</h3>
+          <ul class="space-y-2">
+            <li>📍 Avenida Maldonado S49-106, Quito</li>
+            <li>✉️ licorsureno@gmail.com</li>
+            <li>📞 +593 96 796 7369</li>
+          </ul>
+          <div class="mt-4 flex justify-center gap-4">
+            <a href="https://www.facebook.com/licorsureno" class="underline">Facebook</a>
+            <a href="https://www.instagram.com/licores_sureno_ec/" class="underline">Instagram</a>
+            <a href="tel:+593967967369" class="underline">WhatsApp</a>
+          </div>
         </div>
-      </div>
-      <div class="card overflow-hidden p-0">
-        <iframe
-          title="Ubicación Sureño"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7580915507997!2d-78.5469614!3d-0.3111159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d5a215975ccf5b%3A0xca76fe722c04ad9d!2sAv.%20Pedro%20Vicente%20Maldonado%20S46-80%2C%20Quito%20170701%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1733529137973!5m2!1ses!2sec"
-          class="h-64 w-full"
-          style="border:0"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-    </section>
+        <div class="overflow-hidden rounded shadow-sm">
+          <iframe
+            title="Ubicación Sureño"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7580915507997!2d-78.5469614!3d-0.3111159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d5a215975ccf5b%3A0xca76fe722c04ad9d!2sAv.%20Pedro%20Vicente%20Maldonado%20S46-80%2C%20Quito%20170701%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1733529137973!5m2!1ses!2sec"
+            class="h-64 w-full" style="border:0" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </section>
+    </div>
   </div>
 </BaseLayout>

@@ -1,35 +1,72 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const servicios = [
+  { img: '/static/img/Elaboracion.png', t: 'Elaboración' },
+  { img: '/static/img/Fabricantes.png', t: 'Fabricantes' },
+  { img: '/static/img/producto.png', t: 'Productos' },
+];
+
+const galeria = [
+  { img: '/static/img/inicio_cocktailVodka.png', href: 'https://www.tiktok.com/@licores_sureno' },
+  { img: '/static/img/inicio_ron.png', href: 'https://www.tiktok.com/@licores_sureno' },
+  { img: '/static/img/inicio_cannabis.png', href: 'https://www.tiktok.com/@licores_sureno' },
+  { img: '/static/img/inicio_tragos.png', href: 'https://www.tiktok.com/@licores_sureno' },
+  { img: '/static/img/inicio_blueVodka.png', href: 'https://www.tiktok.com/@licores_sureno' },
+  { img: '/static/img/inicio_promo.png', href: 'https://www.tiktok.com/@licores_sureno' },
+];
 ---
 
 <BaseLayout title="Sureño — Inicio">
-  <section class="grid items-center gap-8 md:grid-cols-2">
-    <div>
-      <h1 class="brand-title text-4xl md:text-5xl">Licores Sureño</h1>
-      <p class="mt-4 max-w-prose text-lg text-brand-brown dark:text-brand-cream/80">
-        Calidad de altura a precios accesibles. Explora nuestro catálogo y recibe tu
-        pedido a domicilio.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/products" class="btn-primary">Ver productos</a>
-        <a href="/about" class="btn-secondary">Quiénes somos</a>
-      </div>
-    </div>
-    <div class="card grid place-items-center p-10">
-      <span class="brand-title text-6xl opacity-80">Sureño</span>
+  <!-- Banner -->
+  <section
+    class="relative bg-cover bg-center"
+    style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('/static/img/Fondo-main.webp')"
+  >
+    <div class="mx-auto max-w-6xl px-4 py-20 text-center text-white">
+      <p class="text-2xl font-bold [text-shadow:0_0_10px_rgba(255,237,221,0.55)]">Calidad en tu paladar</p>
+      <h2 class="mt-6 text-4xl font-bold md:text-5xl [text-shadow:2px_2px_4px_rgba(0,0,0,0.5)]">
+        100% Natural<br />Licor de excelencia
+      </h2>
+      <a href="/products" class="btn-1 mt-8 text-lg">Comprar Ahora →</a>
     </div>
   </section>
 
-  <section class="mt-16 grid gap-6 sm:grid-cols-3">
-    {[
-      { t: 'Catálogo variado', d: 'Amplia selección de licores nacionales e importados.' },
-      { t: 'Compra segura', d: 'Sesión protegida y pago de tu pedido paso a paso.' },
-      { t: 'Envío a domicilio', d: 'Registra tu dirección y recibe donde estés.' },
-    ].map(({ t, d }) => (
-      <article class="card p-6">
-        <h2 class="text-lg font-semibold text-brand-teal-dark dark:text-brand-teal-light">{t}</h2>
-        <p class="mt-2 text-sm opacity-80">{d}</p>
-      </article>
-    ))}
+  <!-- Servicios -->
+  <section class="section-1 py-16">
+    <div class="mx-auto max-w-6xl px-4 text-center">
+      <h2 class="site-title text-3xl md:text-4xl">¿Te gustaría saber más de nosotros?</h2>
+      <div class="mt-8 flex flex-wrap justify-around gap-6">
+        {servicios.map(({ img, t }) => (
+          <div class="p-4 transition-transform hover:scale-105">
+            <img src={img} alt={t} class="mx-auto mb-3 w-28" onerror="this.style.display='none'" />
+            <h3 class="text-xl font-semibold">{t}</h3>
+          </div>
+        ))}
+      </div>
+      <p class="mx-auto mt-6 max-w-3xl">
+        En una pequeña esquina de la ciudad, donde las luces tintinean y el aroma de los
+        buenos momentos flota en el aire, se encuentra <em>«Sureño»</em>, la tienda de
+        licores que transforma cualquier ocasión en una experiencia inolvidable.
+      </p>
+      <a href="/about" class="btn-1 mt-6 text-lg">Información →</a>
+    </div>
+  </section>
+
+  <!-- Galería -->
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {galeria.map(({ img, href }) => (
+        <a href={href} target="_blank" rel="noopener">
+          <img
+            src={img}
+            alt="Galería Sureño"
+            class="w-full rounded shadow"
+            style="aspect-ratio: 9 / 16; object-fit: cover;"
+            onerror="this.style.display='none'"
+          />
+        </a>
+      ))}
+    </div>
   </section>
 </BaseLayout>

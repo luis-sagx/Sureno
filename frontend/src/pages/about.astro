@@ -1,61 +1,65 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
-const productos = [
-  { t: 'Vinos', d: 'Elegantes y de sabor refinado.' },
-  { t: 'Whisky', d: 'Perfectamente añejados.' },
-  { t: 'Vodka', d: 'Destilados con pureza excepcional.' },
-  { t: 'Aguardiente', d: 'Tradicional y auténtico.' },
-];
+const fondo =
+  "linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url('/static/img/Fondo-main.webp')";
 ---
 
 <BaseLayout title="Sureño — Quiénes Somos">
-  <section class="card mb-10 p-8 text-center">
-    <p class="mx-auto max-w-2xl text-lg italic opacity-90">
+  <!-- Frase -->
+  <section class="flex items-center justify-center bg-cover bg-fixed bg-center py-24 text-white" style={`background-image: ${fondo}`}>
+    <p class="w-4/5 text-center text-xl italic">
       En cada botella de Sureño destilamos tradición, pasión y el sabor de lo auténtico,
       para que cada momento se convierta en una experiencia única.
     </p>
   </section>
 
-  <section class="mb-10">
-    <h2 class="brand-title mb-3 text-2xl">Nuestra Historia</h2>
-    <p class="max-w-prose leading-relaxed opacity-90">
-      El 22 de mayo de 1998 nace la idea de formar una pequeña industria en el sur de
-      Quito llamada <strong>Sureño</strong>, al principio artesanal y con el tiempo
-      evolucionada como microempresa cumpliendo las normas INEN. Bajo procesos
-      controlados por ARCSA, maximizamos la satisfacción de nuestros clientes y de toda
-      la familia Sureño, superándonos día a día.
-    </p>
+  <!-- Nuestra Historia -->
+  <section class="section-1 mx-auto my-12 flex max-w-6xl flex-col items-center gap-6 rounded p-8 shadow md:flex-row">
+    <img src="/static/img/history.jpg" alt="Historia" class="w-full rounded md:w-1/2" onerror="this.style.display='none'" />
+    <div class="md:w-1/2">
+      <h2 class="section-title mb-3 text-4xl">Nuestra Historia</h2>
+      <p class="text-base leading-relaxed">
+        El 22 de mayo de 1998 nace la idea de formar una pequeña industria en el sur de
+        Quito llamada <strong>Sureño</strong>, desarrollándose al principio artesanalmente
+        y, con el tiempo, evolucionando como microempresa cumpliendo siempre las normas
+        INEN. Bajo procesos controlados por ARCSA, maximizamos la satisfacción de nuestros
+        clientes y de toda la familia Sureño.
+      </p>
+    </div>
   </section>
 
-  <section class="mb-10 grid gap-6 md:grid-cols-2">
-    <article class="card p-6">
-      <h3 class="mb-2 text-xl font-semibold text-brand-teal-dark dark:text-brand-teal-light">Misión</h3>
-      <p class="leading-relaxed opacity-90">
+  <!-- Misión / Visión -->
+  <section class="section-2 mx-auto my-12 grid max-w-6xl gap-8 rounded p-8 shadow md:grid-cols-2">
+    <div class="md:border-l-2 md:border-current md:pl-6">
+      <h2 class="section-title mb-3 text-4xl">Misión</h2>
+      <p class="leading-relaxed">
         Producir y comercializar licores con los más altos estándares de calidad para
         satisfacer a clientes y consumidores, acompañándolos en sus momentos importantes
         con un equipo humano, técnico y sostenible.
       </p>
-    </article>
-    <article class="card p-6">
-      <h3 class="mb-2 text-xl font-semibold text-brand-teal-dark dark:text-brand-teal-light">Visión</h3>
-      <p class="leading-relaxed opacity-90">
+    </div>
+    <div class="md:border-l-2 md:border-current md:pl-6">
+      <h2 class="section-title mb-3 text-4xl">Visión</h2>
+      <p class="leading-relaxed">
         Ampliar la participación en el mercado nacional e incursionar en el internacional,
         con la más alta responsabilidad social empresarial, a través de la mejora continua
-        e innovación de nuestro portafolio.
+        e innovación de nuestro portafolio de productos.
       </p>
-    </article>
+    </div>
   </section>
 
-  <section>
-    <h2 class="brand-title mb-4 text-2xl">Nuestros Productos</h2>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {productos.map(({ t, d }) => (
-        <div class="card p-5">
-          <h3 class="font-semibold text-brand-brown dark:text-brand-teal-light">{t}</h3>
-          <p class="mt-1 text-sm opacity-80">{d}</p>
-        </div>
-      ))}
+  <!-- Nuestros Productos -->
+  <section class="flex items-center justify-center bg-cover bg-fixed bg-center py-24 text-white" style={`background-image: ${fondo}`}>
+    <div class="text-center">
+      <h2 class="mb-4 text-4xl" style="font-family: var(--font-display); color: var(--color-beige)">Nuestros Productos</h2>
+      <p class="mb-3">Ofrecemos una variedad de bebidas espirituosas:</p>
+      <ul class="space-y-2 text-lg">
+        <li><strong>Vinos:</strong> Elegantes y de sabor refinado.</li>
+        <li><strong>Whisky:</strong> Perfectamente añejados.</li>
+        <li><strong>Vodka:</strong> Destilados con pureza excepcional.</li>
+        <li><strong>Aguardiente:</strong> Tradicional y auténtico.</li>
+      </ul>
     </div>
   </section>
 </BaseLayout>

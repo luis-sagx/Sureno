@@ -29,16 +29,15 @@ const links = [
     </script>
   </head>
   <body class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="flex w-60 flex-shrink-0 flex-col bg-brand-teal-dark p-4 text-white">
-      <a href="/" class="brand-title mb-6 block text-center text-2xl !text-white">Sureño</a>
+    <aside class="flex w-60 flex-shrink-0 flex-col p-4 text-white" style="background-color: var(--color-cafe)">
+      <a href="/" class="site-title mb-6 block text-center text-3xl !text-white">Sureño</a>
       <p class="mb-4 text-center text-xs uppercase tracking-wide text-white/60">Administración</p>
       <nav class="flex flex-col gap-1">
         {links.map(({ key, href, label }) => (
           <a
             href={href}
             class:list={[
-              'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-white/10',
+              'rounded-md px-3 py-2 font-medium transition-colors hover:bg-white/10',
               key === active && 'bg-white/15',
             ]}
           >
@@ -47,17 +46,16 @@ const links = [
         ))}
       </nav>
       <div class="mt-auto flex flex-col gap-2 pt-4">
-        <button type="button" data-theme-toggle class="rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10">
+        <button type="button" data-theme-toggle class="rounded-md px-3 py-2 text-left text-sm hover:bg-white/10">
           Cambiar tema
         </button>
-        <button type="button" data-logout class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium hover:bg-red-700">
+        <button type="button" data-logout class="rounded-md bg-red-600 px-3 py-2 text-sm font-medium hover:bg-red-700">
           Cerrar sesión
         </button>
       </div>
     </aside>
 
-    <!-- Contenido -->
-    <main class="flex-1 overflow-x-auto p-6">
+    <main class="flex-1 overflow-x-auto bg-white p-6 dark:bg-[#1e1e1e]">
       <slot />
     </main>
 

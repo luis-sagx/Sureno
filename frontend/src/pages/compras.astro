@@ -7,65 +7,88 @@ interface Pedido {
   fecha_formateada: string;
   total: string;
   estado: string;
-  productos: { nombre: string; cantidad: number }[];
+  productos: { nombre: string; cantidad: number; mililitros?: number; imagen?: string }[];
   direccion: { provincia: string; canton: string; parroquia: string };
 }
 
 const res = await apiServer<Pedido[]>('/api/compras', Astro.request);
 const pedidos = res.data ?? [];
 
-const estadoClass: Record<string, string> = {
-  pendiente: 'bg-amber-100 text-amber-800',
-  cancelado: 'bg-red-100 text-red-700',
-  entregado: 'bg-green-100 text-green-700',
+const badge: Record<string, string> = {
+  pendiente: 'bg-yellow-200 text-yellow-900',
+  enviado: 'bg-sky-200 text-sky-900',
+  entregado: 'bg-green-200 text-green-900',
+  completado: 'bg-green-200 text-green-900',
+  cancelado: 'bg-red-200 text-red-900',
 };
 ---
 
 <BaseLayout title="Sureño — Mis compras">
-  <h1 class="brand-title mb-6 text-3xl">Mis compras</h1>
-
-  {pedidos.length === 0 ? (
-    <p class="card p-8 text-center opacity-80">Aún no tienes pedidos.</p>
-  ) : (
-    <div class="space-y-4">
-      {pedidos.map((p) => (
-        <article class="card p-6" data-order={p.id}>
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <p class="text-sm opacity-70">{p.fecha_formateada}</p>
-              <p class="text-lg font-bold text-brand-teal-dark dark:text-brand-teal-light">{p.total}</p>
-            </div>
-            <span class:list={['rounded-full px-3 py-1 text-xs font-semibold capitalize', estadoClass[p.estado] ?? 'bg-gray-100 text-gray-700']}>
-              {p.estado}
-            </span>
-          </div>
-
-          <div class="mt-3 grid gap-3 sm:grid-cols-2">
-            <div>
-              <h3 class="text-sm font-semibold">Productos</h3>
-              <ul class="mt-1 text-sm opacity-80">
-                {(p.productos || []).map((it) => (
-                  <li>{it.cantidad ?? 1}× {it.nombre}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 class="text-sm font-semibold">Envío a</h3>
-              <p class="mt-1 text-sm opacity-80">
-                {p.direccion?.provincia}, {p.direccion?.canton}, {p.direccion?.parroquia}
-              </p>
-            </div>
-          </div>
-
-          {p.estado === 'pendiente' && (
-            <div class="mt-4 text-right">
-              <button type="button" class="btn-secondary" data-cancel={p.id}>Cancelar pedido</button>
-            </div>
-          )}
-        </article>
-      ))}
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <div class="mb-4 flex items-center justify-between">
+      <h1 class="site-title text-3xl">Historial de Compras</h1>
+      <a href="/" class="btn-1">← Volver al inicio</a>
     </div>
-  )}
+
+    <div class="panel overflow-x-auto rounded shadow-lg">
+      {pedidos.length === 0 ? (
+        <div class="py-16 text-center">
+          <p class="mb-4 text-lg">No hay compras registradas</p>
+          <a href="/products" class="btn-2">Ir a comprar</a>
+        </div>
+      ) : (
+        <table class="w-full text-left">
+          <thead class="border-b border-cafe/20 text-sm uppercase">
+            <tr>
+              <th class="px-4 py-3">Fecha</th>
+              <th class="px-4 py-3">Productos</th>
+              <th class="px-4 py-3 text-right">Total</th>
+              <th class="px-4 py-3 text-center">Estado</th>
+              <th class="px-4 py-3">Dirección</th>
+              <th class="px-4 py-3 text-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pedidos.map((p) => (
+              <tr class="border-b border-cafe/10" data-order={p.id}>
+                <td class="px-4 py-3 align-top">
+                  <div class="font-medium">{p.fecha_formateada?.split(' ')[0]}</div>
+                  <small class="opacity-60">{p.fecha_formateada?.split(' ')[1]}</small>
+                </td>
+                <td class="px-4 py-3 align-top">
+                  <div class="flex flex-col gap-1">
+                    {(p.productos || []).map((it) => (
+                      <div>
+                        <div class="font-medium">{it.nombre}</div>
+                        <small class="opacity-60">{it.mililitros ? `${it.mililitros}ml • ` : ''}x{it.cantidad ?? 1}</small>
+                      </div>
+                    ))}
+                  </div>
+                </td>
+                <td class="px-4 py-3 text-right align-top font-semibold">{p.total}</td>
+                <td class="px-4 py-3 text-center align-top">
+                  <span class:list={['rounded-full px-3 py-1 text-xs font-semibold capitalize', badge[p.estado] ?? 'bg-gray-200 text-gray-800']} data-badge>
+                    {p.estado}
+                  </span>
+                </td>
+                <td class="px-4 py-3 align-top">
+                  <div class="font-medium">{p.direccion?.provincia}</div>
+                  <small class="opacity-60">{p.direccion?.canton} • {p.direccion?.parroquia}</small>
+                </td>
+                <td class="px-4 py-3 text-right align-top">
+                  {p.estado === 'pendiente' ? (
+                    <button class="btn-1 !bg-red-600 hover:!bg-red-700" data-cancel={p.id}>Cancelar</button>
+                  ) : (
+                    <span class="text-sm opacity-60">No cancelable</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </div>
 </BaseLayout>
 
 <script>
@@ -80,14 +103,10 @@ const estadoClass: Record<string, string> = {
         const res = await apiFetch(`/api/orders/${id}/cancelar`, { method: 'PUT' });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || 'No se pudo cancelar');
-        // Reflejar el cambio sin recargar
-        const card = document.querySelector(`[data-order="${id}"]`);
-        const badge = card?.querySelector('span');
-        if (badge) {
-          badge.textContent = 'cancelado';
-          badge.className = 'rounded-full px-3 py-1 text-xs font-semibold capitalize bg-red-100 text-red-700';
-        }
-        btn.remove();
+        const row = document.querySelector(`[data-order="${id}"]`);
+        const b = row?.querySelector('[data-badge]');
+        if (b) { b.textContent = 'cancelado'; b.className = 'rounded-full px-3 py-1 text-xs font-semibold capitalize bg-red-200 text-red-900'; }
+        btn.replaceWith(Object.assign(document.createElement('span'), { className: 'text-sm opacity-60', textContent: 'No cancelable' }));
       } catch (err) {
         alert((err as Error).message);
         btn.disabled = false;
