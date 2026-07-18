@@ -13,6 +13,8 @@ ENV/
 .env
 .env.*
 *.env
+# ...pero el template SI se versiona (documenta las variables necesarias)
+!.env.example
 
 # Pytest / cobertura
 .pytest_cache/

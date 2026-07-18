@@ -1,80 +1,84 @@
-# Sureno
+# Sureño
 
-Sureno es un sitio web de comercio electrónico para la empresa Sureño, la cual se encarga de vender licores de su marca. El proyecto fue desarrollado utilizando el framework Flask de Python. Este proyecto tiene como objetivo proporcionar una plataforma donde los usuarios pueden explorar, seleccionar y comprar productos de manera sencilla y eficiente.
+E-commerce de licores de la marca Sureño. Arquitectura desacoplada: un backend
+Flask que expone una **API JSON pura** sobre MongoDB, y un frontend **Astro (SSR)
+con Tailwind** que consume esa API.
 
-## Partes del Sitio
+## Estructura del proyecto
 
-- **Clientes**: Los clientes pueden registrarse, navegar por los productos, añadirlos al carrito y realizar compras.
-- **Administradores**: Los administradores tienen acceso a un panel de control donde pueden gestionar todos los aspectos del sitio, incluyendo la gestión de productos y la visualización de pedidos.
+```
+.
+├── backend/            # API Flask (JSON) + MongoDB
+│   ├── app.py          # App Flask, endpoints /api/*
+│   ├── config.py       # Conexión a MongoDB (lee MONGO_URI del entorno)
+│   ├── models/         # Modelos de datos (User, Product, Order, Address, Category)
+│   ├── routes/         # Blueprints de la API + decoradores de auth
+│   ├── static/         # Imágenes de productos (uploads) servidas por Flask
+│   ├── Tests/          # Suite pytest (unitarias, integración, carga)
+│   ├── scripts/        # Utilidades (coverage para Sonar)
+│   ├── requirements.txt / requirements-dev.txt
+│   └── .env(.example)  # MONGO_URI, SECRET_KEY, FLASK_DEBUG (no se versiona)
+├── frontend/           # App Astro (SSR) + Tailwind
+│   └── src/            # pages/, components/, layouts/, lib/, middleware.ts
+├── docs/               # Documentación del SQAP
+├── .github/workflows/  # CI (SonarCloud)
+└── sonar-project.properties
+```
 
-## Credenciales de Acceso
-
-- **Administrador**:
-  - **Usuario**: adminSureno@gmail.com
-  - **Contraseña**: admin1
-
-- **Cliente**:
-  - **Usuario**: ingresoSureno@gmail.com
-  - **Contraseña**: ingreso1
+El frontend habla solo con su propio origen: el middleware de Astro
+(`frontend/src/middleware.ts`) proxya `/api` y `/static` al backend Flask, con lo
+que la cookie de sesión y la protección CSRF funcionan sin CORS.
 
 ## Características
 
-- **Registro y Autenticación de Usuarios**: Permite a los usuarios registrarse y acceder a sus cuentas. Hay roles diferenciados para administradores y clientes.
-- **Gestión de Productos**: Los administradores pueden agregar, editar y eliminar productos de la base de datos, asegurando que el catálogo esté siempre actualizado.
-- **Carrito de Compras**: Los usuarios pueden añadir productos a su carrito y gestionar su selección antes de proceder al pago.
-- **Proceso de Pago**: Integración de un sistema de pago seguro para facilitar la compra de productos.
-- **Historial de Pedidos**: Los usuarios pueden consultar el historial de sus pedidos anteriores.
+- Registro y autenticación por sesión, con roles cliente/administrador.
+- Catálogo de productos, carrito (localStorage) y proceso de compra.
+- Historial de pedidos con cancelación.
+- Panel de administración: métricas, gestión de pedidos y CRUD de productos.
+- Seguridad: CSRF (Flask-WTF), secretos por variables de entorno, guards de sesión/rol.
 
-## Tecnologías Utilizadas
+## Tecnologías
 
-- **Lenguaje de Programación**: Python
-- **Framework**: Flask
-- **Frontend**: HTML, CSS, JavaScript
-- **Base de Datos**: MongoDB Atlas
+- **Backend**: Python, Flask (API JSON), Flask-WTF, MongoDB Atlas (PyMongo).
+- **Frontend**: Astro (SSR, adaptador Node), Tailwind CSS v4, TypeScript.
+- **Pruebas**: pytest + mongomock (backend).
 
-## Instalación
+## Puesta en marcha (desarrollo)
 
-Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/luis-sagx/Sureno.git
-   ```
-2. Navega al directorio del proyecto:
+### 1. Backend (Flask, puerto 5000)
 
 ```bash
- cd Sureno
+cd backend
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env        # define MONGO_URI, SECRET_KEY; usa FLASK_DEBUG=1 en local
+python app.py
 ```
 
-3. Instala las dependencias:
+> En local usa `FLASK_DEBUG=1` para que la cookie CSRF no exija HTTPS.
+
+### 2. Frontend (Astro, puerto 4321)
 
 ```bash
- pip install -r requirements.txt
+cd frontend
+npm install
+npm run dev                 # o: npm run build && npm start
 ```
 
-4. Ejecuta la aplicación:
+Abre http://localhost:4321. Las llamadas a `/api` se proxyan al backend en `:5000`
+(configurable con `FLASK_API_URL`).
+
+## Pruebas (backend)
 
 ```bash
- python app.py
+cd backend
+source venv/bin/activate
+pip install -r requirements-dev.txt
+pytest                      # unitarias + integración (mongomock, sin Atlas)
 ```
 
-## SonarQube Cloud sin tests
+## SonarCloud
 
-Si el proyecto usa **Automatic analysis** en SonarQube Cloud, la cobertura **no está soportada** y por eso no aparece `0%`; en su lugar, Sonar muestra que falta configurar coverage.
-
-Para que se vea `0%` de cobertura en este proyecto:
-
-1. Desactiva `Automatic analysis` en SonarQube Cloud y usa análisis por scanner/CI.
-2. Genera un reporte vacío de cobertura:
-   ```bash
-   python scripts/generate_empty_coverage.py
-   ```
-3. Ejecuta el análisis de Sonar con el archivo `coverage.xml` generado.
-
-El archivo `sonar-project.properties` ya apunta a:
-
-```properties
-sonar.python.coverage.reportPaths=coverage.xml
-```
-
-Si ejecutas `sonar-scanner` o el workflow de GitHub Actions con ese reporte, SonarQube Cloud podrá importar cobertura y mostrará el proyecto con cobertura en `0%` mientras no existan tests.
+El workflow `.github/workflows/sonar.yml` genera el reporte de cobertura y ejecuta
+el análisis. Config en `sonar-project.properties` (fuentes bajo `backend/`,
+`sonar.python.coverage.reportPaths=backend/coverage.xml`).
