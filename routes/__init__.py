@@ -11,4 +11,4 @@ def register_routes(app):
     app.register_blueprint(user_routes, url_prefix='/api')
     app.register_blueprint(admin_routes, url_prefix='/admin')  # Registrar admin_routes con prefijo '/admin'
     app.register_blueprint(address_routes, url_prefix='/api')
-    app.secret_key = "supersecreto"
+    # secret_key se define en app.py desde entorno (fix DEF-013).
