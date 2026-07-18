@@ -1,0 +1,74 @@
+/* Fuentes self-hosted (offline, sin CDN) */
+@import '@fontsource/pacifico/400.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@import 'tailwindcss';
+
+/* Dark mode por clase (lo alterna el toggle en <html class="dark">) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- Design system (MEJ-01): tokens de marca Sureño ---- */
+@theme {
+  /* Teal (primario) */
+  --color-brand-teal: #00b1c9;
+  --color-brand-teal-dark: #316168;
+  --color-brand-teal-mid: #408791;
+  --color-brand-teal-light: #8fc1d4;
+
+  /* Marrón (acento cálido) */
+  --color-brand-brown: #5e422e;
+  --color-brand-brown-light: #906243;
+
+  /* Neutros de marca */
+  --color-brand-cream: #f5f1dc;
+  --color-brand-ink: #1e1e1e;
+
+  /* Tipografía */
+  --font-display: 'Pacifico', cursive;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Base: superficie clara/oscura coherente */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-brand-cream text-brand-ink antialiased;
+  }
+  .dark body {
+    @apply bg-brand-ink text-brand-cream;
+  }
+  h1, h2, h3 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+/* Utilidades de componente reutilizables */
+@layer components {
+  .brand-title {
+    font-family: var(--font-display);
+    @apply text-brand-teal-dark;
+  }
+  .dark .brand-title {
+    @apply text-brand-teal-light;
+  }
+  .btn,
+  .btn-primary,
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal focus-visible:ring-offset-2;
+  }
+  .btn-primary {
+    @apply bg-brand-teal text-white hover:bg-brand-teal-mid;
+  }
+  .btn-secondary {
+    @apply border border-brand-teal-dark text-brand-teal-dark hover:bg-brand-teal-light/20;
+  }
+  .card {
+    @apply rounded-xl border border-black/5 bg-white shadow-sm dark:border-white/10 dark:bg-white/5;
+  }
+}

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Sureño — Inicio">
+  <section class="grid items-center gap-8 md:grid-cols-2">
+    <div>
+      <h1 class="brand-title text-4xl md:text-5xl">Licores Sureño</h1>
+      <p class="mt-4 max-w-prose text-lg text-brand-brown dark:text-brand-cream/80">
+        Calidad de altura a precios accesibles. Explora nuestro catálogo y recibe tu
+        pedido a domicilio.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/products" class="btn-primary">Ver productos</a>
+        <a href="/about" class="btn-secondary">Quiénes somos</a>
+      </div>
+    </div>
+    <div class="card grid place-items-center p-10">
+      <span class="brand-title text-6xl opacity-80">Sureño</span>
+    </div>
+  </section>
+
+  <section class="mt-16 grid gap-6 sm:grid-cols-3">
+    {[
+      { t: 'Catálogo variado', d: 'Amplia selección de licores nacionales e importados.' },
+      { t: 'Compra segura', d: 'Sesión protegida y pago de tu pedido paso a paso.' },
+      { t: 'Envío a domicilio', d: 'Registra tu dirección y recibe donde estés.' },
+    ].map(({ t, d }) => (
+      <article class="card p-6">
+        <h2 class="text-lg font-semibold text-brand-teal-dark dark:text-brand-teal-light">{t}</h2>
+        <p class="mt-2 text-sm opacity-80">{d}</p>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
