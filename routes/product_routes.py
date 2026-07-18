@@ -35,7 +35,7 @@ def upload_image(product_id):
     else:
         return jsonify({"error": "Producto no encontrado"}), 404
     
-@product_routes.route('/products')
+@product_routes.route('/products', methods=['GET'])
 def products():
     products = ProductModel.get_all()
     for product in products:

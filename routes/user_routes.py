@@ -15,7 +15,8 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@user_routes.route('/api/users', methods=['GET'])
+# Fix DEF-015 (RM-05): rutas relativas; el prefijo /api se aplica al registrar.
+@user_routes.route('/users', methods=['GET'])
 def get_users():
     # Obtén la lista de productos desde la base de datos
     users = UserModel.get_all()  # Cambiado: get_all() en lugar de get_all_products()
@@ -24,7 +25,7 @@ def get_users():
         user['_id'] = str(user['_id'])
     return jsonify(users), 200
 
-@user_routes.route('/users', methods=['GET'])
+@user_routes.route('/users/view', methods=['GET'])
 def show_users():
     # Obtén la lista de productos desde la base de datos
     users = UserModel.get_all()  # Asegúrate de llamar al método correcto

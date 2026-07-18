@@ -7,7 +7,7 @@ from routes.auth import admin_required
 
 admin_routes = Blueprint('admin_routes', __name__)
 
-@admin_routes.route('/home')
+@admin_routes.route('/home', methods=['GET'])
 @admin_required
 def admin_home():
     total_clientes = db.usuarios.count_documents({})
@@ -15,13 +15,13 @@ def admin_home():
     total_pedidos = db.orders.count_documents({})
     return render_template('admin/home.html', total_clientes=total_clientes, total_productos=total_productos, total_pedidos=total_pedidos)
 
-@admin_routes.route('/orders')
+@admin_routes.route('/orders', methods=['GET'])
 @admin_required
 def admin_orders():
     pedidos = OrderModel.get_all()
     return render_template('admin/orders.html', pedidos=pedidos)
 
-@admin_routes.route('/products')
+@admin_routes.route('/products', methods=['GET'])
 @admin_required
 def admin_product_list():
     productos = ProductModel.get_all()  # Usar el modelo en lugar de acceder directamente a la BD

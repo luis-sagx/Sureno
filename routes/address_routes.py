@@ -5,17 +5,18 @@ from bson.errors import InvalidId
 
 address_routes = Blueprint('address_routes', __name__)
 
-@address_routes.route('/api/addresses', methods=['GET'])
+# Fix DEF-015 (RM-05): rutas relativas; el prefijo /api se aplica al registrar.
+@address_routes.route('/addresses', methods=['GET'])
 def get_addresses():
-    """ Obtiene todas las direcciones de la base de datos """
+    """ Obtiene todas las direcciones (JSON). Ruta canonica: /api/addresses """
     addresses = AddressModel.get_all()
     for address in addresses:
         address['_id'] = str(address['_id'])
     return jsonify(addresses), 200
 
-@address_routes.route('/addresses', methods=['GET'])
+@address_routes.route('/addresses/view', methods=['GET'])
 def show_addresses():
-    """ Muestra las direcciones en una plantilla HTML """
+    """ Muestra las direcciones en una plantilla HTML. Ruta: /api/addresses/view """
     addresses = AddressModel.get_all()
     for address in addresses:
         address['_id'] = str(address['_id'])
@@ -32,15 +33,8 @@ def get_address(address_id):
             return jsonify(address), 200
         else:
             return jsonify({'error': 'Dirección no encontrada'}), 404
-    except Exception as e:
+    except Exception:  # Fix DEF-008 (S1481): sin variable sin uso.
         return jsonify({'error': 'Error en el servidor'}), 500
-    
-# @address_routes.route('/addresses', methods=['POST'])
-# def create_address():
-#     """ Crea una nueva dirección """
-#     data = request.get_json()
-#     inserted_id = AddressModel.create(data)
-#     return jsonify({'message': 'Dirección creada', 'id': inserted_id}), 201
 
 @address_routes.route('/addresses/<address_id>', methods=['PUT'])
 def update_address(address_id):

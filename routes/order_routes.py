@@ -6,14 +6,17 @@ from datetime import datetime
 
 order_routes = Blueprint("orders", __name__)
 
+# Fix DEF-005 (S1192): literal centralizado.
+MSG_LOGIN_REQUERIDO = "Debes iniciar sesión"
 
 
-@order_routes.route('/api/orders', methods=['POST'])
+# Fix DEF-015 (RM-05): rutas relativas; el prefijo /api se define al registrar.
+@order_routes.route('/orders', methods=['POST'])
 def create_order():
     try:
         user_id = session.get("user_id")
         if not user_id:
-            return jsonify({"error": "Debes iniciar sesión"}), 401
+            return jsonify({"error": MSG_LOGIN_REQUERIDO}), 401
 
         data = request.get_json()
         if not data:
@@ -49,7 +52,7 @@ def create_order():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@order_routes.route('/api/orders', methods=['GET'])
+@order_routes.route('/orders', methods=['GET'])
 def get_all_orders():
     try:
         orders = OrderModel.get_all()
@@ -57,7 +60,7 @@ def get_all_orders():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@order_routes.route('/api/orders/<order_id>', methods=['PUT'])
+@order_routes.route('/orders/<order_id>', methods=['PUT'])
 def update_order_status(order_id):
     try:
         data = request.get_json()
@@ -77,7 +80,7 @@ def delete_order(order_id):
         # Verificar autenticación
         user_id = session.get("user_id")
         if not user_id:
-            return jsonify({"error": "Debes iniciar sesión"}), 401
+            return jsonify({"error": MSG_LOGIN_REQUERIDO}), 401
 
         # Validar formato del ID
         if not ObjectId.is_valid(order_id):
@@ -102,7 +105,7 @@ def cancelar_pedido(order_id):
     try:
         user_id = session.get("user_id")
         if not user_id:
-            return jsonify({"error": "Debes iniciar sesión"}), 401
+            return jsonify({"error": MSG_LOGIN_REQUERIDO}), 401
 
         # Actualizar estado a 'cancelado'
         result = db.orders.update_one(
