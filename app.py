@@ -125,6 +125,7 @@ def _compras_de_usuario(user_id):
         {"$sort": {"fecha": -1}},
         {"$project": {
             "_id": 0,
+            "id": {"$toString": "$_id"},
             "fecha_formateada": {"$dateToString": {"format": "%d/%m/%Y %H:%M", "date": "$fecha"}},
             "total": 1,
             "estado": 1,
