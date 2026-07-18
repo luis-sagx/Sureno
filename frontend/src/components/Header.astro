@@ -11,24 +11,24 @@ const path = Astro.url.pathname;
 const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
 
-<header class="bg-beige shadow-[0_2px_4px_rgba(0,0,0,0.1)] dark:bg-[#2b2a2a]">
-  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+<header class="relative bg-beige shadow-[0_2px_4px_rgba(0,0,0,0.1)] dark:bg-[#2b2a2a]">
+  <div class="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 px-3 py-3 sm:px-4">
     <!-- Marca -->
-    <a href="/" class="flex items-center gap-3">
-      <img src="/img/logo.png" alt="Logo Sureño" class="h-14 w-14 object-cover" onerror="this.style.display='none'" />
-      <span class="site-title text-3xl leading-none font-semibold">Sureño</span>
+    <a href="/" class="flex min-w-0 items-center gap-2 sm:gap-3">
+      <img src="/img/logo.png" alt="Logo Sureño" class="h-10 w-10 flex-none object-cover sm:h-12 sm:w-12 lg:h-14 lg:w-14" onerror="this.style.display='none'" />
+      <span class="site-title truncate text-3xl font-semibold leading-none">Sureño</span>
     </a>
 
     <!-- Navegación -->
-    <nav id="main-nav" data-main-nav class="order-3 hidden w-full sm:order-none sm:block sm:w-auto">
-      <ul class="flex flex-col gap-1 rounded-md border border-cafe/15 bg-white/60 p-2 shadow-sm sm:flex-row sm:items-center sm:justify-center sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none dark:bg-white/5 sm:dark:bg-transparent">
+    <nav id="main-nav" data-main-nav class="absolute left-3 right-3 top-[4.5rem] z-20 hidden lg:static lg:block lg:w-auto">
+      <ul class="flex flex-col gap-1 rounded-md border border-cafe/15 bg-beige p-2 shadow-md lg:flex-row lg:items-center lg:justify-center lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none dark:bg-[#2b2a2a] lg:dark:bg-transparent">
         {links.map(({ href, label, icon }) => (
           <li>
             <a
               href={href}
               aria-current={isActive(href) ? 'page' : undefined}
               class:list={[
-                'inline-flex w-full items-center gap-2 rounded-md px-3 py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-boton-celeste/50 sm:w-auto sm:gap-1.5',
+                'inline-flex w-full items-center gap-2 rounded-md px-3 py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-boton-celeste/50 lg:w-auto lg:gap-1.5',
                 isActive(href)
                   ? 'bg-celeste-dark text-white shadow-sm'
                   : 'text-cafe hover:bg-cafe/10 hover:text-celeste-dark dark:text-beige dark:hover:bg-white/10 dark:hover:text-celeste',
@@ -43,23 +43,23 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     </nav>
 
     <!-- Acciones -->
-    <div class="flex items-center gap-3">
+    <div class="flex flex-none items-center gap-1.5 sm:gap-3">
       <button
         type="button"
         data-menu-toggle
-        class="grid h-10 w-10 place-items-center rounded-full text-cafe transition-colors hover:bg-cafe/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-boton-celeste/50 sm:hidden dark:text-beige dark:hover:bg-white/10"
+        class="grid h-9 w-9 place-items-center rounded-full text-cafe transition-colors hover:bg-cafe/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-boton-celeste/50 lg:hidden dark:text-beige dark:hover:bg-white/10"
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="main-nav"
       >
-        <Icon name="lucide:menu" data-menu-icon-open class="h-6 w-6" />
-        <Icon name="lucide:x" data-menu-icon-close class="hidden h-6 w-6" />
+        <Icon name="lucide:menu" data-menu-icon-open class="h-5 w-5 sm:h-6 sm:w-6" />
+        <Icon name="lucide:x" data-menu-icon-close class="hidden h-5 w-5 sm:h-6 sm:w-6" />
       </button>
 
       <!-- Usuario -->
       <details class="relative">
-        <summary class="grid h-10 w-10 cursor-pointer place-items-center rounded-full bg-boton-celeste text-white transition-colors hover:bg-boton-celeste-hover marker:content-none">
-          <Icon name="lucide:user" class="h-5 w-5" />
+        <summary class="grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-boton-celeste text-white transition-colors hover:bg-boton-celeste-hover marker:content-none sm:h-10 sm:w-10">
+          <Icon name="lucide:user" class="h-4 w-4 sm:h-5 sm:w-5" />
           <span class="sr-only">Perfil</span>
         </summary>
         <div class="panel absolute right-0 z-20 mt-2 w-64 p-4 text-sm">
@@ -76,17 +76,17 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       </details>
 
       <!-- Carrito -->
-      <a href="/cart" class="relative grid h-10 w-10 place-items-center rounded-full text-cafe transition-colors hover:bg-celeste/40 dark:text-beige" aria-label="Carrito">
-        <Icon name="lucide:shopping-cart" class="h-6 w-6" />
+      <a href="/cart" class="relative grid h-9 w-9 place-items-center rounded-full text-cafe transition-colors hover:bg-celeste/40 dark:text-beige sm:h-10 sm:w-10" aria-label="Carrito">
+        <Icon name="lucide:shopping-cart" class="h-5 w-5 sm:h-6 sm:w-6" />
         <span data-cart-count class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-naranja px-1 text-center text-xs font-bold text-white shadow"></span>
       </a>
 
       <!-- Toggle de tema (switch con icono sol/luna) -->
       <button type="button" data-theme-toggle role="switch" aria-label="Cambiar tema"
-        class="relative grid h-8 w-14 place-items-center rounded-full bg-cafe transition-colors dark:bg-beige">
-        <span data-toggle-ball class="absolute left-[3px] top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full bg-beige text-cafe transition-[left] dark:left-[29px] dark:bg-cafe dark:text-beige">
-          <Icon name="lucide:sun" class="h-4 w-4 dark:hidden" />
-          <Icon name="lucide:moon" class="hidden h-4 w-4 dark:block" />
+        class="relative grid h-7 w-12 place-items-center rounded-full bg-cafe transition-colors sm:h-8 sm:w-14 dark:bg-beige">
+        <span data-toggle-ball class="absolute left-[3px] top-1/2 grid h-5 w-5 -translate-y-1/2 place-items-center rounded-full bg-beige text-cafe transition-[left] sm:h-6 sm:w-6 dark:left-[25px] sm:dark:left-[29px] dark:bg-cafe dark:text-beige">
+          <Icon name="lucide:sun" class="h-3.5 w-3.5 sm:h-4 sm:w-4 dark:hidden" />
+          <Icon name="lucide:moon" class="hidden h-3.5 w-3.5 sm:h-4 sm:w-4 dark:block" />
         </span>
       </button>
     </div>
