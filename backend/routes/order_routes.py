@@ -3,11 +3,15 @@ from bson.objectid import ObjectId
 from models.order import OrderModel
 from config import db
 from datetime import datetime
+from routes.auth import admin_required_api
 
 order_routes = Blueprint("orders", __name__)
 
 # Fix DEF-005 (S1192): literal centralizado.
 MSG_LOGIN_REQUERIDO = "Debes iniciar sesión"
+
+# Estados válidos de un pedido (evita inyectar valores arbitrarios).
+ESTADOS_VALIDOS = {"pendiente", "pagado", "enviado", "entregado", "cancelado"}
 
 
 # Fix DEF-015 (RM-05): rutas relativas; el prefijo /api se define al registrar.
@@ -53,7 +57,9 @@ def create_order():
         return jsonify({"error": str(e)}), 500
 
 @order_routes.route('/orders', methods=['GET'])
+@admin_required_api
 def get_all_orders():
+    """Lista todos los pedidos (solo admin)."""
     try:
         orders = OrderModel.get_all()
         return jsonify(orders), 200
@@ -61,11 +67,16 @@ def get_all_orders():
         return jsonify({"error": str(e)}), 500
 
 @order_routes.route('/orders/<order_id>', methods=['PUT'])
+@admin_required_api
 def update_order_status(order_id):
+    """Cambia el estado de un pedido (solo admin, estado validado)."""
     try:
         data = request.get_json()
         if not data or "estado" not in data:
             return jsonify({"error": "Estado no proporcionado"}), 400
+
+        if data["estado"] not in ESTADOS_VALIDOS:
+            return jsonify({"error": "Estado inválido"}), 400
 
         if OrderModel.update_status(order_id, data["estado"]):
             return jsonify({"message": "Estado del pedido actualizado"}), 200

@@ -5,16 +5,19 @@ from bson.objectid import ObjectId
 import os
 from werkzeug.utils import secure_filename
 from config import db
+from routes.auth import admin_required_api
 
 product_routes = Blueprint('product_routes', __name__)
 
 UPLOAD_FOLDER = "static/uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @product_routes.route('/upload-image/<product_id>', methods=['POST'])
+@admin_required_api
 def upload_image(product_id):
     if "imagen" not in request.files:
         return jsonify({"error": "No se envió ninguna imagen"}), 400
@@ -63,6 +66,7 @@ def categories():
     return jsonify(categorias), 200
 
 @product_routes.route('/products', methods=['POST'])
+@admin_required_api
 def create_product():
     # Obtener datos del producto
     nombre = request.form.get('nombre')
@@ -97,6 +101,7 @@ def create_product():
     return jsonify({'error': 'Error al crear el producto'}), 400
 
 @product_routes.route('/products/<product_id>', methods=['PUT'])
+@admin_required_api
 def update_product(product_id):
     try:
         # Obtener datos del formulario
@@ -136,6 +141,7 @@ def update_product(product_id):
         return jsonify({'error': 'Error al actualizar producto'}), 500
 
 @product_routes.route('/products/<product_id>', methods=['DELETE'])
+@admin_required_api
 def delete_product(product_id):
     """
     Elimina un producto existente.

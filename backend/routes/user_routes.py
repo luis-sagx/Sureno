@@ -1,84 +1,67 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify
 from models.user import UserModel
-from bson.objectid import ObjectId
-import os
-from werkzeug.utils import secure_filename
+from routes.auth import admin_required_api
 
 user_routes = Blueprint('user_routes', __name__)
 
-# Configuración de carpeta de subida
-UPLOAD_FOLDER = "static/uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+# Campos sensibles que nunca se exponen en la API.
+_SENSITIVE = ('password',)
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def _sanitize(user):
+    user['_id'] = str(user['_id'])
+    for field in _SENSITIVE:
+        user.pop(field, None)
+    return user
 
 
 # Fix DEF-015 (RM-05): rutas relativas; el prefijo /api se aplica al registrar.
+# Seguridad: la gestión de usuarios es solo para administradores y nunca
+# devuelve el hash de contraseña (info disclosure / IDOR).
 @user_routes.route('/users', methods=['GET'])
+@admin_required_api
 def get_users():
-    # Obtén la lista de productos desde la base de datos
-    users = UserModel.get_all()  # Cambiado: get_all() en lugar de get_all_products()
-    # Convierte el ObjectId a string para que JSON sea serializable
-    for user in users:
-        user['_id'] = str(user['_id'])
-    return jsonify(users), 200
+    """Lista de usuarios (solo admin, sin campos sensibles)."""
+    return jsonify([_sanitize(u) for u in UserModel.get_all()]), 200
 
-@user_routes.route('/users/view', methods=['GET'])
-def show_users():
-    # Obtén la lista de productos desde la base de datos
-    users = UserModel.get_all()  # Asegúrate de llamar al método correcto
-    # Convertir ObjectId a string para evitar problemas en la plantilla
-    for user in users:
-        user['_id'] = str(user['_id'])
-    # Agrega un print para verificar el contenido
-    print("Productos obtenidos:", users)
-    # Pasa los productos a la plantilla product.html
-    return render_template('user.html', users=users)
 
 @user_routes.route('/users/<user_id>', methods=['GET'])
+@admin_required_api
 def get_user(user_id):
-    """
-    Devuelve un producto específico dado su id.
-    """
-    user = UserModel.get_by_id(user_id)  # Usamos get_by_id()
+    """Usuario por id (solo admin, sin campos sensibles)."""
+    user = UserModel.get_by_id(user_id)
     if user:
-        user['_id'] = str(user['_id'])
-        return jsonify(user), 200
-    else:
-        return jsonify({'error': 'Producto no encontrado'}), 404
+        return jsonify(_sanitize(user)), 200
+    return jsonify({'error': 'Usuario no encontrado'}), 404
+
 
 @user_routes.route('/users', methods=['POST'])
+@admin_required_api
 def create_user():
-    """
-    Crea un nuevo producto.
-    Se espera que la petición incluya un JSON con la información del producto.
-    """
+    """Crea un usuario (solo admin)."""
     data = request.get_json()
-    # Aquí podrías validar los datos recibidos antes de insertar
-    inserted_id = UserModel.create(data)  # Usamos create() en lugar de create_product()
+    inserted_id = UserModel.create(data)
     return jsonify({'message': 'Usuario creado', 'id': inserted_id}), 201
 
+
 @user_routes.route('/users/<user_id>', methods=['PUT'])
+@admin_required_api
 def update_user(user_id):
-    """
-    Actualiza los datos de un producto existente.
-    """
-    update_data = request.get_json()
-    modified_count = UserModel.update(user_id, update_data)  # Usamos update() en lugar de update_product()
+    """Actualiza un usuario (solo admin). No permite cambiar rol ni contraseña por esta vía."""
+    update_data = request.get_json() or {}
+    for prohibido in ('id_rol', 'password'):
+        update_data.pop(prohibido, None)
+    modified_count = UserModel.update(user_id, update_data)
     if modified_count:
         return jsonify({'message': 'Usuario actualizado'}), 200
-    else:
-        return jsonify({'error': 'Producto no encontrado o no hubo cambios'}), 404
+    return jsonify({'error': 'Usuario no encontrado o sin cambios'}), 404
+
 
 @user_routes.route('/users/<user_id>', methods=['DELETE'])
+@admin_required_api
 def delete_user(user_id):
-    """
-    Elimina un producto existente.
-    """
-    deleted_count = UserModel.delete(user_id)  # Usamos delete() en lugar de delete_product()
+    """Elimina un usuario (solo admin)."""
+    deleted_count = UserModel.delete(user_id)
     if deleted_count:
-        return jsonify({'message': 'User eliminado'}), 200
-    else:
-        return jsonify({'error': 'User no encontrado'}), 404
+        return jsonify({'message': 'Usuario eliminado'}), 200
+    return jsonify({'error': 'Usuario no encontrado'}), 404
