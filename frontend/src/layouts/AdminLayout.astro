@@ -31,17 +31,20 @@ const links = [
       })();
     </script>
   </head>
-  <body class="flex min-h-screen">
-    <aside class="flex w-60 flex-shrink-0 flex-col p-4 text-white" style="background-color: var(--color-cafe)">
-      <a href="/" class="site-title mb-6 block text-center text-3xl !text-white">Sureño</a>
-      <p class="mb-4 text-center text-xs uppercase tracking-wide text-white/60">Administración</p>
+  <body class="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <aside class="flex w-60 flex-shrink-0 flex-col border-r border-stone-400 bg-stone-200/70 p-4 text-stone-900 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-100">
+      <a href="/" class="mb-6 inline-flex items-center justify-center gap-2 rounded-md px-2 py-1 text-xl font-semibold">
+        <Icon name="lucide:shield-check" class="h-5 w-5" />
+        Sureño Admin
+      </a>
+      <p class="mb-4 text-center text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Gestión</p>
       <nav class="flex flex-col gap-1">
         {links.map(({ key, href, label, icon }) => (
           <a
             href={href}
             class:list={[
-              'inline-flex items-center gap-2 rounded-md px-3 py-2 font-medium transition-colors hover:bg-white/10',
-              key === active && 'bg-white/15',
+              'inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-200 hover:text-stone-950 dark:text-stone-200 dark:hover:bg-white/10 dark:hover:text-white',
+              key === active && 'bg-white text-stone-950 shadow-sm dark:bg-white/15 dark:text-white dark:shadow-none',
             ]}
           >
             <Icon name={icon} class="h-4 w-4" />
@@ -50,18 +53,18 @@ const links = [
         ))}
       </nav>
       <div class="mt-auto flex flex-col gap-2 pt-4">
-        <button type="button" data-theme-toggle class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm hover:bg-white/10">
+        <button type="button" data-theme-toggle class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-stone-700 hover:bg-stone-200 hover:text-stone-950 dark:text-stone-200 dark:hover:bg-white/10 dark:hover:text-white">
           <Icon name="lucide:sun-moon" class="h-4 w-4" />
           Cambiar tema
         </button>
-        <button type="button" data-logout class="inline-flex items-center gap-2 rounded-md bg-red-700 px-3 py-2 text-sm font-medium hover:bg-red-800">
+        <button type="button" data-logout class="inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700">
           <Icon name="lucide:log-out" class="h-4 w-4" />
           Cerrar sesión
         </button>
       </div>
     </aside>
 
-    <main class="flex-1 overflow-x-auto bg-white p-6 dark:bg-[#1e1e1e]">
+    <main class="flex-1 overflow-x-auto p-6">
       <slot />
     </main>
 

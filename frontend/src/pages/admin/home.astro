@@ -1,26 +1,90 @@
 ---
 import AdminLayout from '@/layouts/AdminLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { apiServer } from '@/lib/api';
 
 interface Stats { total_clientes: number; total_productos: number; total_pedidos: number; }
-const res = await apiServer<Stats>('/api/admin/stats', Astro.request);
-const s = res.data ?? { total_clientes: 0, total_productos: 0, total_pedidos: 0 };
+interface Order { estado: string; }
+
+const [statsRes, ordersRes] = await Promise.all([
+  apiServer<Stats>('/api/admin/stats', Astro.request),
+  apiServer<Order[]>('/api/orders', Astro.request),
+]);
+const s = statsRes.data ?? { total_clientes: 0, total_productos: 0, total_pedidos: 0 };
+const pedidos = ordersRes.data ?? [];
 
 const tiles = [
-  { label: 'Clientes', value: s.total_clientes },
-  { label: 'Productos', value: s.total_productos },
-  { label: 'Pedidos', value: s.total_pedidos },
+  { label: 'Clientes', value: s.total_clientes, icon: 'lucide:users' },
+  { label: 'Productos', value: s.total_productos, icon: 'lucide:package' },
 ];
+
+const estados = [
+  { key: 'pendiente', label: 'Pendientes', icon: 'lucide:clock' },
+  { key: 'enviado', label: 'Enviados', icon: 'lucide:truck' },
+  { key: 'entregado', label: 'Entregados', icon: 'lucide:circle-check' },
+  { key: 'cancelado', label: 'Cancelados', icon: 'lucide:circle-x' },
+];
+
+const countByState = estados.map((estado) => ({
+  ...estado,
+  value: pedidos.filter((p) => p.estado === estado.key).length,
+}));
+const otherOrders = Math.max(
+  0,
+  s.total_pedidos - countByState.reduce((total, estado) => total + estado.value, 0),
+);
+const statusTiles = otherOrders > 0
+  ? [...countByState, { key: 'otros', label: 'Otros', icon: 'lucide:circle-help', value: otherOrders }]
+  : countByState;
 ---
 
 <AdminLayout title="Dashboard — Sureño" active="home">
-  <h1 class="site-title mb-6 text-3xl">Dashboard</h1>
-  <div class="grid gap-6 sm:grid-cols-3">
-    {tiles.map(({ label, value }) => (
-      <div class="panel p-6">
-        <p class="text-sm uppercase tracking-wide opacity-60">{label}</p>
-        <p class="site-title mt-2 text-4xl">{value}</p>
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-slate-900 dark:text-white">Dashboard</h1>
+    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Resumen general de la tienda.</p>
+  </div>
+  <div class="grid gap-5 md:grid-cols-2">
+    {tiles.map(({ label, value, icon }) => (
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center gap-5">
+          <span class="grid h-16 w-16 flex-none place-items-center rounded-lg bg-stone-100 text-stone-700 dark:bg-slate-800 dark:text-slate-200">
+            <Icon name={icon} class="h-8 w-8" />
+          </span>
+          <div class="min-w-0">
+            <p class="text-xl font-semibold text-slate-700 dark:text-slate-200">{label}</p>
+            <p class="mt-2 text-4xl font-bold leading-none text-slate-950 dark:text-white">{value}</p>
+          </div>
+        </div>
       </div>
     ))}
   </div>
+
+  <section class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div class="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Pedidos por estado</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Total de pedidos registrados: {s.total_pedidos}</p>
+      </div>
+      <a href="/admin/orders" class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white">
+        Ver pedidos
+        <Icon name="lucide:arrow-right" class="h-4 w-4" />
+      </a>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {statusTiles.map(({ label, value, icon }) => (
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-base font-semibold text-slate-700 dark:text-slate-200">{label}</p>
+              <p class="mt-2 text-3xl font-bold leading-none text-slate-950 dark:text-white">{value}</p>
+            </div>
+            <span class="grid h-12 w-12 flex-none place-items-center rounded-lg bg-white text-stone-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
+              <Icon name={icon} class="h-6 w-6" />
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
 </AdminLayout>
