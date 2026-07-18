@@ -1,0 +1,77 @@
+---
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  active?: 'home' | 'orders' | 'products';
+}
+const { title = 'Panel — Sureño', active = 'home' } = Astro.props;
+
+const links = [
+  { key: 'home', href: '/admin/home', label: 'Dashboard' },
+  { key: 'products', href: '/admin/products', label: 'Productos' },
+  { key: 'orders', href: '/admin/orders', label: 'Pedidos' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const t = localStorage.getItem('theme');
+        const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="flex w-60 flex-shrink-0 flex-col bg-brand-teal-dark p-4 text-white">
+      <a href="/" class="brand-title mb-6 block text-center text-2xl !text-white">Sureño</a>
+      <p class="mb-4 text-center text-xs uppercase tracking-wide text-white/60">Administración</p>
+      <nav class="flex flex-col gap-1">
+        {links.map(({ key, href, label }) => (
+          <a
+            href={href}
+            class:list={[
+              'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-white/10',
+              key === active && 'bg-white/15',
+            ]}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+      <div class="mt-auto flex flex-col gap-2 pt-4">
+        <button type="button" data-theme-toggle class="rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10">
+          Cambiar tema
+        </button>
+        <button type="button" data-logout class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium hover:bg-red-700">
+          Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido -->
+    <main class="flex-1 overflow-x-auto p-6">
+      <slot />
+    </main>
+
+    <script>
+      import { apiFetch } from '@/lib/csrf';
+      const root = document.documentElement;
+      document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+        root.classList.toggle('dark');
+        localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+      });
+      document.querySelector('[data-logout]')?.addEventListener('click', async () => {
+        try { await apiFetch('/api/logout', { method: 'POST' }); } catch {}
+        window.location.href = '/login';
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+---
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { apiServer } from '@/lib/api';
+
+interface Product {
+  _id: string;
+  nombre: string;
+  precio: number;
+  stock?: number;
+  mililitros?: number;
+  categoria_id?: string;
+  imagen?: string;
+}
+interface Category { _id: string; nombre: string; }
+
+const [pRes, cRes] = await Promise.all([
+  apiServer<Product[]>('/api/products', Astro.request),
+  apiServer<Category[]>('/api/categories', Astro.request),
+]);
+const productos = pRes.data ?? [];
+const categorias = cRes.data ?? [];
+const catName = (id?: string) => categorias.find((c) => c._id === id)?.nombre ?? '—';
+
+const inputClass =
+  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
+---
+
+<AdminLayout title="Productos — Sureño" active="products">
+  <h1 class="brand-title mb-6 text-3xl">Administración de Productos</h1>
+
+  <!-- Formulario alta/edición -->
+  <section class="card mb-8 p-6">
+    <h2 data-form-title class="mb-4 text-lg font-semibold">Agregar producto</h2>
+    <form id="product-form" class="grid gap-4 sm:grid-cols-2" enctype="multipart/form-data">
+      <input type="hidden" name="_id" />
+      <label class="block text-sm"><span class="mb-1 block font-medium">Nombre</span><input name="nombre" required class={inputClass} /></label>
+      <label class="block text-sm"><span class="mb-1 block font-medium">Precio</span><input name="precio" type="number" step="0.01" required class={inputClass} /></label>
+      <label class="block text-sm"><span class="mb-1 block font-medium">Stock</span><input name="stock" type="number" required class={inputClass} /></label>
+      <label class="block text-sm"><span class="mb-1 block font-medium">Mililitros</span><input name="mililitros" type="number" required class={inputClass} /></label>
+      <label class="block text-sm">
+        <span class="mb-1 block font-medium">Categoría</span>
+        <select name="categoria_id" required class={inputClass}>
+          <option value="">Selecciona…</option>
+          {categorias.map((c) => <option value={c._id}>{c.nombre}</option>)}
+        </select>
+      </label>
+      <label class="block text-sm"><span class="mb-1 block font-medium">Imagen</span><input name="imagen" type="file" accept="image/*" class={inputClass} /></label>
+      <div class="sm:col-span-2">
+        <button type="submit" class="btn-primary">Guardar</button>
+        <button type="button" data-reset class="btn-secondary ml-2 hidden">Cancelar edición</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Tabla -->
+  {productos.length === 0 ? (
+    <p class="card p-8 text-center opacity-80">No hay productos.</p>
+  ) : (
+    <div class="card overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="border-b border-black/10 text-xs uppercase opacity-60 dark:border-white/10">
+          <tr>
+            <th class="p-3">Producto</th><th class="p-3">Precio</th><th class="p-3">Stock</th>
+            <th class="p-3">ml</th><th class="p-3">Categoría</th><th class="p-3">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {productos.map((p) => (
+            <tr class="border-b border-black/5 dark:border-white/5" data-row={p._id}>
+              <td class="p-3 font-medium">{p.nombre}</td>
+              <td class="p-3">${Number(p.precio).toFixed(2)}</td>
+              <td class="p-3">{p.stock ?? '—'}</td>
+              <td class="p-3">{p.mililitros ?? '—'}</td>
+              <td class="p-3">{catName(p.categoria_id)}</td>
+              <td class="p-3">
+                <button
+                  class="text-brand-teal-dark hover:underline dark:text-brand-teal-light"
+                  data-edit={p._id}
+                  data-nombre={p.nombre}
+                  data-precio={p.precio}
+                  data-stock={p.stock ?? ''}
+                  data-mililitros={p.mililitros ?? ''}
+                  data-categoria={p.categoria_id ?? ''}
+                >Editar</button>
+                <button class="ml-3 text-red-600 hover:text-red-700" data-del={p._id}>Eliminar</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</AdminLayout>
+
+<script>
+  import { apiFetch } from '@/lib/csrf';
+
+  const form = document.getElementById('product-form') as HTMLFormElement;
+  const title = document.querySelector<HTMLElement>('[data-form-title]');
+  const resetBtn = document.querySelector<HTMLButtonElement>('[data-reset]');
+  const idField = form.elements.namedItem('_id') as HTMLInputElement;
+
+  function resetForm() {
+    form.reset();
+    idField.value = '';
+    if (title) title.textContent = 'Agregar producto';
+    resetBtn?.classList.add('hidden');
+  }
+
+  // Editar: precargar formulario
+  document.querySelectorAll<HTMLButtonElement>('[data-edit]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const d = btn.dataset;
+      idField.value = d.edit!;
+      (form.elements.namedItem('nombre') as HTMLInputElement).value = d.nombre!;
+      (form.elements.namedItem('precio') as HTMLInputElement).value = d.precio!;
+      (form.elements.namedItem('stock') as HTMLInputElement).value = d.stock!;
+      (form.elements.namedItem('mililitros') as HTMLInputElement).value = d.mililitros!;
+      (form.elements.namedItem('categoria_id') as HTMLSelectElement).value = d.categoria!;
+      if (title) title.textContent = `Editar: ${d.nombre}`;
+      resetBtn?.classList.remove('hidden');
+      form.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+  resetBtn?.addEventListener('click', resetForm);
+
+  // Alta / edición (FormData → multipart)
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = idField.value;
+    const fd = new FormData(form);
+    fd.delete('_id');
+    const imagen = fd.get('imagen') as File | null;
+    if (!imagen || imagen.size === 0) fd.delete('imagen'); // sin imagen nueva
+
+    const url = id ? `/api/products/${id}` : '/api/products';
+    const method = id ? 'PUT' : 'POST';
+    try {
+      const res = await apiFetch(url, { method, body: fd });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Error al guardar');
+      location.reload();
+    } catch (err) {
+      alert((err as Error).message);
+    }
+  });
+
+  // Eliminar
+  document.querySelectorAll<HTMLButtonElement>('[data-del]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('¿Eliminar este producto?')) return;
+      const res = await apiFetch(`/api/products/${btn.dataset.del}`, { method: 'DELETE' });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) document.querySelector(`[data-row="${btn.dataset.del}"]`)?.remove();
+      else alert(data.error || 'No se pudo eliminar');
+    });
+  });
+</script>

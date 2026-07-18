@@ -1,0 +1,30 @@
+---
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { apiServer } from '@/lib/api';
+
+interface Stats {
+  total_clientes: number;
+  total_productos: number;
+  total_pedidos: number;
+}
+const res = await apiServer<Stats>('/api/admin/stats', Astro.request);
+const s = res.data ?? { total_clientes: 0, total_productos: 0, total_pedidos: 0 };
+
+const tiles = [
+  { label: 'Clientes', value: s.total_clientes },
+  { label: 'Productos', value: s.total_productos },
+  { label: 'Pedidos', value: s.total_pedidos },
+];
+---
+
+<AdminLayout title="Dashboard — Sureño" active="home">
+  <h1 class="brand-title mb-6 text-3xl">Dashboard</h1>
+  <div class="grid gap-6 sm:grid-cols-3">
+    {tiles.map(({ label, value }) => (
+      <div class="card p-6">
+        <p class="text-sm uppercase tracking-wide opacity-60">{label}</p>
+        <p class="mt-2 text-4xl font-bold text-brand-teal-dark dark:text-brand-teal-light">{value}</p>
+      </div>
+    ))}
+  </div>
+</AdminLayout>

@@ -11,6 +11,9 @@ export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   server: { port: 4321 },
+  // El proxy reenvía formularios multipart a Flask, que ya valida CSRF
+  // (Flask-WTF). La verificación de origen de Astro bloquearía esos POST.
+  security: { checkOrigin: false },
   vite: {
     plugins: [tailwindcss()],
     server: {

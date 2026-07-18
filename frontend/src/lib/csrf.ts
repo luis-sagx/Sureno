@@ -20,7 +20,8 @@ async function ensureCsrfToken(): Promise<string> {
 export async function apiFetch(input: string, init: RequestInit = {}): Promise<Response> {
   const method = (init.method || 'GET').toUpperCase();
   const headers = new Headers(init.headers || {});
-  if (!headers.has('Content-Type') && init.body) {
+  // Solo JSON para cuerpos string; FormData debe fijar su propio Content-Type (boundary).
+  if (typeof init.body === 'string' && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
   if (!/^(GET|HEAD|OPTIONS)$/.test(method)) {
