@@ -17,10 +17,9 @@ export default defineConfig({
       // Dev: el navegador habla solo con Astro; /api se reenvia a Flask
       // (same-origin -> la cookie de sesion y CSRF funcionan sin CORS).
       proxy: {
-        '/api': {
-          target: FLASK_API,
-          changeOrigin: true,
-        },
+        '/api': { target: FLASK_API, changeOrigin: true },
+        // Imágenes/estáticos servidos por Flask (uploads de productos).
+        '/static': { target: FLASK_API, changeOrigin: true },
       },
     },
   },

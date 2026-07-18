@@ -1,0 +1,99 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { apiServer } from '@/lib/api';
+
+interface Product {
+  _id: string;
+  nombre: string;
+  precio: number;
+  stock?: number;
+  mililitros?: number;
+  imagen?: string;
+}
+
+const res = await apiServer<Product[]>('/api/products', Astro.request);
+const productos = res.data ?? [];
+const error = !res.ok;
+---
+
+<BaseLayout title="Sureño — Productos">
+  <h1 class="brand-title mb-6 text-3xl">Nuestros Productos</h1>
+
+  {error && (
+    <p class="card p-6 text-center text-red-600">
+      No se pudo cargar el catálogo. Verifica que el backend esté disponible.
+    </p>
+  )}
+
+  {!error && productos.length === 0 && (
+    <p class="card p-6 text-center opacity-80">Aún no hay productos disponibles.</p>
+  )}
+
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {productos.map((p) => (
+      <article class="card flex flex-col overflow-hidden">
+        <a href={`/products/${p._id}`} class="block bg-white">
+          <img
+            src={p.imagen || '/static/img/default-product.png'}
+            alt={p.nombre}
+            class="h-48 w-full object-contain p-4"
+            onerror="this.src='/static/img/default-product.png'"
+          />
+        </a>
+        <div class="flex flex-1 flex-col p-4">
+          <h2 class="font-semibold">
+            <a href={`/products/${p._id}`} class="hover:text-brand-teal">{p.nombre}</a>
+          </h2>
+          {p.mililitros && <p class="text-xs opacity-70">{p.mililitros} ml</p>}
+          <p class="mt-2 text-lg font-bold text-brand-teal-dark dark:text-brand-teal-light">
+            ${Number(p.precio).toFixed(2)}
+          </p>
+          <button
+            type="button"
+            class="btn-primary mt-3 w-full"
+            data-add
+            data-id={p._id}
+            data-nombre={p.nombre}
+            data-precio={p.precio}
+            data-imagen={p.imagen || '/static/img/default-product.png'}
+            data-mililitros={p.mililitros ?? ''}
+          >
+            Agregar al carrito
+          </button>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div
+    data-toast
+    class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg bg-brand-teal-dark px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity"
+  >
+  </div>
+</BaseLayout>
+
+<script>
+  import { addToCart } from '@/lib/cart';
+
+  const toast = document.querySelector<HTMLElement>('[data-toast]');
+  function showToast(msg: string) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => (toast.style.opacity = '0'), 1600);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const d = btn.dataset;
+      addToCart({
+        id: d.id!,
+        nombre: d.nombre!,
+        precio: Number(d.precio),
+        imagen: d.imagen!,
+        mililitros: d.mililitros ? Number(d.mililitros) : undefined,
+      });
+      showToast(`${d.nombre} agregado al carrito`);
+    });
+  });
+</script>

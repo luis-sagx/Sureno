@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const productos = [
+  { t: 'Vinos', d: 'Elegantes y de sabor refinado.' },
+  { t: 'Whisky', d: 'Perfectamente añejados.' },
+  { t: 'Vodka', d: 'Destilados con pureza excepcional.' },
+  { t: 'Aguardiente', d: 'Tradicional y auténtico.' },
+];
+---
+
+<BaseLayout title="Sureño — Quiénes Somos">
+  <section class="card mb-10 p-8 text-center">
+    <p class="mx-auto max-w-2xl text-lg italic opacity-90">
+      En cada botella de Sureño destilamos tradición, pasión y el sabor de lo auténtico,
+      para que cada momento se convierta en una experiencia única.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="brand-title mb-3 text-2xl">Nuestra Historia</h2>
+    <p class="max-w-prose leading-relaxed opacity-90">
+      El 22 de mayo de 1998 nace la idea de formar una pequeña industria en el sur de
+      Quito llamada <strong>Sureño</strong>, al principio artesanal y con el tiempo
+      evolucionada como microempresa cumpliendo las normas INEN. Bajo procesos
+      controlados por ARCSA, maximizamos la satisfacción de nuestros clientes y de toda
+      la familia Sureño, superándonos día a día.
+    </p>
+  </section>
+
+  <section class="mb-10 grid gap-6 md:grid-cols-2">
+    <article class="card p-6">
+      <h3 class="mb-2 text-xl font-semibold text-brand-teal-dark dark:text-brand-teal-light">Misión</h3>
+      <p class="leading-relaxed opacity-90">
+        Producir y comercializar licores con los más altos estándares de calidad para
+        satisfacer a clientes y consumidores, acompañándolos en sus momentos importantes
+        con un equipo humano, técnico y sostenible.
+      </p>
+    </article>
+    <article class="card p-6">
+      <h3 class="mb-2 text-xl font-semibold text-brand-teal-dark dark:text-brand-teal-light">Visión</h3>
+      <p class="leading-relaxed opacity-90">
+        Ampliar la participación en el mercado nacional e incursionar en el internacional,
+        con la más alta responsabilidad social empresarial, a través de la mejora continua
+        e innovación de nuestro portafolio.
+      </p>
+    </article>
+  </section>
+
+  <section>
+    <h2 class="brand-title mb-4 text-2xl">Nuestros Productos</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {productos.map(({ t, d }) => (
+        <div class="card p-5">
+          <h3 class="font-semibold text-brand-brown dark:text-brand-teal-light">{t}</h3>
+          <p class="mt-1 text-sm opacity-80">{d}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
