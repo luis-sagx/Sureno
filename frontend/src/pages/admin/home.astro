@@ -5,17 +5,26 @@ import { apiServer } from '@/lib/api';
 
 interface Stats { total_clientes: number; total_productos: number; total_pedidos: number; }
 interface Order { estado: string; }
+interface User {
+  _id: string;
+  nombre?: string;
+  apellido?: string;
+  email?: string;
+  cedula?: string;
+}
 
-const [statsRes, ordersRes] = await Promise.all([
+const [statsRes, ordersRes, usersRes] = await Promise.all([
   apiServer<Stats>('/api/admin/stats', Astro.request),
   apiServer<Order[]>('/api/orders', Astro.request),
+  apiServer<User[]>('/api/users', Astro.request),
 ]);
 const s = statsRes.data ?? { total_clientes: 0, total_productos: 0, total_pedidos: 0 };
 const pedidos = ordersRes.data ?? [];
+const clientes = usersRes.data ?? [];
 
 const tiles = [
-  { label: 'Clientes', value: s.total_clientes, icon: 'lucide:users' },
-  { label: 'Productos', value: s.total_productos, icon: 'lucide:package' },
+  { label: 'Clientes', value: s.total_clientes, icon: 'lucide:users', href: '#clientes', cta: 'Ver clientes' },
+  { label: 'Productos', value: s.total_productos, icon: 'lucide:package', href: '/admin/products', cta: 'Ver productos' },
 ];
 
 const estados = [
@@ -44,7 +53,7 @@ const statusTiles = otherOrders > 0
     <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Resumen general de la tienda.</p>
   </div>
   <div class="grid gap-5 md:grid-cols-2">
-    {tiles.map(({ label, value, icon }) => (
+    {tiles.map(({ label, value, icon, href, cta }) => (
       <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
         <div class="flex items-center gap-5">
           <span class="grid h-16 w-16 flex-none place-items-center rounded-lg bg-stone-100 text-stone-700 dark:bg-slate-800 dark:text-slate-200">
@@ -55,6 +64,10 @@ const statusTiles = otherOrders > 0
             <p class="mt-2 text-4xl font-bold leading-none text-slate-950 dark:text-white">{value}</p>
           </div>
         </div>
+        <a href={href} class="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white">
+          {cta}
+          <Icon name="lucide:arrow-right" class="h-4 w-4" />
+        </a>
       </div>
     ))}
   </div>
@@ -62,8 +75,8 @@ const statusTiles = otherOrders > 0
   <section class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
     <div class="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Pedidos por estado</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400">Total de pedidos registrados: {s.total_pedidos}</p>
+        <h2 class="text-2xl font-semibold text-slate-900 dark:text-white">Pedidos</h2>
+        <p class=" text-slate-600 dark:text-slate-400">Total de pedidos registrados: {s.total_pedidos}</p>
       </div>
       <a href="/admin/orders" class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white">
         Ver pedidos
@@ -86,5 +99,51 @@ const statusTiles = otherOrders > 0
         </div>
       ))}
     </div>
+  </section>
+
+  <section id="clientes" class="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div class="flex items-center justify-between gap-3 border-b border-slate-200 p-5 dark:border-slate-800">
+      <div>
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Clientes</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Lista de clientes registrados.</p>
+      </div>
+      <span class="grid h-10 w-10 place-items-center rounded-lg bg-stone-100 text-stone-700 dark:bg-slate-800 dark:text-slate-200">
+        <Icon name="lucide:users" class="h-5 w-5" />
+      </span>
+    </div>
+
+    {clientes.length === 0 ? (
+      <p class="p-6 text-sm text-slate-500 dark:text-slate-400">No hay clientes registrados.</p>
+    ) : (
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/70 dark:text-slate-400">
+            <tr>
+              <th class="p-3">Cliente</th>
+              <th class="p-3">Correo</th>
+              <th class="p-3">Cédula</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+            {clientes.map((cliente) => (
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                <td class="p-3">
+                  <div class="flex items-center gap-3">
+                    <span class="grid h-9 w-9 place-items-center rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      <Icon name="lucide:user" class="h-4 w-4" />
+                    </span>
+                    <span class="font-medium text-slate-900 dark:text-white">
+                      {cliente.nombre || 'Sin nombre'} {cliente.apellido || ''}
+                    </span>
+                  </div>
+                </td>
+                <td class="p-3 text-slate-600 dark:text-slate-300">{cliente.email || '—'}</td>
+                <td class="p-3 text-slate-600 dark:text-slate-300">{cliente.cedula || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
   </section>
 </AdminLayout>
