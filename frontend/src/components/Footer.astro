@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 const social = [
   { href: 'https://www.facebook.com/licorsureno', label: 'Facebook', d: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' },
   { href: 'https://www.instagram.com/licores_sureno_ec/', label: 'Instagram', d: 'M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.5-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.9-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.1 15.5 2.1 15.2 2.1 12s0-3.5.1-4.8C2.3 4 3.8 2.4 7.1 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3zm6.9-11.1a1.5 1.5 0 1 0 1.5 1.5 1.5 1.5 0 0 0-1.5-1.5z' },
@@ -18,9 +20,9 @@ const social = [
     <div class="flex flex-col justify-center gap-8 md:flex-row md:gap-20">
       <div class="text-center">
         <h4 class="mb-2 text-lg font-semibold">Información de Contacto</h4>
-        <p class="mb-1">ventas@licorsureno.com</p>
-        <p class="mb-1">Avenida Maldonado S29-106, Quito</p>
-        <p class="mb-1">+593 96 796 7369</p>
+        <p class="mb-1 flex items-center justify-center gap-2"><Icon name="lucide:mail" class="h-4 w-4" /> ventas@licorsureno.com</p>
+        <p class="mb-1 flex items-center justify-center gap-2"><Icon name="lucide:map-pin" class="h-4 w-4" /> Avenida Maldonado S29-106, Quito</p>
+        <p class="mb-1 flex items-center justify-center gap-2"><Icon name="lucide:phone" class="h-4 w-4" /> +593 96 796 7369</p>
       </div>
       <div class="text-center">
         <h4 class="mb-2 text-lg font-semibold">Síguenos</h4>

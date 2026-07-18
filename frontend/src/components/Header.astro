@@ -2,10 +2,10 @@
 import { Icon } from 'astro-icon/components';
 // Cabecera en una sola fila: marca + navegación + acciones de usuario.
 const links = [
-  { href: '/', label: 'Inicio' },
-  { href: '/about', label: 'Quiénes Somos' },
-  { href: '/products', label: 'Productos' },
-  { href: '/contact', label: 'Contacto' },
+  { href: '/', label: 'Inicio', icon: 'lucide:home' },
+  { href: '/about', label: 'Quiénes Somos', icon: 'lucide:users' },
+  { href: '/products', label: 'Productos', icon: 'lucide:bottle-wine' },
+  { href: '/contact', label: 'Contacto', icon: 'lucide:mail' },
 ];
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
@@ -22,18 +22,19 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     <!-- Navegación (misma fila) -->
     <nav class="order-3 w-full sm:order-none sm:w-auto">
       <ul class="flex flex-wrap items-center justify-center gap-1">
-        {links.map(({ href, label }) => (
+        {links.map(({ href, label, icon }) => (
           <li>
             <a
               href={href}
               aria-current={isActive(href) ? 'page' : undefined}
               class:list={[
-                'rounded-md px-3 py-2 font-medium transition-colors',
+                'inline-flex items-center gap-1.5 rounded-md px-3 py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-boton-celeste/50',
                 isActive(href)
                   ? 'bg-celeste-dark text-white shadow-sm'
                   : 'text-cafe hover:bg-cafe/10 hover:text-celeste-dark dark:text-beige dark:hover:bg-white/10 dark:hover:text-celeste',
               ]}
             >
+              <Icon name={icon} class="h-4 w-4" />
               {label}
             </a>
           </li>
@@ -57,8 +58,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
             <div><dt class="inline font-semibold">Apellido:</dt> <dd class="inline" data-user-apellido>--</dd></div>
           </dl>
           <hr class="my-3 border-cafe/15" />
-          <a href="/compras" class="block rounded-md px-2 py-1.5 text-center hover:bg-celeste/30">Mis compras</a>
-          <a href="/login" data-logout class="block rounded-md px-2 py-1.5 text-center hover:bg-celeste/30">Cerrar sesión</a>
+          <a href="/compras" class="flex items-center justify-center gap-2 rounded-md px-2 py-1.5 hover:bg-celeste/30"><Icon name="lucide:receipt-text" class="h-4 w-4" /> Mis compras</a>
+          <a href="/login" data-logout class="flex items-center justify-center gap-2 rounded-md px-2 py-1.5 hover:bg-celeste/30"><Icon name="lucide:log-out" class="h-4 w-4" /> Cerrar sesión</a>
         </div>
       </details>
 

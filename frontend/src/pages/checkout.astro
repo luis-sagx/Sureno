@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 
 const cantones = [
   'Quito', 'Cayambe', 'Mejía', 'Pedro Moncayo', 'Pedro Vicente Maldonado',
@@ -27,8 +28,14 @@ const cantones = [
         <label class="block"><span class="mb-1 block">Código Postal</span><input id="codigo_postal" type="number" class="field" required /></label>
 
         <div class="text-center">
-          <button type="submit" class="btn-2 text-lg">Guardar Dirección</button>
-          <span data-address-ok class="ml-3 hidden text-green-700">✓ Dirección guardada</span>
+          <button type="submit" class="btn-2 text-lg">
+            <Icon name="lucide:map-pinned" class="h-5 w-5" />
+            Guardar Dirección
+          </button>
+          <span data-address-ok class="ml-3 hidden items-center gap-1 font-semibold text-green-800 dark:text-green-300">
+            <Icon name="lucide:check-circle-2" class="h-4 w-4" />
+            Dirección guardada
+          </span>
         </div>
       </form>
 
@@ -40,6 +47,7 @@ const cantones = [
         <hr class="my-4 border-cafe/25" />
         <div class="flex justify-between font-bold"><span>Total</span><span data-total>$3.00</span></div>
         <button type="button" id="finalizar-compra" class="btn-1 mt-6 w-full text-lg disabled:opacity-50">
+          <Icon name="lucide:credit-card" class="h-5 w-5" />
           Finalizar Compra
         </button>
         <p data-msg class="mt-3 hidden text-center"></p>
@@ -91,6 +99,7 @@ const cantones = [
       if (!res.ok) throw new Error(data.error || 'No se pudo guardar la dirección');
       addressId = data.id;
       okBadge?.classList.remove('hidden');
+      okBadge?.classList.add('inline-flex');
     } catch (err) {
       alert((err as Error).message);
     }

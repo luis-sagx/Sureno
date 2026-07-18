@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <BaseLayout title="Sureño — Carrito">
@@ -8,7 +9,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <h1 class="site-title mb-4 text-center text-3xl">Carrito de Compras</h1>
 
       <div data-cart-items class="flex flex-col gap-3"></div>
-      <p data-empty class="hidden py-6 text-center">Tu carrito está vacío.</p>
+      <p data-empty class="hidden py-6 text-center">
+        <Icon name="lucide:shopping-bag" class="mx-auto mb-2 h-8 w-8 opacity-70" />
+        Tu carrito está vacío.
+      </p>
 
       <hr class="my-4 border-cafe/20" />
       <div class="flex items-center justify-between">
@@ -17,9 +21,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       </div>
 
       <button type="button" data-checkout class="btn-1 mt-4 w-full text-lg disabled:opacity-50">
+        <Icon name="lucide:check-circle-2" class="h-5 w-5" />
         Confirmar Productos
       </button>
-      <a href="/products" class="mt-3 block text-center underline">Seguir comprando</a>
+      <a href="/products" class="link mt-3 flex items-center justify-center gap-2">
+        <Icon name="lucide:arrow-left" class="h-4 w-4" />
+        Seguir comprando
+      </a>
     </div>
   </div>
 </BaseLayout>

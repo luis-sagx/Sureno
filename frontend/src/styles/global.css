@@ -12,10 +12,10 @@
   --color-beige: #f5f1dc;            /* beige suave */
   --color-celeste: #8fc1d4;          /* celeste */
   --color-celeste-dark: #316168;     /* celeste oscuro */
-  --color-naranja: #fc894f;
+  --color-naranja: #c95f2c;
   --color-boton-cafe: #906243;
   --color-boton-celeste: #408791;
-  --color-boton-celeste-hover: #00b1c9;
+  --color-boton-celeste-hover: #256f78;
   --color-ink: #1e1e1e;
 
   --font-display: 'Pacifico', cursive;
@@ -56,7 +56,7 @@
   /* Botones originales */
   .btn-1,
   .btn-2 {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink;
   }
   .btn-1 {
     background-color: var(--color-boton-cafe);
@@ -84,19 +84,19 @@
 
   /* Enlace de texto */
   .link {
-    @apply font-semibold text-boton-celeste underline-offset-2 transition-colors hover:text-boton-celeste-hover hover:underline;
+    @apply font-semibold text-celeste-dark underline-offset-2 transition-colors hover:text-boton-cafe hover:underline dark:text-celeste dark:hover:text-white;
   }
 
   /* Secciones de fondo (beige / celeste) */
   .section-1 {
-    @apply border border-boton-cafe bg-beige text-cafe;
+    @apply border border-boton-cafe/70 bg-beige text-cafe;
   }
   .dark .section-1 {
     @apply border-boton-cafe text-beige;
     background-color: var(--color-cafe);
   }
   .section-2 {
-    @apply border-2 border-boton-celeste bg-celeste text-cafe;
+    @apply border-2 border-boton-celeste bg-celeste text-cafe shadow-sm;
   }
   .dark .section-2 {
     color: var(--color-beige);
@@ -105,18 +105,18 @@
 
   /* Tarjeta/panel neutro */
   .panel {
-    @apply rounded-lg border border-cafe/15 bg-beige shadow-sm;
+    @apply rounded-lg border border-cafe/25 bg-beige text-cafe shadow-sm;
   }
   .dark .panel {
-    @apply border-white/10;
+    @apply border-white/15 text-beige;
     background-color: #2b2a2a;
   }
 
   /* Campo de formulario */
   .field {
-    @apply w-full rounded-md border border-cafe/25 bg-white px-3 py-2 outline-none focus:border-boton-celeste focus:ring-2 focus:ring-boton-celeste/30;
+    @apply w-full rounded-md border border-cafe/35 bg-white px-3 py-2 text-cafe outline-none placeholder:text-cafe/55 focus:border-boton-celeste focus:ring-2 focus:ring-boton-celeste/30;
   }
   .dark .field {
-    @apply border-white/20 bg-white/5 text-beige;
+    @apply border-white/25 bg-white/5 text-beige placeholder:text-beige/55;
   }
 }

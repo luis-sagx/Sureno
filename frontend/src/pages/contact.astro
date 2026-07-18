@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <BaseLayout title="Sureño — Contacto">
@@ -21,7 +22,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           </div>
           <label class="block"><span class="mb-1 block">Mensaje</span><textarea name="Mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." class="field"></textarea></label>
           <input type="hidden" name="_captcha" value="false" />
-          <div class="text-center"><button type="submit" class="btn-2">Enviar</button></div>
+          <div class="text-center">
+            <button type="submit" class="btn-2">
+              <Icon name="lucide:send" class="h-4 w-4" />
+              Enviar
+            </button>
+          </div>
         </form>
       </section>
 
@@ -30,14 +36,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         <div class="section-1 rounded p-6 shadow-sm">
           <h3 class="mb-4 text-center text-xl font-bold">Información de Contacto</h3>
           <ul class="space-y-2">
-            <li>📍 Avenida Maldonado S49-106, Quito</li>
-            <li>✉️ licorsureno@gmail.com</li>
-            <li>📞 +593 96 796 7369</li>
+            <li class="flex items-center gap-2"><Icon name="lucide:map-pin" class="h-4 w-4 flex-none" /> Avenida Maldonado S49-106, Quito</li>
+            <li class="flex items-center gap-2"><Icon name="lucide:mail" class="h-4 w-4 flex-none" /> licorsureno@gmail.com</li>
+            <li class="flex items-center gap-2"><Icon name="lucide:phone" class="h-4 w-4 flex-none" /> +593 96 796 7369</li>
           </ul>
           <div class="mt-4 flex justify-center gap-4">
-            <a href="https://www.facebook.com/licorsureno" class="underline">Facebook</a>
-            <a href="https://www.instagram.com/licores_sureno_ec/" class="underline">Instagram</a>
-            <a href="tel:+593967967369" class="underline">WhatsApp</a>
+            <a href="https://www.facebook.com/licorsureno" class="link inline-flex items-center gap-1.5"><Icon name="lucide:external-link" class="h-4 w-4" /> Facebook</a>
+            <a href="https://www.instagram.com/licores_sureno_ec/" class="link inline-flex items-center gap-1.5"><Icon name="lucide:external-link" class="h-4 w-4" /> Instagram</a>
+            <a href="tel:+593967967369" class="link inline-flex items-center gap-1.5"><Icon name="lucide:phone-call" class="h-4 w-4" /> WhatsApp</a>
           </div>
         </div>
         <div class="overflow-hidden rounded shadow-sm">

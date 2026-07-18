@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   title?: string;
@@ -8,9 +9,9 @@ interface Props {
 const { title = 'Panel — Sureño', active = 'home' } = Astro.props;
 
 const links = [
-  { key: 'home', href: '/admin/home', label: 'Dashboard' },
-  { key: 'products', href: '/admin/products', label: 'Productos' },
-  { key: 'orders', href: '/admin/orders', label: 'Pedidos' },
+  { key: 'home', href: '/admin/home', label: 'Dashboard', icon: 'lucide:layout-dashboard' },
+  { key: 'products', href: '/admin/products', label: 'Productos', icon: 'lucide:package' },
+  { key: 'orders', href: '/admin/orders', label: 'Pedidos', icon: 'lucide:clipboard-list' },
 ];
 ---
 
@@ -33,23 +34,26 @@ const links = [
       <a href="/" class="site-title mb-6 block text-center text-3xl !text-white">Sureño</a>
       <p class="mb-4 text-center text-xs uppercase tracking-wide text-white/60">Administración</p>
       <nav class="flex flex-col gap-1">
-        {links.map(({ key, href, label }) => (
+        {links.map(({ key, href, label, icon }) => (
           <a
             href={href}
             class:list={[
-              'rounded-md px-3 py-2 font-medium transition-colors hover:bg-white/10',
+              'inline-flex items-center gap-2 rounded-md px-3 py-2 font-medium transition-colors hover:bg-white/10',
               key === active && 'bg-white/15',
             ]}
           >
+            <Icon name={icon} class="h-4 w-4" />
             {label}
           </a>
         ))}
       </nav>
       <div class="mt-auto flex flex-col gap-2 pt-4">
-        <button type="button" data-theme-toggle class="rounded-md px-3 py-2 text-left text-sm hover:bg-white/10">
+        <button type="button" data-theme-toggle class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm hover:bg-white/10">
+          <Icon name="lucide:sun-moon" class="h-4 w-4" />
           Cambiar tema
         </button>
-        <button type="button" data-logout class="rounded-md bg-red-600 px-3 py-2 text-sm font-medium hover:bg-red-700">
+        <button type="button" data-logout class="inline-flex items-center gap-2 rounded-md bg-red-700 px-3 py-2 text-sm font-medium hover:bg-red-800">
+          <Icon name="lucide:log-out" class="h-4 w-4" />
           Cerrar sesión
         </button>
       </div>
