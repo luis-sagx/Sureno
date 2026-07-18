@@ -151,3 +151,21 @@ def test_api_user_incluye_rol(client, usuario_cliente):
     r = client.get("/api/user")
     assert r.status_code == 200
     assert r.get_json()["rol"] == "cliente"
+
+
+# ---------------------- Admin: eliminar pedido ----------------------
+
+def test_api_admin_delete_order_no_admin_401(client):
+    from bson.objectid import ObjectId as OID
+    assert client.delete(f"/api/admin/orders/{OID()}").status_code == 401
+
+
+def test_api_admin_delete_order_admin(client, usuario_admin, db):
+    from bson.objectid import ObjectId as OID
+    oid = db.orders.insert_one({"user_id": OID(), "estado": "pendiente"}).inserted_id
+    with client.session_transaction() as s:
+        s["user_id"] = usuario_admin["_id"]
+        s["rol"] = "administrador"
+    r = client.delete(f"/api/admin/orders/{oid}")
+    assert r.status_code == 200
+    assert db.orders.count_documents({}) == 0

@@ -326,6 +326,18 @@ def api_compras():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/api/admin/orders/<order_id>', methods=['DELETE'])
+@admin_required_api
+def api_admin_delete_order(order_id):
+    """Elimina cualquier pedido (solo admin), sin la restricción de propietario."""
+    if not ObjectId.is_valid(order_id):
+        return jsonify({"error": "ID inválido"}), 400
+    result = db.orders.delete_one({"_id": ObjectId(order_id)})
+    if result.deleted_count == 0:
+        return jsonify({"error": "Pedido no encontrado"}), 404
+    return jsonify({"message": "Pedido eliminado"}), 200
+
+
 @app.route('/api/admin/stats', methods=['GET'])
 @admin_required_api
 def api_admin_stats():
