@@ -1,5 +1,5 @@
 /* Fuente Pacifico self-hosted (títulos). El cuerpo usa Times New Roman (sistema). */
-@import '@fontsource/pacifico/400.css';
+@import '@fontsource/pacifico/latin-400.css';
 
 @import 'tailwindcss';
 
@@ -8,7 +8,7 @@
 
 /* ---- Paleta y tipografía originales (Sureño) ---- */
 @theme {
-  --color-cafe: #5e422e;             /* marrón principal */
+  --color-cafe: #3f2b1f;             /* marrón principal */
   --color-beige: #f5f1dc;            /* beige suave */
   --color-celeste: #8fc1d4;          /* celeste */
   --color-celeste-dark: #316168;     /* celeste oscuro */
@@ -18,7 +18,7 @@
   --color-boton-celeste-hover: #256f78;
   --color-ink: #1e1e1e;
 
-  --font-display: 'Pacifico', cursive;
+  --font-display: 'Pacifico', 'Brush Script MT', 'Segoe Script', cursive;
   --font-sans: 'Times New Roman', Times, serif;
 }
 
@@ -40,7 +40,7 @@
   /* Título de marca / secciones (Pacifico) */
   .site-title {
     font-family: var(--font-display);
-    @apply font-bold italic text-cafe;
+    @apply font-normal not-italic text-cafe;
   }
   .dark .site-title {
     @apply text-beige;
@@ -89,7 +89,7 @@
 
   /* Secciones de fondo (beige / celeste) */
   .section-1 {
-    @apply border border-boton-cafe/70 bg-beige text-cafe;
+    @apply border border-cafe/70 bg-beige text-cafe;
   }
   .dark .section-1 {
     @apply border-boton-cafe text-beige;

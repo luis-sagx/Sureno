@@ -17,7 +17,7 @@ const error = !res.ok;
 ---
 
 <BaseLayout title="Sureño — Productos">
-  <div class="mx-auto max-w-6xl px-4 py-8">
+  <div class="mx-auto max-w-7xl px-3 py-8 sm:px-4">
     <h1 class="site-title my-4 text-center text-4xl">Productos Sureño</h1>
 
     {error && (
@@ -29,21 +29,21 @@ const error = !res.ok;
       <p class="panel p-6 text-center">Aún no hay productos disponibles.</p>
     )}
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {productos.map((p) => (
-        <div class="section-2 card-hover flex flex-col overflow-hidden rounded-lg shadow-sm">
-          <div class="overflow-hidden bg-white/30">
+        <div class="panel card-hover flex flex-col overflow-hidden rounded-lg">
+          <div class="overflow-hidden border-b border-cafe/10 bg-white">
             <img
               src={p.imagen || '/static/img/producto.png'}
               alt={p.nombre}
-              class="h-96 w-full object-cover transition-transform duration-300 hover:scale-105"
+              class="h-80 w-full object-contain p-2 transition-transform duration-300 hover:scale-105 sm:h-72 lg:h-80"
               onerror="this.src='/static/img/producto.png'"
             />
           </div>
-          <div class="flex flex-1 flex-col p-4">
-            <h5 class="text-lg font-bold">{p.nombre}</h5>
-            <p class="mt-1 text-sm">Caja: 12 unidades</p>
-            <p class="font-bold">Precio: ${Number(p.precio).toFixed(2)}</p>
+          <div class="flex flex-1 flex-col bg-celeste/65 p-4 text-cafe dark:bg-white/5 dark:text-beige">
+            <h5 class="text-xl font-bold leading-tight">{p.nombre}</h5>
+            <p class="mt-2 text-sm text-cafe/85 dark:text-beige/80">Caja: 12 unidades</p>
+            <p class="mt-1 text-lg font-bold">Precio: ${Number(p.precio).toFixed(2)}</p>
             <button
               type="button"
               class="btn-2 mt-2 w-full"
