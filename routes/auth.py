@@ -29,3 +29,25 @@ def admin_required(view):
             return redirect(url_for("login"))
         return view(*args, **kwargs)
     return wrapper
+
+
+def login_required_api(view):
+    """Como login_required pero siempre responde JSON 401 (para endpoints /api)."""
+    @wraps(view)
+    def wrapper(*args, **kwargs):
+        if not session.get("user_id"):
+            return jsonify({"error": "Debes iniciar sesión"}), 401
+        return view(*args, **kwargs)
+    return wrapper
+
+
+def admin_required_api(view):
+    """Exige rol administrador; responde JSON 401/403 (para endpoints /api)."""
+    @wraps(view)
+    def wrapper(*args, **kwargs):
+        if not session.get("user_id"):
+            return jsonify({"error": "Debes iniciar sesión"}), 401
+        if session.get("rol") != "administrador":
+            return jsonify({"error": "Acceso solo para administradores"}), 403
+        return view(*args, **kwargs)
+    return wrapper

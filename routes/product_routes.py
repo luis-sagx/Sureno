@@ -1,5 +1,6 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify
 from models.product import ProductModel
+from models.category import CategoryModel
 from bson.objectid import ObjectId
 import os
 from werkzeug.utils import secure_filename
@@ -37,18 +38,29 @@ def upload_image(product_id):
     
 @product_routes.route('/products', methods=['GET'])
 def products():
-    products = ProductModel.get_all()
-    for product in products:
-        product['_id'] = str(product['_id'])
-    return render_template('product.html', products=products)
+    """Lista de productos en JSON (consumida por el frontend Astro)."""
+    productos = ProductModel.get_all()
+    for producto in productos:
+        producto['_id'] = str(producto['_id'])
+        if producto.get('categoria_id') is not None:
+            producto['categoria_id'] = str(producto['categoria_id'])
+    return jsonify(productos), 200
 
 @product_routes.route('/products/<product_id>', methods=['GET'])
 def product_detail(product_id):
-    product = ProductModel.get_by_id(product_id)
-    if product:
-        return render_template('product_detail.html', product=product)
-    else:
-        return "Producto no encontrado", 404
+    """Detalle de un producto en JSON."""
+    producto = ProductModel.get_by_id(product_id)  # ya devuelve _id/categoria_id como str
+    if producto:
+        return jsonify(producto), 200
+    return jsonify({'error': 'Producto no encontrado'}), 404
+
+@product_routes.route('/categories', methods=['GET'])
+def categories():
+    """Lista de categorías en JSON (para el formulario de productos del admin)."""
+    categorias = CategoryModel.get_all()
+    for categoria in categorias:
+        categoria['_id'] = str(categoria['_id'])
+    return jsonify(categorias), 200
 
 @product_routes.route('/products', methods=['POST'])
 def create_product():

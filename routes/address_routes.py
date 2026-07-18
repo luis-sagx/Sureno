@@ -1,9 +1,25 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, session
 from models.address import AddressModel
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
+from routes.auth import login_required_api
 
 address_routes = Blueprint('address_routes', __name__)
+
+
+@address_routes.route('/addresses', methods=['POST'])
+@login_required_api
+def create_address():
+    """Crea una dirección para el usuario en sesión. Ruta canónica: /api/addresses (POST)."""
+    try:
+        data = request.get_json() or {}
+        data['user_id'] = session["user_id"]
+        inserted_id = AddressModel.create(data)
+        return jsonify({"message": "Dirección guardada exitosamente", "id": inserted_id}), 201
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Fix DEF-015 (RM-05): rutas relativas; el prefijo /api se aplica al registrar.
 @address_routes.route('/addresses', methods=['GET'])

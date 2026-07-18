@@ -9,7 +9,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from models.address import AddressModel
 from routes.order_routes import order_routes
-from routes.auth import login_required
+from routes.auth import login_required, login_required_api, admin_required_api
 
 app = Flask(__name__)
 
@@ -111,84 +111,43 @@ def cart():
 def check_out():  # Fix DEF-007 (S1542): snake_case.
     return render_template('checkOut.html')
 
+def _compras_de_usuario(user_id):
+    """Pedidos del usuario con carrito y dirección resueltos, ordenados por fecha desc."""
+    pipeline = [
+        {"$match": {"user_id": ObjectId(user_id)}},
+        {"$lookup": {"from": "carrito", "localField": "cart_id",
+                     "foreignField": "_id", "as": "carrito_info"}},
+        {"$unwind": "$carrito_info"},
+        {"$lookup": {"from": "addresses", "localField": "address_id",
+                     "foreignField": "_id", "as": "direccion_info"}},
+        {"$unwind": "$direccion_info"},
+        {"$sort": {"fecha": -1}},
+        {"$project": {
+            "_id": 0,
+            "fecha_formateada": {"$dateToString": {"format": "%d/%m/%Y %H:%M", "date": "$fecha"}},
+            "total": 1,
+            "estado": 1,
+            "productos": "$carrito_info.productos",
+            "direccion": {
+                "provincia": "$direccion_info.provincia",
+                "canton": "$direccion_info.canton",
+                "parroquia": "$direccion_info.parroquia",
+            },
+        }},
+    ]
+    pedidos = list(db.orders.aggregate(pipeline))
+    for pedido in pedidos:
+        pedido['total'] = f"${pedido['total']:.2f}"
+    return pedidos
+
+
 @app.route('/compras', methods=['GET'])
 def compras():
     # Verificar autenticación
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
-    user_id = session['user_id']
-    
     try:
-        # Pipeline de agregación
-        pipeline = [
-            # Paso 1: Filtrar órdenes del usuario actual
-            {
-                "$match": {
-                    "user_id": ObjectId(user_id)
-                }
-            },
-            # Paso 2: Buscar información del carrito
-            {
-                "$lookup": {
-                    "from": "carrito",
-                    "localField": "cart_id",
-                    "foreignField": "_id",
-                    "as": "carrito_info"
-                }
-            },
-            # Paso 3: Descomponer el array de carrito
-            {
-                "$unwind": "$carrito_info"
-            },
-            # Paso 4: Buscar información de la dirección
-            {
-                "$lookup": {
-                    "from": "addresses",
-                    "localField": "address_id",
-                    "foreignField": "_id",
-                    "as": "direccion_info"
-                }
-            },
-            # Paso 5: Descomponer el array de dirección
-            {
-                "$unwind": "$direccion_info"
-            },
-            # Paso 6: Ordenar por fecha descendente
-            {
-                "$sort": {"fecha": -1}
-            },
-            # Paso 7: Proyectar los campos necesarios
-            {
-                "$project": {
-                    "_id": 0,
-                    "fecha_formateada": {
-                        "$dateToString": {
-                            "format": "%d/%m/%Y %H:%M",
-                            "date": "$fecha"
-                        }
-                    },
-                    "total": 1,
-                    "estado": 1,
-                    "productos": "$carrito_info.productos",
-                    "direccion": {
-                        "provincia": "$direccion_info.provincia",
-                        "canton": "$direccion_info.canton",
-                        "parroquia": "$direccion_info.parroquia"
-                    }
-                }
-            }
-        ]
-
-        # Ejecutar la consulta
-        pedidos = list(db.orders.aggregate(pipeline))
-        
-        # Formatear precios
-        for pedido in pedidos:
-            pedido['total'] = f"${pedido['total']:.2f}"
-            
-        return render_template('compras.html', pedidos=pedidos)
-    
+        return render_template('compras.html', pedidos=_compras_de_usuario(session['user_id']))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
@@ -307,6 +266,84 @@ def create_address():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# =====================================================================
+# API JSON consolidada bajo /api (consumida por el frontend Astro).
+# =====================================================================
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    try:
+        return _process_login()
+    except Exception as e:
+        return jsonify({"error": f"Error en el servidor: {str(e)}"}), 500
+
+
+@app.route('/api/signup', methods=['POST'])
+def api_signup():
+    try:
+        data = request.get_json() or {}
+        required = ['email', 'nombre', 'apellido', 'password', 'cedula']
+        if not all(f in data and data[f] for f in required):
+            return jsonify({"error": "Faltan campos obligatorios"}), 400
+
+        if db.usuarios.find_one({"email": data['email']}):
+            return jsonify({"error": "El correo ya está registrado"}), 409
+
+        role = db.roles.find_one({"rol": "cliente"})
+        if not role:
+            return jsonify({"error": "Error en la configuración de roles"}), 500
+
+        hashed = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        db.usuarios.insert_one({
+            "email": data['email'], "nombre": data['nombre'], "apellido": data['apellido'],
+            "password": hashed, "cedula": data['cedula'], "id_rol": role["id_rol"],
+        })
+        return jsonify({"message": "Registro exitoso", "redirect": "/login"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/logout', methods=['POST'])
+def api_logout():
+    session.clear()
+    return jsonify({"message": "Sesión cerrada"}), 200
+
+
+@app.route('/api/compras', methods=['GET'])
+@login_required_api
+def api_compras():
+    try:
+        return jsonify(_compras_de_usuario(session["user_id"])), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/admin/stats', methods=['GET'])
+@admin_required_api
+def api_admin_stats():
+    return jsonify({
+        "total_clientes": db.usuarios.count_documents({}),
+        "total_productos": db.productos.count_documents({}),
+        "total_pedidos": db.orders.count_documents({}),
+    }), 200
+
+
+@app.route('/api/cart', methods=['POST'])
+@login_required_api
+def api_cart_create():
+    data = request.get_json()
+    if not data or 'productos' not in data or 'total' not in data:
+        return jsonify({'error': 'Datos no recibidos'}), 400
+    result = db.carrito.insert_one({
+        "user_id": ObjectId(session["user_id"]),
+        "productos": data['productos'],
+        "total": data['total'],
+        "fecha_creacion": datetime.now(),
+    })
+    return jsonify({'message': 'Carrito guardado', 'id': str(result.inserted_id),
+                    'total': data['total']}), 201
+
+
 if __name__ == '__main__':
     # Fix DEF-009 (S4507): debug desactivado salvo FLASK_DEBUG=1 explicito.
     debug_mode = os.environ.get('FLASK_DEBUG') == '1'
