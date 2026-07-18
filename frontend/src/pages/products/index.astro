@@ -22,7 +22,7 @@ const error = !res.ok;
 
     {error && (
       <p class="panel p-6 text-center text-red-600">
-        No se pudo cargar el catálogo. Verifica que el backend esté disponible.
+        No se pudo cargar el catálogo. El servidor no esta disponible.
       </p>
     )}
     {!error && productos.length === 0 && (
