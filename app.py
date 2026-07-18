@@ -59,7 +59,8 @@ def api_user():
         "email": user.get("email", ""),
         "nombre": user.get("nombre", ""),
         "apellido": user.get("apellido", ""),
-        "cedula": user.get("cedula", "")
+        "cedula": user.get("cedula", ""),
+        "rol": session.get("rol", "")
     })
     
 @app.route('/index', methods=['GET'])
@@ -269,6 +270,12 @@ def create_address():
 # =====================================================================
 # API JSON consolidada bajo /api (consumida por el frontend Astro).
 # =====================================================================
+
+@app.route('/api/csrf', methods=['GET'])
+def api_csrf():
+    """Devuelve el token CSRF y (vía after_request) siembra la cookie csrf_token."""
+    return jsonify({"csrfToken": generate_csrf()}), 200
+
 
 @app.route('/api/login', methods=['POST'])
 def api_login():

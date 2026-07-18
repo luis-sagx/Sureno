@@ -1,0 +1,70 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const inputClass =
+  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
+---
+
+<BaseLayout title="Sureño — Iniciar sesión" bare>
+  <div class="mx-auto max-w-md">
+    <div class="card p-8">
+      <h1 class="brand-title mb-6 text-center text-3xl">Iniciar sesión</h1>
+
+      <p data-error class="mb-4 hidden rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700"></p>
+
+      <form id="login-form" class="space-y-4" novalidate>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Correo</span>
+          <input type="email" name="email" required autocomplete="email" class={inputClass} />
+        </label>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Contraseña</span>
+          <input type="password" name="password" required autocomplete="current-password" class={inputClass} />
+        </label>
+        <button type="submit" class="btn-primary w-full">Entrar</button>
+      </form>
+
+      <p class="mt-4 text-center text-sm opacity-80">
+        ¿No tienes cuenta?
+        <a href="/signup" class="font-medium text-brand-teal-dark hover:underline dark:text-brand-teal-light">Regístrate</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { apiFetch } from '@/lib/csrf';
+
+  const form = document.getElementById('login-form') as HTMLFormElement;
+  const errBox = document.querySelector<HTMLElement>('[data-error]');
+
+  function showError(msg: string) {
+    if (!errBox) return;
+    errBox.textContent = msg;
+    errBox.classList.remove('hidden');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errBox?.classList.add('hidden');
+    const fd = new FormData(form);
+    const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+    btn.disabled = true;
+    try {
+      const res = await apiFetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({ email: fd.get('email'), password: fd.get('password') }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        window.location.href = data.redirect || '/';
+      } else {
+        showError(data.error || 'No se pudo iniciar sesión');
+      }
+    } catch {
+      showError('Error de conexión con el servidor');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>

@@ -1,0 +1,82 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const inputClass =
+  'w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30 dark:border-white/15 dark:bg-white/5';
+---
+
+<BaseLayout title="Sureño — Crear cuenta" bare>
+  <div class="mx-auto max-w-lg">
+    <div class="card p-8">
+      <h1 class="brand-title mb-6 text-center text-3xl">Crear cuenta</h1>
+
+      <p data-error class="mb-4 hidden rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700"></p>
+
+      <form id="signup-form" class="space-y-4" novalidate>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block text-sm">
+            <span class="mb-1 block font-medium">Nombre</span>
+            <input type="text" name="nombre" required class={inputClass} />
+          </label>
+          <label class="block text-sm">
+            <span class="mb-1 block font-medium">Apellido</span>
+            <input type="text" name="apellido" required class={inputClass} />
+          </label>
+        </div>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Cédula</span>
+          <input type="text" name="cedula" required inputmode="numeric" class={inputClass} />
+        </label>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Correo</span>
+          <input type="email" name="email" required autocomplete="email" class={inputClass} />
+        </label>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Contraseña</span>
+          <input type="password" name="password" required minlength="6" autocomplete="new-password" class={inputClass} />
+        </label>
+        <button type="submit" class="btn-primary w-full">Registrarme</button>
+      </form>
+
+      <p class="mt-4 text-center text-sm opacity-80">
+        ¿Ya tienes cuenta?
+        <a href="/login" class="font-medium text-brand-teal-dark hover:underline dark:text-brand-teal-light">Inicia sesión</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { apiFetch } from '@/lib/csrf';
+
+  const form = document.getElementById('signup-form') as HTMLFormElement;
+  const errBox = document.querySelector<HTMLElement>('[data-error]');
+
+  function showError(msg: string) {
+    if (!errBox) return;
+    errBox.textContent = msg;
+    errBox.classList.remove('hidden');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errBox?.classList.add('hidden');
+    const fd = new FormData(form);
+    const payload = Object.fromEntries(fd.entries());
+    const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+    btn.disabled = true;
+    try {
+      const res = await apiFetch('/api/signup', { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        window.location.href = data.redirect || '/login';
+      } else {
+        showError(data.error || 'No se pudo completar el registro');
+      }
+    } catch {
+      showError('Error de conexión con el servidor');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>

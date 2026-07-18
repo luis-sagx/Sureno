@@ -134,3 +134,20 @@ def test_api_address_crea(client, usuario_cliente, db):
     })
     assert r.status_code == 201
     assert db.addresses.count_documents({}) == 1
+
+
+# ---------------------- CSRF / sesión ----------------------
+
+def test_api_csrf_devuelve_token(client):
+    r = client.get("/api/csrf")
+    assert r.status_code == 200
+    assert r.get_json().get("csrfToken")
+
+
+def test_api_user_incluye_rol(client, usuario_cliente):
+    with client.session_transaction() as s:
+        s["user_id"] = usuario_cliente["_id"]
+        s["rol"] = "cliente"
+    r = client.get("/api/user")
+    assert r.status_code == 200
+    assert r.get_json()["rol"] == "cliente"
