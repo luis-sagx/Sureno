@@ -21,7 +21,8 @@ export async function apiServer<T = unknown>(
   init: RequestInit = {},
 ): Promise<ApiResult<T>> {
   const cookie = request.headers.get('cookie') ?? '';
-  const url = `${FLASK_API}${path.startsWith('/') ? path : `/${path}`}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const url = `${FLASK_API}${normalizedPath}`;
 
   try {
     const res = await fetch(url, {
