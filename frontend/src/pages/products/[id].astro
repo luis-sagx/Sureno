@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { apiServer } from '@/lib/api';
+import { UNIDADES_POR_CAJA } from '@/lib/config';
 
 interface Product {
   _id: string;
@@ -42,7 +43,7 @@ if (!res.ok || !p) Astro.response.status = 404;
           <h1 class="site-title my-2 text-4xl">{p.nombre}</h1>
           {p.descripcion && <p>{p.descripcion}</p>}
           <p class="mt-3"><strong>Precio:</strong> ${Number(p.precio).toFixed(2)}</p>
-          <p><strong>Caja:</strong> 12 unidades</p>
+          <p><strong>Caja:</strong> {UNIDADES_POR_CAJA} unidades</p>
           {p.stock != null && <p><strong>Stock disponible:</strong> {p.stock} cajas</p>}
           {p.tipo && <p><strong>Tipo:</strong> {p.tipo}</p>}
           {p.mililitros && <p><strong>Cantidad:</strong> {p.mililitros} ml</p>}

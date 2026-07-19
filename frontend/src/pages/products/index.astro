@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { apiServer } from '@/lib/api';
+import { UNIDADES_POR_CAJA } from '@/lib/config';
 
 interface Product {
   _id: string;
@@ -42,7 +43,7 @@ const error = !res.ok;
           </div>
           <div class="flex flex-1 flex-col bg-celeste/65 p-4 text-cafe dark:bg-white/5 dark:text-beige">
             <h5 class="text-xl font-bold leading-tight">{p.nombre}</h5>
-            <p class="mt-2 text-sm text-cafe/85 dark:text-beige/80">Caja: 12 unidades</p>
+            <p class="mt-2 text-sm text-cafe/85 dark:text-beige/80">Caja: {UNIDADES_POR_CAJA} unidades</p>
             <p class="mt-1 text-lg font-bold">Precio: ${Number(p.precio).toFixed(2)}</p>
             <button
               type="button"
