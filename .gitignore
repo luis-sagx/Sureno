@@ -29,7 +29,6 @@ Tests/evidencias/coverage_html/
 
 # Artefactos varios
 *.log
-requirements-dev.txt
 
 # Backups de regeneracion
 requirements.txt.original_utf16.bak

@@ -1,0 +1,35 @@
+# Ruff configuration for the CI lint gate (TAR-07).
+#
+# Kept intentionally small: this is the first time a linter runs in CI for
+# this codebase, so the goal is a green baseline going forward rather than a
+# large, unrelated cleanup diff across files owned by other in-flight issues
+# (backend/models and backend/routes are being actively changed by other
+# agents in parallel). New/changed code should not add fresh violations; the
+# per-file-ignores below only silence pre-existing findings in files this
+# issue does not touch.
+
+target-version = "py311"
+line-length = 100
+
+exclude = [
+    "Tests",
+    "static",
+    "scripts",
+]
+
+[lint]
+select = ["E", "F", "W"]
+# Whitespace/line-length nits are widespread pre-existing style debt across
+# backend/models and backend/routes (files owned by other in-flight issues).
+# Ignored repo-wide for now so the lint gate can go green without a large,
+# unrelated cleanup diff; pyflakes (F) correctness checks stay enforced.
+ignore = ["E501", "W291", "W292", "W293"]
+
+[lint.per-file-ignores]
+# Package `__init__.py` files re-export symbols for convenience; ruff's F401
+# (unused import) is a known false positive for this pattern.
+"models/__init__.py" = ["F401"]
+"routes/__init__.py" = ["F401"]
+# Pre-existing unused imports in a file owned by another in-flight issue
+# (backend/routes) — left untouched here to avoid conflicting with that work.
+"routes/product_routes.py" = ["F401"]

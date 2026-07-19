@@ -1,4 +1,4 @@
-name: SonarCloud
+name: CI
 
 on:
   push:
@@ -14,8 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  sonarqube:
-    name: SonarQube Cloud
+  lint-test-sonar:
+    name: Lint, tests, coverage & SonarQube quality gate
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +29,26 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Generate empty coverage report
-        run: python3 backend/scripts/generate_empty_coverage.py
+      # Installed as two separate steps (not one combined `pip install -r a -r
+      # b`): requirements.txt pins python-dotenv==1.0.1 while
+      # requirements-dev.txt pins python-dotenv==1.2.2, and resolving both
+      # files in a single pip invocation fails with ResolutionImpossible.
+      # Installing sequentially lets the dev pin win, matching what local
+      # development/test runs already assume.
+      - name: Install runtime dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Install dev/test dependencies
+        run: pip install -r backend/requirements-dev.txt
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Lint (ruff)
+        run: cd backend && ruff check .
+
+      - name: Run tests with coverage
+        run: cd backend && pytest --cov=. --cov-report=xml:coverage.xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7
@@ -40,3 +58,5 @@ jobs:
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.python.coverage.reportPaths=backend/coverage.xml
+            -Dsonar.qualitygate.wait=true
