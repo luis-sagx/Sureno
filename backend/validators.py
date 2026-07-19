@@ -1,11 +1,15 @@
 """DEF-018: validación de email e identificación (cédula 10d / RUC 13d, Ecuador)."""
-import re
-
-_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
 def is_valid_email(email):
-    return bool(email) and bool(_EMAIL_RE.match(email))
+    if not email or any(c.isspace() for c in email):
+        return False
+    local, sep, domain = email.partition("@")
+    if sep != "@" or not local or not domain:
+        return False
+    if domain.startswith(".") or domain.endswith("."):
+        return False
+    return "." in domain
 
 
 def is_valid_cedula(cedula):
