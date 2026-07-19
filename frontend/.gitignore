@@ -2,3 +2,9 @@ node_modules/
 dist/
 .astro/
 .env
+
+# Playwright E2E (TAR-04)
+tests-e2e/playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
