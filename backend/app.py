@@ -12,6 +12,7 @@ from config import db
 from routes import register_routes
 from routes.auth import login_required_api, admin_required_api
 from routes.order_routes import order_routes
+from validators import is_valid_email, is_valid_identificacion
 
 
 ROLE_NAMES = {1: "cliente", 2: "administrador"}
