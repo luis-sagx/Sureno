@@ -316,13 +316,24 @@ def test_order_create_carrito_no_encontrado_404(client, usuario_cliente):
 
 
 def test_order_create_exitoso_201(client, usuario_cliente, db):
-    cart_id = db.carrito.insert_one({"total": 20, "productos": []}).inserted_id
+    cart_id = db.carrito.insert_one({"total": 20, "productos": [{"id": "1", "cantidad": 2}]}).inserted_id
     _login_cliente(client, usuario_cliente)
     r = client.post("/api/orders", json={
         "address_id": str(ObjectId()), "cart_id": str(cart_id),
     })
     assert r.status_code == 201
     assert db.orders.count_documents({}) == 1
+
+
+def test_cp23_order_create_carrito_vacio_400(client, usuario_cliente, db):
+    """CP-23: no se puede crear un pedido a partir de un carrito sin productos."""
+    cart_id = db.carrito.insert_one({"total": 0, "productos": []}).inserted_id
+    _login_cliente(client, usuario_cliente)
+    r = client.post("/api/orders", json={
+        "address_id": str(ObjectId()), "cart_id": str(cart_id),
+    })
+    assert r.status_code == 400
+    assert db.orders.count_documents({}) == 0
 
 
 def test_order_create_excepcion_500(client, usuario_cliente):
