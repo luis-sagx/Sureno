@@ -1,15 +1,22 @@
 import os
 
-from flask import Flask, request, session, jsonify
-from flask_wtf.csrf import CSRFProtect, generate_csrf
-from routes import register_routes
-from config import db
 import bcrypt
-from datetime import datetime
 from bson.objectid import ObjectId
-from routes.order_routes import order_routes
+from datetime import datetime
+from flask import Flask, request, session, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_wtf.csrf import CSRFProtect, generate_csrf
+
+from config import db
+from routes import register_routes
 from routes.auth import login_required_api, admin_required_api
+from routes.order_routes import order_routes
 from validators import is_valid_email, is_valid_identificacion
+
+
+ROLE_NAMES = {1: "cliente", 2: "administrador"}
+LOGIN_DESTINATIONS = {1: "/", 2: "/admin/home"}
 
 app = Flask(__name__)
 
@@ -21,6 +28,15 @@ app.secret_key = os.environ["SECRET_KEY"]
 # X-CSRFToken de cada peticion mutante (POST/PUT/DELETE).
 app.config['WTF_CSRF_TIME_LIMIT'] = None
 csrf = CSRFProtect(app)
+
+# Protege el trabajo costoso de bcrypt con contadores locales al proceso.
+app.config.update(
+    RATELIMIT_STORAGE_URI="memory://",
+    RATELIMIT_HEADERS_ENABLED=True,
+    LOGIN_RATE_LIMIT_IP="60 per minute",
+    LOGIN_RATE_LIMIT_IDENTITY="5 per minute",
+)
+limiter = Limiter(get_remote_address, app=app)
 
 
 @app.after_request
@@ -94,10 +110,10 @@ def _compras_de_usuario(user_id):
     return pedidos
 
 
-def _start_session(user, role):
+def _start_session(user, role_name):
     """Guarda los datos de sesion tras un login valido."""
     session["user_id"] = str(user["_id"])
-    session["rol"] = role["rol"]
+    session["rol"] = role_name
     session["user_email"] = user.get("email", "")
     session["user_nombre"] = user.get("nombre", "")
     session["user_apellido"] = user.get("apellido", "")
@@ -110,24 +126,51 @@ def _process_login():
     if not data or "email" not in data or "password" not in data:
         return jsonify({"error": "Faltan datos"}), 400
 
-    user = db.usuarios.find_one({"email": data["email"]})
+    user = db.usuarios.find_one(
+        {"email": data["email"]},
+        {
+            "email": 1,
+            "password": 1,
+            "id_rol": 1,
+            "nombre": 1,
+            "apellido": 1,
+            "cedula": 1,
+        },
+    )
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
     if not bcrypt.checkpw(data["password"].encode('utf-8'), user["password"].encode('utf-8')):
         return jsonify({"error": "Contraseña incorrecta"}), 401
 
-    role = db.roles.find_one({"id_rol": user["id_rol"]})
-    if not role:
-        return jsonify({"error": "Rol no encontrado"}), 500
+    role_name = ROLE_NAMES.get(user["id_rol"])
+    if role_name is None:
+        role = db.roles.find_one({"id_rol": user["id_rol"]})
+        if not role:
+            return jsonify({"error": "Rol no encontrado"}), 500
+        role_name = role["rol"]
 
-    _start_session(user, role)
-
-    destino = {1: "/", 2: "/admin/home"}.get(user["id_rol"])
+    destino = LOGIN_DESTINATIONS.get(user["id_rol"])
     if not destino:
         return jsonify({"error": "Rol no reconocido"}), 403
 
+    _start_session(user, role_name)
     return jsonify({"message": "Inicio de sesión exitoso", "redirect": destino}), 200
+
+
+def _login_identity():
+    """Agrupa intentos por IP y correo sin fallar ante cuerpos invalidos."""
+    data = request.get_json(silent=True) or {}
+    email = str(data.get("email", "<sin-email>")).strip().lower()
+    return f"{get_remote_address()}:{email}"
+
+
+def _login_ip_limit():
+    return app.config["LOGIN_RATE_LIMIT_IP"]
+
+
+def _login_identity_limit():
+    return app.config["LOGIN_RATE_LIMIT_IDENTITY"]
 
 
 @app.route('/api/csrf', methods=['GET'])
@@ -137,11 +180,20 @@ def api_csrf():
 
 
 @app.route('/api/login', methods=['POST'])
+@limiter.limit(_login_ip_limit, key_func=get_remote_address)
+@limiter.limit(_login_identity_limit, key_func=_login_identity)
 def api_login():
     try:
         return _process_login()
     except Exception as e:
         return jsonify({"error": f"Error en el servidor: {str(e)}"}), 500
+
+
+@app.errorhandler(429)
+def rate_limit_exceeded(_error):
+    return jsonify({
+        "error": "Demasiados intentos de inicio de sesión. Intenta nuevamente más tarde."
+    }), 429
 
 
 @app.route('/api/signup', methods=['POST'])
