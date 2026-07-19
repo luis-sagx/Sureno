@@ -193,17 +193,39 @@ def get_cart(cart_id):
 @app.route('/api/cart', methods=['POST'])
 @login_required_api
 def api_cart_create():
+    # Fix CP-24: el precio/total del cliente no es de confianza (se puede
+    # manipular en el DOM/localStorage). El servidor recalcula cada linea
+    # y el total a partir del precio real en Mongo; el payload del cliente
+    # solo se usa para saber que producto y cuantas unidades quiere.
     data = request.get_json()
-    if not data or 'productos' not in data or 'total' not in data:
+    if not data or 'productos' not in data or not isinstance(data['productos'], list) or not data['productos']:
         return jsonify({'error': 'Datos no recibidos'}), 400
+
+    productos = []
+    total = 0
+    for item in data['productos']:
+        cantidad = item.get('cantidad')
+        if not isinstance(cantidad, (int, float)) or cantidad <= 0:
+            return jsonify({'error': 'Cantidad invalida'}), 400
+        try:
+            producto = db.productos.find_one({"_id": ObjectId(item.get('id'))})
+        except Exception:
+            producto = None
+        if not producto:
+            return jsonify({'error': f"Producto no encontrado: {item.get('id')}"}), 404
+
+        precio_real = producto['precio']
+        total += precio_real * cantidad
+        productos.append({**item, "precio": precio_real})
+
     result = db.carrito.insert_one({
         "user_id": ObjectId(session["user_id"]),
-        "productos": data['productos'],
-        "total": data['total'],
+        "productos": productos,
+        "total": total,
         "fecha_creacion": datetime.now(),
     })
     return jsonify({'message': 'Carrito guardado', 'id': str(result.inserted_id),
-                    'total': data['total']}), 201
+                    'total': total}), 201
 
 
 @app.route('/api/compras', methods=['GET'])
