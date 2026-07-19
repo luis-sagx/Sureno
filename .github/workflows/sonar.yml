@@ -50,6 +50,25 @@ jobs:
       - name: Run tests with coverage
         run: cd backend && pytest --cov=. --cov-report=xml:coverage.xml
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Check Astro frontend
+        run: npm run check
+        working-directory: frontend
+
+      - name: Run frontend tests with coverage
+        run: npm run test:coverage
+        working-directory: frontend
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7
         env:
@@ -59,4 +78,5 @@ jobs:
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.python.coverage.reportPaths=backend/coverage.xml
+            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
             -Dsonar.qualitygate.wait=true
