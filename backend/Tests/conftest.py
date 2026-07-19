@@ -44,7 +44,13 @@ def db():
 @pytest.fixture
 def client(db):
     """Flask test client con CSRF desactivado para las pruebas."""
-    app_module.app.config.update(TESTING=True, WTF_CSRF_ENABLED=False)
+    app_module.app.config.update(
+        TESTING=True,
+        WTF_CSRF_ENABLED=False,
+        LOGIN_RATE_LIMIT_IP="60 per minute",
+        LOGIN_RATE_LIMIT_IDENTITY="5 per minute",
+    )
+    app_module.limiter.reset()
     return app_module.app.test_client()
 
 
