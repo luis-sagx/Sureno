@@ -6,6 +6,9 @@ from routes.auth import login_required_api, admin_required_api
 
 address_routes = Blueprint('address_routes', __name__)
 
+# Mensaje reutilizado cuando el address_id no es un ObjectId válido (S1192).
+ERROR_ID_INVALIDO = 'ID inválido'
+
 
 def _es_admin():
     return session.get("rol") == "administrador"
@@ -49,7 +52,7 @@ def get_address(address_id):
     try:
         object_id = ObjectId(address_id)
     except Exception:
-        return jsonify({'error': 'ID inválido'}), 400
+        return jsonify({'error': ERROR_ID_INVALIDO}), 400
 
     address = AddressModel.get_by_id(object_id)
     if not address:
@@ -69,7 +72,7 @@ def update_address(address_id):
     try:
         object_id = ObjectId(address_id)
     except Exception:
-        return jsonify({'error': 'ID inválido'}), 400
+        return jsonify({'error': ERROR_ID_INVALIDO}), 400
 
     address = db.addresses.find_one({"_id": object_id})
     if not address:
@@ -92,7 +95,7 @@ def delete_address(address_id):
     try:
         object_id = ObjectId(address_id)
     except Exception:
-        return jsonify({'error': 'ID inválido'}), 400
+        return jsonify({'error': ERROR_ID_INVALIDO}), 400
 
     filtro = {"_id": object_id}
     if not _es_admin():
