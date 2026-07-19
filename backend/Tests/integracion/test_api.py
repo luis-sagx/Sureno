@@ -23,19 +23,50 @@ def test_api_signup_crea_usuario(client, db):
     db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
     r = client.post("/api/signup", json={
         "email": "n@test.com", "nombre": "N", "apellido": "U",
-        "password": "Clave123", "cedula": "1234567890",
+        "password": "Clave123", "cedula": "1710034065",
     })
     assert r.status_code == 201
     assert db.usuarios.find_one({"email": "n@test.com"}) is not None
+
+
+def test_api_signup_con_ruc_valido_crea_usuario(client, db):
+    db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
+    r = client.post("/api/signup", json={
+        "email": "negocio@test.com", "nombre": "N", "apellido": "U",
+        "password": "Clave123", "cedula": "1710034065001",
+    })
+    assert r.status_code == 201
+    assert db.usuarios.find_one({"email": "negocio@test.com"}) is not None
 
 
 def test_api_signup_email_duplicado(client, db, usuario_cliente):
     db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
     r = client.post("/api/signup", json={
         "email": usuario_cliente["email"], "nombre": "N", "apellido": "U",
-        "password": "Clave123", "cedula": "1",
+        "password": "Clave123", "cedula": "1710034065",
     })
     assert r.status_code == 409
+
+
+def test_cp21_api_signup_identificacion_con_formato_invalido(client, db):
+    """CP-21: cédula/RUC con formato inválido (ni 10 ni 13 dígitos válidos) -> 400."""
+    db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
+    r = client.post("/api/signup", json={
+        "email": "n@test.com", "nombre": "N", "apellido": "U",
+        "password": "Clave123", "cedula": "asdf",
+    })
+    assert r.status_code == 400
+    assert db.usuarios.find_one({"email": "n@test.com"}) is None
+
+
+def test_cp22_api_signup_email_con_formato_invalido(client, db):
+    """CP-22: email con formato inválido -> 400."""
+    db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
+    r = client.post("/api/signup", json={
+        "email": "no-es-un-email", "nombre": "N", "apellido": "U",
+        "password": "Clave123", "cedula": "1710034065",
+    })
+    assert r.status_code == 400
 
 
 def test_api_logout_limpia_sesion(client, usuario_cliente):

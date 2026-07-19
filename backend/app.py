@@ -9,6 +9,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from routes.order_routes import order_routes
 from routes.auth import login_required_api, admin_required_api
+from validators import is_valid_email, is_valid_identificacion
 
 app = Flask(__name__)
 
@@ -150,6 +151,13 @@ def api_signup():
         required = ['email', 'nombre', 'apellido', 'password', 'cedula']
         if not all(f in data and data[f] for f in required):
             return jsonify({"error": "Faltan campos obligatorios"}), 400
+
+        # Fix DEF-018: cedula acepta cedula (10 digitos) o RUC (13 digitos).
+        if not is_valid_email(data['email']):
+            return jsonify({"error": "Email inválido"}), 400
+
+        if not is_valid_identificacion(data['cedula']):
+            return jsonify({"error": "Cédula o RUC inválido"}), 400
 
         if db.usuarios.find_one({"email": data['email']}):
             return jsonify({"error": "El correo ya está registrado"}), 409
