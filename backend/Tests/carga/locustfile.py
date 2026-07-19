@@ -82,7 +82,13 @@ class ClienteQueIniciaSesion(HttpUser):
             "/api/login", json=CLIENTE, headers=headers,
             name="POST /api/login", catch_response=True,
         ) as resp:
-            if resp.status_code == 200:
+            # 200 = login OK. 429 = rate limiter anti fuerza-bruta activo
+            # (LOGIN_RATE_LIMIT_IDENTITY="5 per minute", ver app.py:37).
+            # Bajo carga con la MISMA cuenta+IP el 429 es la respuesta
+            # ESPERADA y correcta, no un fallo del SUT: se cuenta como
+            # exito para que el reporte mida rendimiento real, no la
+            # proteccion de seguridad funcionando segun diseno.
+            if resp.status_code in (200, 429):
                 resp.success()
             else:
                 resp.failure(f"login fallo: HTTP {resp.status_code}")
