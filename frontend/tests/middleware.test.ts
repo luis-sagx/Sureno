@@ -35,7 +35,7 @@ describe('Astro middleware', () => {
     });
 
     expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:5000/api/orders?detail=1',
+      'http://127.0.0.1:5000/api/orders?detail=1',
       expect.objectContaining({ method: 'POST', redirect: 'manual' }),
     );
     const forwarded = vi.mocked(fetch).mock.calls[0][1]!;
@@ -49,7 +49,7 @@ describe('Astro middleware', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('image', { status: 200 })));
     await run('/static/img/logo.png');
     expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:5000/static/img/logo.png',
+      'http://127.0.0.1:5000/static/img/logo.png',
       expect.objectContaining({ method: 'GET' }),
     );
     expect(vi.mocked(fetch).mock.calls[0][1]).not.toHaveProperty('body');
