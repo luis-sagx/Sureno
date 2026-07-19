@@ -112,11 +112,57 @@ def test_api_cart_sin_sesion_401(client):
 
 
 def test_api_cart_guarda(client, usuario_cliente, db):
+    prod_id = db.productos.insert_one({"nombre": "Ron", "precio": 10}).inserted_id
     with client.session_transaction() as s:
         s["user_id"] = usuario_cliente["_id"]
-    r = client.post("/api/cart", json={"productos": [{"id": "1"}], "total": 15.5})
+    r = client.post("/api/cart", json={
+        "productos": [{"id": str(prod_id), "cantidad": 2}], "total": 15.5,
+    })
     assert r.status_code == 201
     assert db.carrito.count_documents({}) == 1
+
+
+# ---------------------- Carrito: CP-24 (precio/total server-side) ----------------------
+
+def test_api_cart_ignora_precio_y_total_manipulados(client, usuario_cliente, db):
+    """El precio/total que envia el cliente no debe usarse: el servidor
+    recalcula desde el precio real del producto en Mongo."""
+    prod_id = db.productos.insert_one({"nombre": "Ron", "precio": 10}).inserted_id
+    with client.session_transaction() as s:
+        s["user_id"] = usuario_cliente["_id"]
+    r = client.post("/api/cart", json={
+        "productos": [{"id": str(prod_id), "cantidad": 3, "precio": 0}],
+        "total": 0,
+    })
+    assert r.status_code == 201
+    body = r.get_json()
+    assert body["total"] == 30  # 10 (precio real) * 3, no 0
+
+    cart = db.carrito.find_one({"_id": ObjectId(body["id"])})
+    assert cart["total"] == 30
+    assert cart["productos"][0]["precio"] == 10
+
+
+def test_api_cart_cantidad_invalida_400(client, usuario_cliente, db):
+    prod_id = db.productos.insert_one({"nombre": "Ron", "precio": 10}).inserted_id
+    with client.session_transaction() as s:
+        s["user_id"] = usuario_cliente["_id"]
+    r = client.post("/api/cart", json={"productos": [{"id": str(prod_id), "cantidad": 0}]})
+    assert r.status_code == 400
+
+
+def test_api_cart_producto_no_encontrado_404(client, usuario_cliente):
+    with client.session_transaction() as s:
+        s["user_id"] = usuario_cliente["_id"]
+    r = client.post("/api/cart", json={"productos": [{"id": str(ObjectId()), "cantidad": 1}]})
+    assert r.status_code == 404
+
+
+def test_api_cart_id_producto_invalido_404(client, usuario_cliente):
+    with client.session_transaction() as s:
+        s["user_id"] = usuario_cliente["_id"]
+    r = client.post("/api/cart", json={"productos": [{"id": "no-es-un-objectid", "cantidad": 1}]})
+    assert r.status_code == 404
 
 
 # ---------------------- Direcciones ----------------------
