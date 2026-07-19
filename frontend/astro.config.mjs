@@ -3,9 +3,11 @@ import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
+import { loadEnv } from 'vite';
 
 // URL del backend Flask (API JSON). Configurable por entorno.
-const FLASK_API = process.env.FLASK_API_URL || 'http://localhost:5000';
+const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
+const FLASK_API = process.env.FLASK_API_URL || env.FLASK_API_URL || 'http://127.0.0.1:5000';
 
 // https://astro.build/config
 export default defineConfig({

@@ -1,7 +1,7 @@
 import { defineMiddleware } from 'astro:middleware';
 import { apiServer } from '@/lib/api';
 
-const FLASK_API = import.meta.env.FLASK_API_URL || 'http://localhost:5000';
+const FLASK_API = import.meta.env.FLASK_API_URL || 'http://127.0.0.1:5000';
 
 // Rutas que exigen sesión; y las que además exigen rol administrador.
 const USER_PATHS = ['/cart', '/checkout', '/compras'];
