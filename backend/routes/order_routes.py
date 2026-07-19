@@ -35,6 +35,10 @@ def create_order():
         if not cart:
             return jsonify({"error": "Carrito no encontrado"}), 404
 
+        # Fix DEF-019: bloquear pedidos de un carrito sin productos.
+        if not cart.get('productos'):
+            return jsonify({"error": "El carrito está vacío"}), 400
+
         total_final = cart['total'] + 3  # Añadir costo de envío
 
         order_data = { 
