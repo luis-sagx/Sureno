@@ -84,7 +84,7 @@ def test_api_signup_sin_rol_cliente_configurado(client, db):
     """No existe rol 'cliente' en BD -> 500 (error de configuración)."""
     r = client.post("/api/signup", json={
         "email": "x@test.com", "nombre": "X", "apellido": "Y",
-        "password": "Clave123", "cedula": "1",
+        "password": "Clave123", "cedula": "1710034065",
     })
     assert r.status_code == 500
 
