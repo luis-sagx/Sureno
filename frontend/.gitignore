@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 .env
+coverage/
 
 # Playwright E2E (TAR-04)
 tests-e2e/playwright-report/
