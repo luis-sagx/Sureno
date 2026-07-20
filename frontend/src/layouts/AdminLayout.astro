@@ -27,14 +27,47 @@ const links = [
     <link rel="preload" href={pacificoLatinUrl} as="font" type="font/woff2" crossorigin />
     <ThemeInit />
   </head>
-  <body class="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-    <aside class="flex w-60 flex-shrink-0 flex-col border-r border-stone-400 bg-stone-200/70 p-4 text-stone-900 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-100">
-      <a href="/" class="mb-6 inline-flex items-center justify-center gap-2 rounded-md px-2 py-1 text-xl font-semibold">
+  <body class="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 lg:flex">
+    <header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-stone-300 bg-stone-100/95 px-4 backdrop-blur dark:border-stone-800 dark:bg-stone-900/95 lg:hidden">
+      <a href="/admin/home" class="inline-flex items-center gap-2 text-lg font-semibold">
         <Icon name="lucide:shield-check" class="h-5 w-5" />
         Sureño Admin
       </a>
+      <button
+        type="button"
+        data-sidebar-open
+        aria-controls="admin-sidebar"
+        aria-expanded="false"
+        aria-label="Abrir menú de administración"
+        class="grid h-10 w-10 place-items-center rounded-md border border-stone-300 bg-white text-stone-700 shadow-sm dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+      >
+        <Icon name="lucide:menu" class="h-5 w-5" />
+      </button>
+    </header>
+
+    <button
+      type="button"
+      data-sidebar-overlay
+      aria-label="Cerrar menú de administración"
+      class="fixed inset-0 z-40 hidden bg-slate-950/55 backdrop-blur-[1px] lg:hidden"
+    ></button>
+
+    <aside
+      id="admin-sidebar"
+      data-sidebar
+      class="fixed inset-y-0 left-0 z-50 flex h-dvh w-[min(18rem,85vw)] -translate-x-full flex-col border-r border-stone-400 bg-stone-100 p-4 text-stone-900 shadow-2xl transition-transform duration-200 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-100 lg:sticky lg:top-0 lg:z-20 lg:w-60 lg:flex-shrink-0 lg:translate-x-0 lg:shadow-none"
+    >
+      <div class="mb-6 flex items-center justify-between gap-2">
+        <a href="/admin/home" class="inline-flex min-w-0 items-center gap-2 rounded-md px-2 py-1 text-xl font-semibold">
+          <Icon name="lucide:shield-check" class="h-5 w-5 flex-none" />
+          <span class="truncate">Sureño Admin</span>
+        </a>
+        <button type="button" data-sidebar-close aria-label="Cerrar menú" class="grid h-9 w-9 flex-none place-items-center rounded-md hover:bg-stone-200 dark:hover:bg-white/10 lg:hidden">
+          <Icon name="lucide:x" class="h-5 w-5" />
+        </button>
+      </div>
       <p class="mb-4 text-center text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Gestión</p>
-      <nav class="flex flex-col gap-1">
+      <nav aria-label="Navegación administrativa" class="flex flex-col gap-1">
         {links.map(({ key, href, label, icon }) => (
           <a
             href={href}
@@ -43,7 +76,7 @@ const links = [
               key === active && 'bg-white text-stone-950 shadow-sm dark:bg-white/15 dark:text-white dark:shadow-none',
             ]}
           >
-            <Icon name={icon} class="h-4 w-4" />
+            <Icon name={icon} class="h-4 w-4 flex-none" />
             {label}
           </a>
         ))}
@@ -60,13 +93,37 @@ const links = [
       </div>
     </aside>
 
-    <main class="flex-1 overflow-x-auto p-6">
-      <slot />
+    <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+      <div class="mx-auto w-full max-w-[96rem]">
+        <slot />
+      </div>
     </main>
 
     <script>
       import { apiFetch } from '@/lib/csrf';
       const root = document.documentElement;
+      const sidebar = document.querySelector<HTMLElement>('[data-sidebar]');
+      const overlay = document.querySelector<HTMLElement>('[data-sidebar-overlay]');
+      const openButton = document.querySelector<HTMLButtonElement>('[data-sidebar-open]');
+
+      function setSidebar(open: boolean) {
+        sidebar?.classList.toggle('-translate-x-full', !open);
+        overlay?.classList.toggle('hidden', !open);
+        openButton?.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('overflow-hidden', open);
+      }
+
+      openButton?.addEventListener('click', () => setSidebar(true));
+      document.querySelector('[data-sidebar-close]')?.addEventListener('click', () => setSidebar(false));
+      overlay?.addEventListener('click', () => setSidebar(false));
+      sidebar?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setSidebar(false)));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setSidebar(false);
+      });
+      window.matchMedia('(min-width: 1024px)').addEventListener('change', (event) => {
+        if (event.matches) setSidebar(false);
+      });
+
       document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
         root.classList.toggle('dark');
         localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');

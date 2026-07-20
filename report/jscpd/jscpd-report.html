@@ -62,15 +62,15 @@
           </div>
           <div class="stat-card stat-green">
             <h3>Total Lines of Code</h3>
-            <div class="val">4699</div>
+            <div class="val">4876</div>
           </div>
           <div class="stat-card stat-yellow">
             <h3>Number of Clones</h3>
-            <div class="val">11</div>
+            <div class="val">14</div>
           </div>
           <div class="stat-card stat-red">
             <h3>Duplicated Lines</h3>
-            <div class="val">41 (0.87%)</div>
+            <div class="val">60 (1.23%)</div>
           </div>
         </div>
       </section>
@@ -95,7 +95,7 @@
             <tr>
               <td><a href="#astro-clones">astro</a></td>
               <td>10</td>
-              <td>1011</td>
+              <td>1070</td>
               <td>0</td>
               <td>0 (0.00%)</td>
               <td>0 (0.00%)</td>
@@ -113,19 +113,19 @@
             <tr>
               <td><a href="#html-clones">html</a></td>
               <td>9</td>
-              <td>1004</td>
-              <td>1</td>
-              <td>4 (0.40%)</td>
-              <td>65 (1.44%)</td>
+              <td>1063</td>
+              <td>3</td>
+              <td>19 (1.79%)</td>
+              <td>124 (2.65%)</td>
             </tr>
             
             <tr>
               <td><a href="#javascript-clones">javascript</a></td>
               <td>10</td>
-              <td>1001</td>
-              <td>3</td>
-              <td>9 (0.90%)</td>
-              <td>121 (3.02%)</td>
+              <td>1060</td>
+              <td>4</td>
+              <td>13 (1.23%)</td>
+              <td>191 (4.37%)</td>
             </tr>
             
             <tr>
@@ -149,10 +149,10 @@
             <tr style="font-weight: 700;">
               <td>Total</td>
               <td>58</td>
-              <td>4699</td>
-              <td>11</td>
-              <td>41 (0.87%)</td>
-              <td>395 (1.69%)</td>
+              <td>4876</td>
+              <td>14</td>
+              <td>60 (1.23%)</td>
+              <td>524 (2.16%)</td>
             </tr>
           </tbody>
         </table>
@@ -169,13 +169,35 @@
           
           <div class="clone-item">
             <div class="clone-info">
-              pages/login.astro:html (Line 12:55 - Line 16:56),
-              pages/signup.astro:html (Line 17:152 - Line 19:118)
+              pages/admin/orders.astro:html (Line 45:123 - Line 50:20),
+              pages/admin/products.astro:html (Line 46:117 - Line 51:22)
             </div>
             <div>
               <button class="toggle-btn" onclick="toggle('code-html-1')">Show code</button>
             </div>
             <pre id="code-html-1" class="code-block"></pre>
+          </div>
+          
+          <div class="clone-item">
+            <div class="clone-info">
+              pages/admin/orders.astro:html (Line 92:25 - Line 102:4),
+              pages/admin/products.astro:html (Line 99:24 - Line 109:4)
+            </div>
+            <div>
+              <button class="toggle-btn" onclick="toggle('code-html-2')">Show code</button>
+            </div>
+            <pre id="code-html-2" class="code-block"></pre>
+          </div>
+          
+          <div class="clone-item">
+            <div class="clone-info">
+              pages/login.astro:html (Line 12:55 - Line 16:56),
+              pages/signup.astro:html (Line 17:152 - Line 19:118)
+            </div>
+            <div>
+              <button class="toggle-btn" onclick="toggle('code-html-3')">Show code</button>
+            </div>
+            <pre id="code-html-3" class="code-block"></pre>
           </div>
           
         </div>
@@ -190,8 +212,8 @@
           
           <div class="clone-item">
             <div class="clone-info">
-              pages/admin/orders.astro:javascript (Line 104:3 - Line 107:11),
-              pages/admin/products.astro:javascript (Line 151:3 - Line 154:8)
+              components/Header.astro:javascript (Line 100:40 - Line 104:6),
+              layouts/AdminLayout.astro:javascript (Line 125:9 - Line 130:10)
             </div>
             <div>
               <button class="toggle-btn" onclick="toggle('code-javascript-1')">Show code</button>
@@ -201,8 +223,8 @@
           
           <div class="clone-item">
             <div class="clone-info">
-              pages/admin/orders.astro:javascript (Line 112:50 - Line 115:46),
-              pages/cart.astro:javascript (Line 102:72 - Line 105:51)
+              pages/admin/orders.astro:javascript (Line 106:3 - Line 109:11),
+              pages/admin/products.astro:javascript (Line 151:3 - Line 154:8)
             </div>
             <div>
               <button class="toggle-btn" onclick="toggle('code-javascript-2')">Show code</button>
@@ -212,13 +234,24 @@
           
           <div class="clone-item">
             <div class="clone-info">
-              pages/admin/orders.astro:javascript (Line 112:50 - Line 115:63),
-              pages/checkout.astro:javascript (Line 117:71 - Line 120:61)
+              pages/admin/orders.astro:javascript (Line 114:50 - Line 117:46),
+              pages/cart.astro:javascript (Line 102:72 - Line 105:51)
             </div>
             <div>
               <button class="toggle-btn" onclick="toggle('code-javascript-3')">Show code</button>
             </div>
             <pre id="code-javascript-3" class="code-block"></pre>
+          </div>
+          
+          <div class="clone-item">
+            <div class="clone-info">
+              pages/admin/orders.astro:javascript (Line 114:50 - Line 117:63),
+              pages/checkout.astro:javascript (Line 117:71 - Line 120:61)
+            </div>
+            <div>
+              <button class="toggle-btn" onclick="toggle('code-javascript-4')">Show code</button>
+            </div>
+            <pre id="code-javascript-4" class="code-block"></pre>
           </div>
           
         </div>
