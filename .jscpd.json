@@ -1,0 +1,39 @@
+{
+  "path": [
+    "backend/app.py",
+    "backend/config.py",
+    "backend/db_indexes.py",
+    "backend/validators.py",
+    "backend/models",
+    "backend/routes",
+    "frontend/src"
+  ],
+  "ignore": [
+    "**/__pycache__/**",
+    "backend/Tests/**",
+    "backend/scripts/**",
+    "backend/static/uploads/**",
+    "frontend/tests/**",
+    "frontend/tests-e2e/**",
+    "**/coverage.xml",
+    ".git/**",
+    "**/node_modules/**",
+    "report/**"
+  ],
+  "formats": [
+    "python",
+    "astro",
+    "markup",
+    "css",
+    "javascript",
+    "typescript"
+  ],
+  "minLines": 3,
+  "minTokens": 25,
+  "threshold": 0,
+  "reporters": [
+    "console",
+    "html"
+  ],
+  "output": "report/jscpd"
+}
