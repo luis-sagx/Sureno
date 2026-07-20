@@ -24,29 +24,9 @@ import { Icon } from 'astro-icon/components';
 </BaseLayout>
 
 <script>
-  import { apiFetch } from '@/lib/csrf';
-  const form = document.getElementById('login-form') as HTMLFormElement;
-  const errBox = document.querySelector<HTMLElement>('[data-error]');
-  const showError = (m: string) => { if (errBox) { errBox.textContent = m; errBox.classList.remove('hidden'); } };
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errBox?.classList.add('hidden');
-    const fd = new FormData(form);
-    const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
-    btn.disabled = true;
-    try {
-      const res = await apiFetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({ email: fd.get('email'), password: fd.get('password') }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok) window.location.href = data.redirect || '/';
-      else showError(data.error || 'No se pudo iniciar sesión');
-    } catch {
-      showError('Error de conexión con el servidor');
-    } finally {
-      btn.disabled = false;
-    }
+  import { bindJsonForm } from '@/lib/json-form';
+  bindJsonForm({
+    formId: 'login-form', endpoint: '/api/login', defaultRedirect: '/',
+    errorMessage: 'No se pudo iniciar sesión',
   });
 </script>

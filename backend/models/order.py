@@ -4,6 +4,17 @@ from config import db
 
 class OrderModel:
     @staticmethod
+    def _serialize_with_customer(order):
+        """Normaliza ObjectId y agrega los datos visibles del cliente."""
+        for field in ("_id", "user_id", "address_id", "cart_id"):
+            order[field] = str(order[field])
+
+        user = db.usuarios.find_one({"_id": ObjectId(order["user_id"])}) or {}
+        for field in ("nombre", "apellido", "cedula"):
+            order[f"{field}_cliente"] = user.get(field, "N/A")
+        return order
+
+    @staticmethod
     def create(order_data):
         order_data["fecha"] = datetime.now()
         order_data["estado"] = "pendiente"
@@ -13,46 +24,12 @@ class OrderModel:
     @staticmethod
     def get_all():
         orders = list(db.orders.find())
-        for order in orders:
-            order["_id"] = str(order["_id"])
-            order["user_id"] = str(order["user_id"])
-            order["address_id"] = str(order["address_id"])
-            order["cart_id"] = str(order["cart_id"])
-
-            # Obtener datos del usuario
-            user = db.usuarios.find_one({"_id": ObjectId(order["user_id"])})
-            if user:
-                order["nombre_cliente"] = user.get("nombre", "N/A")
-                order["apellido_cliente"] = user.get("apellido", "N/A")
-                order["cedula_cliente"] = user.get("cedula", "N/A")
-            else:
-                order["nombre_cliente"] = "N/A"
-                order["apellido_cliente"] = "N/A"
-                order["cedula_cliente"] = "N/A"
-
-        return orders
+        return [OrderModel._serialize_with_customer(order) for order in orders]
 
     @staticmethod
     def get_by_id(order_id):
         order = db.orders.find_one({"_id": ObjectId(order_id)})
-        if order:
-            order["_id"] = str(order["_id"])
-            order["user_id"] = str(order["user_id"])
-            order["address_id"] = str(order["address_id"])
-            order["cart_id"] = str(order["cart_id"])
-
-            # Obtener datos del usuario
-            user = db.usuarios.find_one({"_id": ObjectId(order["user_id"])})
-            if user:
-                order["nombre_cliente"] = user.get("nombre", "N/A")
-                order["apellido_cliente"] = user.get("apellido", "N/A")
-                order["cedula_cliente"] = user.get("cedula", "N/A")
-            else:
-                order["nombre_cliente"] = "N/A"
-                order["apellido_cliente"] = "N/A"
-                order["cedula_cliente"] = "N/A"
-
-        return order
+        return OrderModel._serialize_with_customer(order) if order else None
 
     @staticmethod
     def update_status(order_id, new_status):

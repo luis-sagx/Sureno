@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { apiServer } from '@/lib/api';
 import { UNIDADES_POR_CAJA } from '@/lib/config';
+import CartToast from '@/components/CartToast.astro';
 
 interface Product {
   _id: string;
@@ -63,25 +64,10 @@ if (!res.ok || !p) Astro.response.status = 404;
     )}
   </div>
 
-  <div data-toast class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-md px-4 py-2 text-white opacity-0 shadow-lg transition-opacity" style="background-color: var(--color-cafe)"></div>
+  <CartToast />
 </BaseLayout>
 
 <script>
-  import { addToCart } from '@/lib/cart';
-  const toast = document.querySelector<HTMLElement>('[data-toast]');
-  function showToast(msg: string) {
-    if (!toast) return;
-    toast.textContent = msg; toast.style.opacity = '1';
-    setTimeout(() => (toast.style.opacity = '0'), 1600);
-  }
-  document.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const d = btn.dataset;
-      addToCart({
-        id: d.id!, nombre: d.nombre!, precio: Number(d.precio),
-        imagen: d.imagen!, mililitros: d.mililitros ? Number(d.mililitros) : undefined,
-      });
-      showToast(`"${d.nombre}" agregado al carrito`);
-    });
-  });
+  import { bindAddToCartButtons } from '@/lib/product-actions';
+  bindAddToCartButtons();
 </script>
