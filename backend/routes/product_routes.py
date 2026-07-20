@@ -16,6 +16,26 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+def _save_image(image):
+    """Guarda una imagen válida y devuelve su ruta pública."""
+    if not image or not allowed_file(image.filename):
+        return None
+    filename = secure_filename(image.filename)
+    image.save(os.path.join(UPLOAD_FOLDER, filename))
+    return f"/static/uploads/{filename}"
+
+
+def _product_form_data():
+    """Convierte el formulario común de creación/edición a tipos de dominio."""
+    return {
+        "nombre": request.form.get('nombre'),
+        "precio": float(request.form.get('precio')),
+        "stock": int(request.form.get('stock')),
+        "mililitros": int(request.form.get('mililitros')),
+        "categoria_id": request.form.get('categoria_id'),
+    }
+
 @product_routes.route('/upload-image/<product_id>', methods=['POST'])
 @admin_required_api
 def upload_image(product_id):
@@ -26,12 +46,7 @@ def upload_image(product_id):
     if imagen.filename == "" or not allowed_file(imagen.filename):
         return jsonify({"error": "Formato no permitido"}), 400
     
-    filename = secure_filename(imagen.filename)
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
-    imagen.save(filepath)
-
-    # Guardar la ruta en la base de datos
-    image_path = f"/static/uploads/{filename}"
+    image_path = _save_image(imagen)
     updated = ProductModel.update_image(product_id, image_path)
 
     if updated:
@@ -68,32 +83,8 @@ def categories():
 @product_routes.route('/products', methods=['POST'])
 @admin_required_api
 def create_product():
-    # Obtener datos del producto
-    nombre = request.form.get('nombre')
-    precio = float(request.form.get('precio'))
-    stock = int(request.form.get('stock'))
-    mililitros = int(request.form.get('mililitros'))
-    categoria_id = request.form.get('categoria_id')
-    
-    # Manejar la imagen
-    imagen = request.files.get('imagen')
-    image_path = ""
-    
-    if imagen and allowed_file(imagen.filename):
-        filename = secure_filename(imagen.filename)
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
-        imagen.save(filepath)
-        image_path = f"/static/uploads/{filename}"
-
-    # Crear el producto
-    product_data = {
-        "nombre": nombre,
-        "precio": precio,
-        "stock": stock,
-        "mililitros": mililitros,
-        "categoria_id": categoria_id,
-        "imagen": image_path
-    }
+    product_data = _product_form_data()
+    product_data["imagen"] = _save_image(request.files.get('imagen')) or ""
 
     inserted_id = ProductModel.create(product_data)
     if inserted_id:
@@ -104,30 +95,10 @@ def create_product():
 @admin_required_api
 def update_product(product_id):
     try:
-        # Obtener datos del formulario
-        nombre = request.form.get('nombre')
-        precio = float(request.form.get('precio'))
-        stock = int(request.form.get('stock'))
-        mililitros = int(request.form.get('mililitros'))
-        categoria_id = request.form.get('categoria_id')
-        
-        # Preparar los datos de actualización
-        update_data = {
-            "nombre": nombre,
-            "precio": precio,
-            "stock": stock,
-            "mililitros": mililitros,
-            "categoria_id": categoria_id
-        }
-
-        # Manejar la imagen si se proporcionó una nueva
-        if 'imagen' in request.files:
-            imagen = request.files['imagen']
-            if imagen and allowed_file(imagen.filename):
-                filename = secure_filename(imagen.filename)
-                filepath = os.path.join(UPLOAD_FOLDER, filename)
-                imagen.save(filepath)
-                update_data['imagen'] = f"/static/uploads/{filename}"
+        update_data = _product_form_data()
+        image_path = _save_image(request.files.get('imagen'))
+        if image_path:
+            update_data['imagen'] = image_path
 
         # Actualizar el producto
         modified_count = ProductModel.update(product_id, update_data)

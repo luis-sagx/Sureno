@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import { Icon } from 'astro-icon/components';
+import ThemeInit from '@/components/ThemeInit.astro';
 import pacificoLatinUrl from '@fontsource/pacifico/files/pacifico-latin-400-normal.woff2?url';
 
 interface Props {
@@ -24,13 +25,7 @@ const links = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <link rel="preload" href={pacificoLatinUrl} as="font" type="font/woff2" crossorigin />
-    <script is:inline>
-      (() => {
-        const t = localStorage.getItem('theme');
-        const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-        if (dark) document.documentElement.classList.add('dark');
-      })();
-    </script>
+    <ThemeInit />
   </head>
   <body class="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
     <aside class="flex w-60 flex-shrink-0 flex-col border-r border-stone-400 bg-stone-200/70 p-4 text-stone-900 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-100">

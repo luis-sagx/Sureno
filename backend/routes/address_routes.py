@@ -19,6 +19,14 @@ def _puede_acceder(address):
     return _es_admin() or str(address.get("user_id")) == session.get("user_id")
 
 
+def _object_id_or_none(value):
+    """Convierte IDs externos sin repetir bloques try/except en cada ruta."""
+    try:
+        return ObjectId(value)
+    except Exception:
+        return None
+
+
 @address_routes.route('/addresses', methods=['POST'])
 @login_required_api
 def create_address():
@@ -49,9 +57,8 @@ def get_addresses():
 @login_required_api
 def get_address(address_id):
     """Detalle de una dirección: solo su dueño o un admin (evita IDOR)."""
-    try:
-        object_id = ObjectId(address_id)
-    except Exception:
+    object_id = _object_id_or_none(address_id)
+    if object_id is None:
         return jsonify({'error': ERROR_ID_INVALIDO}), 400
 
     address = AddressModel.get_by_id(object_id)
@@ -69,9 +76,8 @@ def get_address(address_id):
 @login_required_api
 def update_address(address_id):
     """Actualiza una dirección: solo su dueño o un admin."""
-    try:
-        object_id = ObjectId(address_id)
-    except Exception:
+    object_id = _object_id_or_none(address_id)
+    if object_id is None:
         return jsonify({'error': ERROR_ID_INVALIDO}), 400
 
     address = db.addresses.find_one({"_id": object_id})
@@ -92,9 +98,8 @@ def update_address(address_id):
 @login_required_api
 def delete_address(address_id):
     """Elimina una dirección: solo su dueño o un admin."""
-    try:
-        object_id = ObjectId(address_id)
-    except Exception:
+    object_id = _object_id_or_none(address_id)
+    if object_id is None:
         return jsonify({'error': ERROR_ID_INVALIDO}), 400
 
     filtro = {"_id": object_id}
