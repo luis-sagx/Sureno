@@ -15,6 +15,8 @@
     "backend/static/uploads/**",
     "frontend/tests/**",
     "frontend/tests-e2e/**",
+    "metricas/**",
+    "venv/**",
     "**/coverage.xml",
     ".git/**",
     "**/node_modules/**",
