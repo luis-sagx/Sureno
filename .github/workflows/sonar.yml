@@ -47,8 +47,14 @@ jobs:
       - name: Lint (ruff)
         run: cd backend && ruff check .
 
+      # --junitxml alimenta el calculador de metricas ISO (metricas/calcular_metricas.py):
+      # de ahi salen MC-01/MC-02 (trazabilidad resuelta) y MC-03 (densidad de fallos).
       - name: Run tests with coverage
-        run: cd backend && pytest --cov=. --cov-report=xml:coverage.xml
+        run: |
+          cd backend
+          mkdir -p Tests/evidencias
+          pytest --junitxml=Tests/evidencias/junit_backend.xml \
+                 --cov=. --cov-report=xml:coverage.xml
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -68,6 +74,28 @@ jobs:
       - name: Run frontend tests with coverage
         run: npm run test:coverage
         working-directory: frontend
+
+      - name: Frontend test report (JSON for the metrics engine)
+        run: npx vitest run --reporter=json --outputFile=vitest-results.json
+        working-directory: frontend
+
+      - name: Copy/paste detection (jscpd)
+        run: npx jscpd --reporters json,html --output report/jscpd || true
+
+      # Quality gate propio del SQAP: aplica las formulas ISO/IEC 25023 y 25022
+      # sobre los reportes recien generados y falla (exit 1) si alguna metrica
+      # incumple su umbral o si un caso CP-xx perdio la prueba que lo sustenta.
+      # Playwright y Locust no corren en CI (necesitan el stack levantado), asi
+      # que MC-05..MC-07 y MC-15/MC-16 se omiten con aviso, no con fallo.
+      - name: Quality gate ISO (metricas del SQAP)
+        run: python metricas/calcular_metricas.py
+
+      - name: Upload metrics report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metricas-sqap
+          path: metricas/salida/
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7
