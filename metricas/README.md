@@ -13,8 +13,8 @@ instrumento de medición de 25010 —no un marco adicional:
 | **ISO/IEC 25023** | Medidas de calidad del producto: forma de MC-01…MC-14. |
 | **ISO/IEC 25022** | Medidas de calidad **en uso**: MC-15 (*task completion*) y MC-16 (*task time*). |
 
-Ningún número del documento SQAP se escribe a mano: las tablas del PDF se generan
-desde aquí (`salida/*.tex`, incluidas con `\input`).
+Ningún número del informe de métricas se escribe a mano: `salida/metricas.md`
+se genera desde los reportes reales y las fuentes declaradas.
 
 ## Ejecutar
 
@@ -43,13 +43,10 @@ algún caso de prueba de la matriz quedó en `FAIL` / `NO ENCONTRADO`. Sirve com
 |---|---|
 | `umbrales.json` | Definición formal de las 16 métricas: norma, fórmula, unidad, operador, umbral. **Cambiar un umbral aquí cambia el veredicto** del documento y de CI. |
 | `trazabilidad.json` | Matriz de trazabilidad *ejecutable*: cada CP-xx declara los nodeids exactos de las pruebas que lo implementan. |
-| `fuentes.json` | Valores que no se derivan de la suite local (dashboard SonarQube DESPUÉS, defectos abiertos, KLOC), cada uno con su procedencia declarada. |
+| `fuentes.json` | Valores que no se derivan de la suite local (dashboard SonarQube ANTES/DESPUÉS, defectos abiertos, KLOC), cada uno con su procedencia declarada. |
 | `calcular_metricas.py` | Motor: parsea reportes → aplica fórmulas → CUMPLE / NO CUMPLE. |
 | `ejecutar_suite.sh` | Corre pytest, Vitest, Playwright, Locust y jscpd, y después el cálculo. |
-| `salida/metricas.json` | Resultado completo, consumible por CI. |
 | `salida/metricas.md` | Informe legible con la fórmula, la sustitución de valores y el veredicto. |
-| `salida/metricas_tabla.tex` | Tabla que el SQAP incluye en el Informe de cierre. |
-| `salida/trazabilidad_tabla.tex` | Matriz resuelta que el SQAP incluye en el diseño de casos. |
 
 ## De dónde salen los datos
 
@@ -62,8 +59,7 @@ algún caso de prueba de la matriz quedó en `FAIL` / `NO ENCONTRADO`. Sirve com
 | `frontend/tests-e2e/report.json` | `npx playwright test` | MC-02, MC-15, MC-16 |
 | `backend/Tests/evidencias/carga_stats.csv` | `locust --headless --csv` | MC-05, MC-06, MC-07 |
 | `report/jscpd/jscpd-report.json` | `npx jscpd --reporters json,html` | MC-12 |
-| `issues.csv` | export de SonarQube Cloud (línea base) | MC-09, MC-13, MC-14 |
-| `metricas/fuentes.json` | dashboard SonarQube DESPUÉS + GitHub Issues | MC-04, MC-08, MC-09, MC-13, MC-14 |
+| `metricas/fuentes.json` | dashboard SonarQube ANTES/DESPUÉS + GitHub Issues | MC-04, MC-08, MC-09, MC-13, MC-14 |
 
 Si falta una fuente **obligatoria**, el script aborta indicando el comando exacto que
 la genera. Si falta una **opcional** (carga o E2E, que necesitan el stack levantado),
@@ -83,4 +79,4 @@ avisa y omite las métricas que dependen de ella; con `--estricto` eso también 
 1. Añadir la entrada en `umbrales.json` (id, ISO 25010, norma de medición, fórmula, unidad, operador, umbral).
 2. En `calcular_metricas.py`, dentro de `calcular()`, llamar a `add("MC-xx", valor, sustitucion, fuente)`
    con el valor derivado del reporte correspondiente.
-3. Ejecutar; la tabla del SQAP se regenera sola.
+3. Ejecutar; `metricas/salida/metricas.md` se regenera solo.

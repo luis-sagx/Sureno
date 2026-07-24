@@ -4,13 +4,21 @@
     "se declaran explicitamente aqui, con su procedencia. Todo lo demas (cobertura,",
     "pruebas pasadas/fallidas, carga, duplicacion) lo calcula calcular_metricas.py",
     "parseando los reportes reales.",
-    "El bloque 'sonar_despues' se toma del dashboard de SonarQube Cloud tras el",
-    "analisis de la rama main posterior a la refactorizacion; el bloque 'antes' NO",
-    "se declara: se cuenta automaticamente desde issues.csv (export de SonarQube de",
-    "la linea base, 111 issues)."
+    "Los bloques 'sonar_antes' y 'sonar_despues' se toman del dashboard de",
+    "SonarQube Cloud antes y despues de la refactorizacion. Se declaran aqui",
+    "para no depender de un export externo issues.csv."
   ],
 
-  "sonar_antes_csv": "issues.csv",
+  "sonar_antes": {
+    "_procedencia": "Dashboard SonarQube Cloud - linea base ANTES documentada en el SQAP",
+    "total": 111,
+    "vulnerabilidades": 33,
+    "bugs": 30,
+    "code_smells_critical_major": 42,
+    "code_smells_total": 48,
+    "vulnerabilidades_criticas": 2,
+    "issues_accesibilidad": 52
+  },
 
   "sonar_despues": {
     "_procedencia": "Dashboard SonarQube Cloud - proyecto luis-sagx_Sureno, rama main, analisis posterior a la fase Act",

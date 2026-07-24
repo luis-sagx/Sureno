@@ -15,14 +15,10 @@ Fuentes que consume (ver --ayuda-fuentes para el comando que genera cada una):
   frontend/tests-e2e/report.json               playwright reporter json
   backend/Tests/evidencias/carga_stats.csv     locust  --csv
   report/jscpd/jscpd-report.json               jscpd   --reporters json
-  issues.csv                                   export de SonarQube Cloud (ANTES)
-  metricas/fuentes.json                        valores declarados (Sonar DESPUES, defectos, KLOC)
+  metricas/fuentes.json                        valores declarados (Sonar ANTES/DESPUES, defectos, KLOC)
 
 Salidas (metricas/salida/):
-  metricas.json          resultado completo, apto para CI
   metricas.md            informe legible
-  metricas_tabla.tex     tabla lista para \\input{} desde SQAP_Sureno.tex
-  trazabilidad_tabla.tex matriz de trazabilidad resuelta contra los reportes
 
 Codigo de salida: 0 si todas las metricas cumplen, 1 si alguna falla o si falta
 una fuente obligatoria (usable como Quality Gate propio en CI).
@@ -339,7 +335,7 @@ def calcular(raiz: Path) -> tuple[list[Resultado], list[CasoTrazado], dict, list
         raiz / "report/jscpd/jscpd-report.json",
         "npx jscpd --reporters json,html --output report/jscpd .",
     )["statistics"]["total"]
-    sonar_antes = leer_sonar_antes(raiz / fuentes["sonar_antes_csv"])
+    sonar_antes = fuentes["sonar_antes"]
     sonar_desp = fuentes["sonar_despues"]
 
     # --- Reportes opcionales (requieren el stack levantado) --------------
@@ -416,7 +412,7 @@ def calcular(raiz: Path) -> tuple[list[Resultado], list[CasoTrazado], dict, list
     add("MC-08", float(v_des), f"X = {v_des} (BLOCKER+CRITICAL abiertas)",
         "dashboard SonarQube Cloud DESPUES (fuentes.json)")
     add("MC-09", (v_ant - v_des) / v_ant, f"X = ({v_ant} - {v_des}) / {v_ant}",
-        "issues.csv (ANTES) vs dashboard SonarQube (DESPUES)")
+        "fuentes.json (SonarQube ANTES vs DESPUES)")
 
     # ---- MC-10/11 Cobertura ---------------------------------------------
     cub, tot = cob_be
@@ -434,7 +430,7 @@ def calcular(raiz: Path) -> tuple[list[Resultado], list[CasoTrazado], dict, list
     s_ant = sonar_antes["code_smells_critical_major"]
     s_des = sonar_desp["code_smells_critical_major"]
     add("MC-13", (s_ant - s_des) / s_ant, f"X = ({s_ant} - {s_des}) / {s_ant}",
-        "issues.csv (ANTES) vs dashboard SonarQube (DESPUES)")
+        "fuentes.json (SonarQube ANTES vs DESPUES)")
 
     # ---- MC-14 Accesibilidad --------------------------------------------
     a_des = sonar_desp["issues_accesibilidad"]
@@ -563,87 +559,6 @@ def escribir_markdown(ruta: Path, res: list[Resultado], casos: list[CasoTrazado]
     ruta.write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
-def tex_escape(texto: str) -> str:
-    for a, b in (("\\", r"\textbackslash{}"), ("&", r"\&"), ("%", r"\%"), ("_", r"\_"),
-                 ("#", r"\#"), ("$", r"\$"), ("{", r"\{"), ("}", r"\}")):
-        texto = texto.replace(a, b)
-    return texto
-
-
-OPERADOR_TEX = {">=": r"\geq", "<=": r"\leq", "==": "=", ">": ">", "<": "<"}
-
-
-def escribir_tex_metricas(ruta: Path, res: list[Resultado]) -> None:
-    L = [
-        "% Generado automaticamente por metricas/calcular_metricas.py -- NO editar a mano.",
-        r"\begin{longtable}{p{0.9cm}p{3.1cm}p{2.6cm}p{3.2cm}p{1.8cm}p{1.6cm}p{1.5cm}}",
-        r"\toprule",
-        r"\textbf{ID} & \textbf{M\'etrica (ISO 25010)} & \textbf{F\'ormula} & "
-        r"\textbf{Sustituci\'on} & \textbf{Valor} & \textbf{Umbral} & \textbf{Estado} \\",
-        r"\midrule", r"\endhead",
-    ]
-    for r in res:
-        estado = (r"\textcolor{cumple}{\textbf{CUMPLE}}" if r.cumple
-                  else r"\textcolor{blocker}{\textbf{NO CUMPLE}}")
-        L.append(
-            f"{r.id} & {tex_escape(r.nombre)} \\newline "
-            f"\\textit{{\\small {tex_escape(r.iso25010)}}} & "
-            f"$ {tex_escape(r.formula)} $ & {tex_escape(r.sustitucion)} & "
-            f"\\textbf{{{tex_escape(r.fmt_valor())}}} & "
-            f"${OPERADOR_TEX[r.operador]}$ {tex_escape(r.fmt_umbral())} & {estado} \\\\"
-        )
-    L += [r"\bottomrule", r"\end{longtable}"]
-    ruta.write_text("\n".join(L) + "\n", encoding="utf-8")
-
-
-def escribir_tex_trazabilidad(ruta: Path, casos: list[CasoTrazado]) -> None:
-    L = [
-        "% Generado automaticamente por metricas/calcular_metricas.py -- NO editar a mano.",
-        r"\begin{longtable}{p{1.2cm}p{4.6cm}p{1.9cm}p{4.2cm}p{1.6cm}p{1.1cm}}",
-        r"\toprule",
-        r"\textbf{CP} & \textbf{T\'itulo} & \textbf{Req.} & "
-        r"\textbf{ISO/IEC 25010} & \textbf{Pruebas} & \textbf{Estado} \\",
-        r"\midrule", r"\endhead",
-    ]
-    for c in casos:
-        estado = (r"\textcolor{cumple}{PASS}" if c.estado == "PASS"
-                  else rf"\textcolor{{blocker}}{{{c.estado}}}")
-        tipos: dict[str, int] = {}
-        for d in c.detalle:
-            tipo = d.split("]")[0].lstrip("[")
-            tipos[tipo] = tipos.get(tipo, 0) + 1
-        resumen = ", ".join(f"{n}~{t}" for t, n in tipos.items())
-        L.append(f"{c.id} & {tex_escape(c.titulo)} & {tex_escape(', '.join(c.requisitos))} & "
-                 f"{tex_escape(c.iso25010)} & {tex_escape(resumen)} & {estado} \\\\")
-    L += [r"\bottomrule", r"\end{longtable}"]
-    ruta.write_text("\n".join(L) + "\n", encoding="utf-8")
-
-
-def escribir_json(ruta: Path, res: list[Resultado], casos: list[CasoTrazado],
-                  ctx: dict, avisos: list[str]) -> None:
-    ruta.write_text(json.dumps({
-        "generado": datetime.now().isoformat(timespec="seconds"),
-        "norma_aplicada": "ISO/IEC 25010",
-        "normas_de_medicion": ["ISO/IEC 25023", "ISO/IEC 25022"],
-        "metricas": [
-            {"id": r.id, "nombre": r.nombre, "iso25010": r.iso25010,
-             "subcaracteristica": r.subcaracteristica, "norma_medicion": r.norma_medicion,
-             "formula": r.formula, "sustitucion": r.sustitucion, "valor": r.valor,
-             "unidad": r.unidad, "operador": r.operador, "umbral": r.umbral,
-             "cumple": r.cumple, "fuente": r.fuente}
-            for r in res
-        ],
-        "trazabilidad": [
-            {"id": c.id, "titulo": c.titulo, "requisitos": c.requisitos,
-             "iso25010": c.iso25010, "estado": c.estado, "pruebas": c.detalle}
-            for c in casos
-        ],
-        "contexto": ctx,
-        "avisos": [a.splitlines()[0] for a in avisos],
-        "veredicto": "APTO" if all(r.cumple for r in res) else "NO APTO",
-    }, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-
-
 # ==========================================================================
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__,
@@ -667,12 +582,8 @@ def main() -> int:
         return 1
 
     imprimir_consola(res, casos, ctx, avisos)
-    escribir_json(salida / "metricas.json", res, casos, ctx, avisos)
     escribir_markdown(salida / "metricas.md", res, casos, ctx, avisos)
-    escribir_tex_metricas(salida / "metricas_tabla.tex", res)
-    escribir_tex_trazabilidad(salida / "trazabilidad_tabla.tex", casos)
-    print(f"Reportes escritos en {salida}/ "
-          "(metricas.json, metricas.md, metricas_tabla.tex, trazabilidad_tabla.tex)")
+    print(f"Reporte escrito en {salida / 'metricas.md'}")
 
     fallo = (any(not r.cumple for r in res)
              or any(c.estado in {"FAIL", "NO ENCONTRADO"} for c in casos)

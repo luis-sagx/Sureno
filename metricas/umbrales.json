@@ -128,7 +128,7 @@
       "descripcion_formula": "lineas ejecutadas por la suite pytest sobre lineas ejecutables de app.py, models/ y routes/",
       "unidad": "razon",
       "operador": ">=",
-      "umbral": 0.6
+      "umbral": 0.8
     },
     {
       "id": "MC-11",
@@ -140,7 +140,7 @@
       "descripcion_formula": "lineas ejecutadas por Vitest sobre src/lib/ y src/middleware.ts",
       "unidad": "razon",
       "operador": ">=",
-      "umbral": 0.6
+      "umbral": 0.8
     },
     {
       "id": "MC-12",

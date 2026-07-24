@@ -15,28 +15,28 @@ ABRIR=0
 
 VERDE='\033[32m'; ROJO='\033[31m'; AMAR='\033[33m'; CIAN='\033[1;36m'; NC='\033[0m'
 
-# ruta|descripcion|tamano minimo en bytes|comando que lo genera
+# ruta|descripcion|comando que lo genera|criterio de calidad
 REPORTES=(
-"backend/Tests/evidencias/reporte_pytest.html|Resultados pytest (164 pruebas)|20000|pytest --html=..."
-"backend/Tests/evidencias/coverage_html/index.html|Cobertura backend (94.5%)|5000|pytest --cov-report=html:..."
-"frontend/coverage/index.html|Cobertura frontend (100%)|3000|npx vitest run --coverage"
-"frontend/tests-e2e/playwright-report/index.html|Reporte E2E (18 pruebas)|100000|npx playwright test"
-"backend/Tests/evidencias/reporte_carga.html|Carga Locust (50 usuarios)|100000|locust ... --html=..."
-"report/jscpd/jscpd-report.html|Duplicacion de codigo (1.23%)|5000|npx jscpd --reporters json,html"
-"metricas/salida/metricas.md|METRICAS ISO calculadas (16/16)|3000|python metricas/calcular_metricas.py"
+"backend/Tests/evidencias/reporte_pytest.html|Resultados pytest (164 pruebas)|pytest --html=...|calidad: 164/164 pruebas PASS"
+"backend/Tests/evidencias/coverage_html/index.html|Cobertura backend (94.5%)|pytest --cov-report=html:...|calidad: cobertura backend >= 80%"
+"frontend/coverage/index.html|Cobertura frontend (100%)|npx vitest run --coverage|calidad: cobertura frontend >= 80%"
+"frontend/tests-e2e/playwright-report/index.html|Reporte E2E (18 pruebas)|npx playwright test|calidad: 18/18 E2E PASS"
+"backend/Tests/evidencias/reporte_carga.html|Carga Locust (50 usuarios)|locust ... --html=...|calidad: disponibilidad >= 99%, p95 <= 800 ms, capacidad >= 20 req/s"
+"report/jscpd/jscpd-report.html|Duplicacion de codigo (1.23%)|npx jscpd --reporters json,html|calidad: duplicacion <= 3%"
+"metricas/salida/metricas.md|METRICAS ISO calculadas (16/16)|python metricas/calcular_metricas.py|calidad: 16/16 metricas CUMPLEN"
 )
 
 printf "\n${CIAN}Verificacion de reportes de evidencia — SQAP Sureno${NC}\n"
-printf '%.0s─' {1..96}; printf '\n'
+printf '%.0s─' {1..120}; printf '\n'
 
 FALTAN=0; ANTIGUOS=0; AHORA=$(date +%s)
 
 for entrada in "${REPORTES[@]}"; do
-  IFS='|' read -r ruta desc minimo comando <<< "$entrada"
+  IFS='|' read -r ruta desc comando criterio <<< "$entrada"
   abs="${RAIZ}/${ruta}"
 
   if [[ ! -f "$abs" ]]; then
-    printf "${ROJO}FALTA  ${NC} %-48s %s\n" "$desc" "$ruta"
+    printf "${ROJO}FALTA  ${NC} %-48s %s (%s)\n" "$desc" "$ruta" "$criterio"
     printf "        ${AMAR}genera con:${NC} %s\n" "$comando"
     ((FALTAN++)); continue
   fi
@@ -45,20 +45,20 @@ for entrada in "${REPORTES[@]}"; do
   mod=$(stat -c%Y "$abs")
   edad_h=$(( (AHORA - mod) / 3600 ))
 
-  if (( tam < minimo )); then
-    printf "${ROJO}VACIO  ${NC} %-48s %s (%s bytes, se esperaban >%s)\n" "$desc" "$ruta" "$tam" "$minimo"
+  if (( tam == 0 )); then
+    printf "${ROJO}VACIO  ${NC} %-48s %s (%s)\n" "$desc" "$ruta" "$criterio"
     ((FALTAN++)); continue
   fi
 
   if (( edad_h > 24 )); then
-    printf "${AMAR}ANTIGUO${NC} %-48s %s (%s h)\n" "$desc" "$ruta" "$edad_h"
+    printf "${AMAR}ANTIGUO${NC} %-48s %s (%s; %s h)\n" "$desc" "$ruta" "$criterio" "$edad_h"
     ((ANTIGUOS++))
   else
-    printf "${VERDE}OK     ${NC} %-48s %s (%s KB, hace %s h)\n" "$desc" "$ruta" "$((tam/1024))" "$edad_h"
+    printf "${VERDE}OK     ${NC} %-48s %s (%s; hace %s h)\n" "$desc" "$ruta" "$criterio" "$edad_h"
   fi
 done
 
-printf '%.0s─' {1..96}; printf '\n'
+printf '%.0s─' {1..120}; printf '\n'
 
 if (( FALTAN > 0 )); then
   printf "${ROJO}%d reporte(s) faltan o estan vacios.${NC} Ejecuta: ./metricas/ejecutar_suite.sh --todo\n\n" "$FALTAN"

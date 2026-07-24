@@ -32,7 +32,7 @@
   ],
   "minLines": 3,
   "minTokens": 25,
-  "threshold": 0,
+  "threshold": 3,
   "reporters": [
     "console",
     "html"

@@ -3,8 +3,7 @@
 #
 # Este es el comando que se muestra en la exposicion: produce exactamente los
 # mismos numeros que aparecen en el documento SQAP_Sureno.tex, porque el
-# documento consume las tablas que este script genera
-# (metricas/salida/metricas_tabla.tex y trazabilidad_tabla.tex).
+# documento usa los valores que este script resume en metricas/salida/metricas.md.
 #
 #   ./metricas/ejecutar_suite.sh            # backend + frontend + estatico + metricas
 #   ./metricas/ejecutar_suite.sh --con-e2e  # ademas Playwright (requiere stack levantado)
@@ -87,7 +86,7 @@ cat <<EOF
   frontend/tests-e2e/playwright-report/index.html     reporte E2E
   backend/Tests/evidencias/reporte_carga.html         reporte de carga (Locust)
   report/jscpd/jscpd-report.html                      duplicacion de codigo
-  metricas/salida/metricas.md                         METRICAS ISO calculadas
+  metricas/salida/metricas.md                         METRICAS ISO calculadas (Markdown)
 EOF
 
 printf '\n\033[1;36m==> Abrir todos los reportes en el navegador\033[0m\n'
