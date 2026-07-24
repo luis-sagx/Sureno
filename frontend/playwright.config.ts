@@ -24,7 +24,12 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   retries: 0,
-  reporter: [['list'], ['html', { outputFolder: 'tests-e2e/playwright-report', open: 'never' }]],
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: 'tests-e2e/playwright-report', open: 'never' }],
+    // JSON consumido por metricas/calcular_metricas.py (MC-02, MC-15, MC-16).
+    ['json', { outputFile: 'tests-e2e/report.json' }],
+  ],
   timeout: 30_000,
   use: {
     baseURL: process.env.E2E_BASE_URL || 'http://localhost:4321',
