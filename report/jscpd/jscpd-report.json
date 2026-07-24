@@ -1,0 +1,597 @@
+{
+  "duplicates": [
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 13,
+          "line": 64,
+          "position": 2115
+        },
+        "name": "address_routes.py",
+        "start": 59,
+        "startLoc": {
+          "column": 74,
+          "line": 59,
+          "position": 1967
+        }
+      },
+      "format": "python",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 83,
+        "endLoc": {
+          "column": 13,
+          "line": 83,
+          "position": 2781
+        },
+        "name": "address_routes.py",
+        "start": 78,
+        "startLoc": {
+          "column": 60,
+          "line": 78,
+          "position": 2633
+        }
+      },
+      "tokens": 25
+    },
+    {
+      "firstFile": {
+        "end": 68,
+        "endLoc": {
+          "column": 55,
+          "line": 68,
+          "position": 2328
+        },
+        "name": "address_routes.py",
+        "start": 64,
+        "startLoc": {
+          "column": 46,
+          "line": 64,
+          "position": 2148
+        }
+      },
+      "format": "python",
+      "fragment": "",
+      "lines": 5,
+      "secondFile": {
+        "end": 87,
+        "endLoc": {
+          "column": 55,
+          "line": 87,
+          "position": 3002
+        },
+        "name": "address_routes.py",
+        "start": 83,
+        "startLoc": {
+          "column": 54,
+          "line": 83,
+          "position": 2822
+        }
+      },
+      "tokens": 34
+    },
+    {
+      "firstFile": {
+        "end": 17,
+        "endLoc": {
+          "column": 67,
+          "line": 17,
+          "position": 569
+        },
+        "name": "auth.py",
+        "start": 13,
+        "startLoc": {
+          "column": 58,
+          "line": 13,
+          "position": 409
+        }
+      },
+      "format": "python",
+      "fragment": "",
+      "lines": 5,
+      "secondFile": {
+        "end": 27,
+        "endLoc": {
+          "column": 67,
+          "line": 27,
+          "position": 873
+        },
+        "name": "auth.py",
+        "start": 23,
+        "startLoc": {
+          "column": 55,
+          "line": 23,
+          "position": 713
+        }
+      },
+      "tokens": 37
+    },
+    {
+      "firstFile": {
+        "end": 23,
+        "endLoc": {
+          "column": 63,
+          "line": 23,
+          "position": 797
+        },
+        "name": "order_routes.py",
+        "start": 19,
+        "startLoc": {
+          "column": 17,
+          "line": 19,
+          "position": 657
+        }
+      },
+      "format": "python",
+      "fragment": "",
+      "lines": 5,
+      "secondFile": {
+        "end": 123,
+        "endLoc": {
+          "column": 63,
+          "line": 123,
+          "position": 4239
+        },
+        "name": "order_routes.py",
+        "start": 119,
+        "startLoc": {
+          "column": 28,
+          "line": 119,
+          "position": 4099
+        }
+      },
+      "tokens": 27
+    },
+    {
+      "firstFile": {
+        "end": 73,
+        "endLoc": {
+          "column": 51,
+          "line": 73,
+          "position": 2421
+        },
+        "name": "order_routes.py",
+        "start": 70,
+        "startLoc": {
+          "column": 4,
+          "line": 70,
+          "position": 2299
+        }
+      },
+      "format": "python",
+      "fragment": "",
+      "lines": 4,
+      "secondFile": {
+        "end": 92,
+        "endLoc": {
+          "column": 51,
+          "line": 92,
+          "position": 3190
+        },
+        "name": "order_routes.py",
+        "start": 89,
+        "startLoc": {
+          "column": 4,
+          "line": 89,
+          "position": 3068
+        }
+      },
+      "tokens": 29
+    },
+    {
+      "firstFile": {
+        "end": 48,
+        "endLoc": {
+          "column": 51,
+          "line": 48,
+          "position": 1424
+        },
+        "name": "",
+        "start": 45,
+        "startLoc": {
+          "column": 61,
+          "line": 45,
+          "position": 1295
+        }
+      },
+      "format": "python",
+      "fragment": "",
+      "lines": 4,
+      "secondFile": {
+        "end": 60,
+        "endLoc": {
+          "column": 51,
+          "line": 60,
+          "position": 1793
+        },
+        "name": "",
+        "start": 57,
+        "startLoc": {
+          "column": 61,
+          "line": 57,
+          "position": 1664
+        }
+      },
+      "tokens": 32
+    },
+    {
+      "firstFile": {
+        "end": 104,
+        "endLoc": {
+          "column": 5,
+          "line": 104,
+          "position": 5837
+        },
+        "name": "components/Header.astro:javascript",
+        "start": 100,
+        "startLoc": {
+          "column": 39,
+          "line": 100,
+          "position": 5625
+        }
+      },
+      "format": "javascript",
+      "fragment": "",
+      "lines": 5,
+      "secondFile": {
+        "end": 130,
+        "endLoc": {
+          "column": 9,
+          "line": 130,
+          "position": 6373
+        },
+        "name": "layouts/AdminLayout.astro:javascript",
+        "start": 125,
+        "startLoc": {
+          "column": 8,
+          "line": 125,
+          "position": 6144
+        }
+      },
+      "tokens": 70
+    },
+    {
+      "firstFile": {
+        "end": 50,
+        "endLoc": {
+          "column": 19,
+          "line": 50,
+          "position": 2031
+        },
+        "name": "pages/admin/orders.astro:html",
+        "start": 45,
+        "startLoc": {
+          "column": 122,
+          "line": 45,
+          "position": 1823
+        }
+      },
+      "format": "html",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 51,
+        "endLoc": {
+          "column": 21,
+          "line": 51,
+          "position": 2385
+        },
+        "name": "pages/admin/products.astro:html",
+        "start": 46,
+        "startLoc": {
+          "column": 116,
+          "line": 46,
+          "position": 2175
+        }
+      },
+      "tokens": 28
+    },
+    {
+      "firstFile": {
+        "end": 102,
+        "endLoc": {
+          "column": 3,
+          "line": 102,
+          "position": 4701
+        },
+        "name": "pages/admin/orders.astro:html",
+        "start": 92,
+        "startLoc": {
+          "column": 24,
+          "line": 92,
+          "position": 4582
+        }
+      },
+      "format": "html",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 109,
+        "endLoc": {
+          "column": 3,
+          "line": 109,
+          "position": 5381
+        },
+        "name": "pages/admin/products.astro:html",
+        "start": 99,
+        "startLoc": {
+          "column": 23,
+          "line": 99,
+          "position": 5252
+        }
+      },
+      "tokens": 31
+    },
+    {
+      "firstFile": {
+        "end": 109,
+        "endLoc": {
+          "column": 10,
+          "line": 109,
+          "position": 4892
+        },
+        "name": "pages/admin/orders.astro:javascript",
+        "start": 106,
+        "startLoc": {
+          "column": 2,
+          "line": 106,
+          "position": 4784
+        }
+      },
+      "format": "javascript",
+      "fragment": "",
+      "lines": 4,
+      "secondFile": {
+        "end": 154,
+        "endLoc": {
+          "column": 7,
+          "line": 154,
+          "position": 8379
+        },
+        "name": "pages/admin/products.astro:javascript",
+        "start": 151,
+        "startLoc": {
+          "column": 2,
+          "line": 151,
+          "position": 8274
+        }
+      },
+      "tokens": 28
+    },
+    {
+      "firstFile": {
+        "end": 117,
+        "endLoc": {
+          "column": 45,
+          "line": 117,
+          "position": 5294
+        },
+        "name": "pages/admin/orders.astro:javascript",
+        "start": 114,
+        "startLoc": {
+          "column": 49,
+          "line": 114,
+          "position": 5180
+        }
+      },
+      "format": "javascript",
+      "fragment": "",
+      "lines": 4,
+      "secondFile": {
+        "end": 105,
+        "endLoc": {
+          "column": 50,
+          "line": 105,
+          "position": 4129
+        },
+        "name": "pages/cart.astro:javascript",
+        "start": 102,
+        "startLoc": {
+          "column": 71,
+          "line": 102,
+          "position": 4010
+        }
+      },
+      "tokens": 45
+    },
+    {
+      "firstFile": {
+        "end": 117,
+        "endLoc": {
+          "column": 62,
+          "line": 117,
+          "position": 5311
+        },
+        "name": "pages/admin/orders.astro:javascript",
+        "start": 114,
+        "startLoc": {
+          "column": 49,
+          "line": 114,
+          "position": 5180
+        }
+      },
+      "format": "javascript",
+      "fragment": "",
+      "lines": 4,
+      "secondFile": {
+        "end": 120,
+        "endLoc": {
+          "column": 60,
+          "line": 120,
+          "position": 5438
+        },
+        "name": "pages/checkout.astro:javascript",
+        "start": 117,
+        "startLoc": {
+          "column": 70,
+          "line": 117,
+          "position": 5309
+        }
+      },
+      "tokens": 48
+    },
+    {
+      "firstFile": {
+        "end": 7,
+        "endLoc": {
+          "column": 9,
+          "line": 7,
+          "position": 214
+        },
+        "name": "pages/admin/orders.astro:typescript",
+        "start": 2,
+        "startLoc": {
+          "column": 0,
+          "line": 2,
+          "position": 4
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 7,
+        "endLoc": {
+          "column": 9,
+          "line": 7,
+          "position": 214
+        },
+        "name": "pages/admin/products.astro:typescript",
+        "start": 2,
+        "startLoc": {
+          "column": 0,
+          "line": 2,
+          "position": 4
+        }
+      },
+      "tokens": 25
+    },
+    {
+      "firstFile": {
+        "end": 16,
+        "endLoc": {
+          "column": 55,
+          "line": 16,
+          "position": 737
+        },
+        "name": "pages/login.astro:html",
+        "start": 12,
+        "startLoc": {
+          "column": 54,
+          "line": 12,
+          "position": 447
+        }
+      },
+      "format": "html",
+      "fragment": "",
+      "lines": 5,
+      "secondFile": {
+        "end": 19,
+        "endLoc": {
+          "column": 117,
+          "line": 19,
+          "position": 1198
+        },
+        "name": "pages/signup.astro:html",
+        "start": 17,
+        "startLoc": {
+          "column": 151,
+          "line": 17,
+          "position": 926
+        }
+      },
+      "tokens": 65
+    }
+  ],
+  "statistics": {
+    "detectionDate": "2026-07-23T22:02:19.315Z",
+    "formats": {
+      "astro": {
+        "clones": 0,
+        "duplicatedLines": 0,
+        "duplicatedTokens": 0,
+        "lines": 1070,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 0.0,
+        "percentageTokens": 0.0,
+        "sources": 10,
+        "tokens": 4369
+      },
+      "css": {
+        "clones": 0,
+        "duplicatedLines": 0,
+        "duplicatedTokens": 0,
+        "lines": 122,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 0.0,
+        "percentageTokens": 0.0,
+        "sources": 1,
+        "tokens": 1379
+      },
+      "html": {
+        "clones": 3,
+        "duplicatedLines": 19,
+        "duplicatedTokens": 124,
+        "lines": 1063,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 1.7873941674506115,
+        "percentageTokens": 2.645051194539249,
+        "sources": 9,
+        "tokens": 4688
+      },
+      "javascript": {
+        "clones": 4,
+        "duplicatedLines": 13,
+        "duplicatedTokens": 191,
+        "lines": 1060,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 1.2264150943396228,
+        "percentageTokens": 4.371709773403524,
+        "sources": 10,
+        "tokens": 4369
+      },
+      "python": {
+        "clones": 6,
+        "duplicatedLines": 23,
+        "duplicatedTokens": 184,
+        "lines": 1139,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 2.019315188762072,
+        "percentageTokens": 2.7491408934707904,
+        "sources": 15,
+        "tokens": 6693
+      },
+      "typescript": {
+        "clones": 1,
+        "duplicatedLines": 5,
+        "duplicatedTokens": 25,
+        "lines": 422,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 1.1848341232227488,
+        "percentageTokens": 0.8877840909090909,
+        "sources": 13,
+        "tokens": 2816
+      }
+    },
+    "total": {
+      "clones": 14,
+      "duplicatedLines": 60,
+      "duplicatedTokens": 524,
+      "lines": 4876,
+      "newClones": 0,
+      "newDuplicatedLines": 0,
+      "percentage": 1.2305168170631664,
+      "percentageTokens": 2.1551369581311177,
+      "sources": 58,
+      "tokens": 24314
+    }
+  }
+}

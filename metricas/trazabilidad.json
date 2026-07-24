@@ -1,0 +1,263 @@
+{
+  "_comentario": [
+    "Matriz de trazabilidad EJECUTABLE del SQAP (seccion 8).",
+    "Cada caso de prueba CP-xx declara los tests automatizados que lo implementan.",
+    "metricas/calcular_metricas.py resuelve cada referencia contra los reportes reales",
+    "(JUnit de pytest, JSON de Playwright, JSON de Vitest) y marca el CP como",
+    "PASS solo si TODOS sus tests existen y pasan. Si un nodeid deja de existir,",
+    "el calculo se marca NO ENCONTRADO: la matriz del documento no puede quedar",
+    "desactualizada en silencio.",
+    "Tipos: 'pytest' -> nodeid; 'playwright'/'vitest' -> titulo exacto del test."
+  ],
+  "requisitos": {
+    "RF-01": "Registro de usuarios con validacion de datos",
+    "RF-02": "Autenticacion con roles (admin/cliente)",
+    "RF-03": "CRUD de productos (solo admin)",
+    "RF-04": "Carrito: agregar, modificar cantidad, eliminar",
+    "RF-05": "Checkout con direccion de envio",
+    "RF-06": "Historial de pedidos del cliente",
+    "RF-07": "Panel admin: visualizacion de pedidos",
+    "RNF-01": "Contrasenas con hash (bcrypt)",
+    "RNF-02": "Rutas protegidas exigen sesion activa",
+    "RNF-03": "El servidor no confia en precios/totales enviados por el cliente"
+  },
+  "casos": [
+    {
+      "id": "CP-01",
+      "titulo": "Registro exitoso con datos validos",
+      "requisitos": ["RF-01"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_signup_crea_usuario"}
+      ]
+    },
+    {
+      "id": "CP-02",
+      "titulo": "Registro rechazado con email duplicado",
+      "requisitos": ["RF-01"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_signup_email_duplicado"}
+      ]
+    },
+    {
+      "id": "CP-03",
+      "titulo": "Registro rechazado con campos vacios",
+      "requisitos": ["RF-01"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_api_signup_faltan_campos"}
+      ]
+    },
+    {
+      "id": "CP-04",
+      "titulo": "Login exitoso con credenciales de cliente",
+      "requisitos": ["RF-02"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_login_exitoso"},
+        {"tipo": "playwright", "ref": "login exitoso con credenciales válidas redirige fuera de /login"}
+      ]
+    },
+    {
+      "id": "CP-05",
+      "titulo": "Login rechazado con contrasena incorrecta",
+      "requisitos": ["RF-02"],
+      "iso25010": "Seguridad / Autenticidad",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_login_password_incorrecta"},
+        {"tipo": "playwright", "ref": "login fallido muestra error inline sin redirigir"}
+      ]
+    },
+    {
+      "id": "CP-06",
+      "titulo": "Login de administrador va al panel",
+      "requisitos": ["RF-02"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_casos_sqap.py::test_cp06_login_admin_redirige_al_panel"}
+      ]
+    },
+    {
+      "id": "CP-07",
+      "titulo": "Cliente/anonimo NO accede al panel admin",
+      "requisitos": ["RF-02", "RNF-02"],
+      "iso25010": "Seguridad / Confidencialidad",
+      "defecto": "DEF-010",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_admin_stats_sin_sesion_401"},
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_admin_stats_cliente_403"},
+        {"tipo": "playwright", "ref": "redirige panel administrativo al login sin sesión"}
+      ]
+    },
+    {
+      "id": "CP-08",
+      "titulo": "Crear producto como administrador",
+      "requisitos": ["RF-03"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_create_product_201"}
+      ]
+    },
+    {
+      "id": "CP-09",
+      "titulo": "Editar producto existente",
+      "requisitos": ["RF-03"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_update_product_200"}
+      ]
+    },
+    {
+      "id": "CP-10",
+      "titulo": "Eliminar producto",
+      "requisitos": ["RF-03"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_delete_product_200"},
+        {"tipo": "vitest", "ref": "bindDeleteDialog > deletes the row and closes the dialog on a successful response"}
+      ]
+    },
+    {
+      "id": "CP-11",
+      "titulo": "Agregar producto al carrito",
+      "requisitos": ["RF-04"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_cart_guarda"},
+        {"tipo": "vitest", "ref": "bindAddToCartButtons > adds the product read from the dataset to the cart"}
+      ]
+    },
+    {
+      "id": "CP-12",
+      "titulo": "Carrito rechaza cantidad cero",
+      "requisitos": ["RF-04"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_cart_cantidad_invalida_400"}
+      ]
+    },
+    {
+      "id": "CP-13",
+      "titulo": "Carrito rechaza cantidad negativa",
+      "requisitos": ["RF-04"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "defecto": "DEF-021",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_casos_sqap.py::test_cp13_carrito_rechaza_cantidad_negativa"}
+      ]
+    },
+    {
+      "id": "CP-14",
+      "titulo": "Checkout completo (E2E) con direccion",
+      "requisitos": ["RF-05"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tarea_calidad_en_uso": true,
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_order_create_exitoso_201"},
+        {"tipo": "playwright", "ref": "agregar producto al carrito y completar checkout"}
+      ]
+    },
+    {
+      "id": "CP-15",
+      "titulo": "Checkout sin direccion de envio",
+      "requisitos": ["RF-05"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_order_create_falta_campo_400"}
+      ]
+    },
+    {
+      "id": "CP-16",
+      "titulo": "Historial de pedidos del cliente",
+      "requisitos": ["RF-06"],
+      "iso25010": "Seguridad / Confidencialidad",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_compras_autenticado_lista"}
+      ]
+    },
+    {
+      "id": "CP-17",
+      "titulo": "Administrador visualiza los pedidos",
+      "requisitos": ["RF-07"],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_order_get_all_orders_admin_200"}
+      ]
+    },
+    {
+      "id": "CP-18",
+      "titulo": "Contrasena almacenada hasheada (bcrypt)",
+      "requisitos": ["RNF-01"],
+      "iso25010": "Seguridad / Confidencialidad",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/unitarias/test_models.py::test_cp18_user_create_hashea_password"}
+      ]
+    },
+    {
+      "id": "CP-19",
+      "titulo": "Acceso a compra/checkout sin sesion",
+      "requisitos": ["RNF-02"],
+      "iso25010": "Seguridad / Confidencialidad",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_compras_sin_sesion_401"},
+        {"tipo": "playwright", "ref": "logout cierra la sesión y bloquea rutas protegidas"}
+      ]
+    },
+    {
+      "id": "CP-20",
+      "titulo": "API /api/user sin sesion devuelve 401",
+      "requisitos": ["RNF-02"],
+      "iso25010": "Seguridad / Confidencialidad",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_casos_sqap.py::test_cp20_api_user_sin_sesion_401"}
+      ]
+    },
+    {
+      "id": "CP-21",
+      "titulo": "Registro rechaza email con formato invalido",
+      "requisitos": ["RF-01"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "defecto": "DEF-018",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_cp21_api_signup_email_con_formato_invalido"},
+        {"tipo": "playwright", "ref": "rechaza un correo con formato inválido"}
+      ]
+    },
+    {
+      "id": "CP-22",
+      "titulo": "Registro valida la identificacion (cedula o RUC)",
+      "requisitos": ["RF-01"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "defecto": "DEF-018",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_cp22_api_signup_identificacion_con_formato_invalido"},
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_signup_con_ruc_valido_crea_usuario"},
+        {"tipo": "pytest", "ref": "Tests/unitarias/test_validators.py::test_identificacion_acepta_cedula_valida"},
+        {"tipo": "pytest", "ref": "Tests/unitarias/test_validators.py::test_identificacion_acepta_ruc_valido"},
+        {"tipo": "pytest", "ref": "Tests/unitarias/test_validators.py::test_identificacion_rechaza_formato_arbitrario"},
+        {"tipo": "playwright", "ref": "rechaza una cédula o RUC inválido"}
+      ]
+    },
+    {
+      "id": "CP-23",
+      "titulo": "No se puede comprar con carrito vacio",
+      "requisitos": ["RF-05"],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "defecto": "DEF-019",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api_extra.py::test_cp23_order_create_carrito_vacio_400"}
+      ]
+    },
+    {
+      "id": "CP-24",
+      "titulo": "El total no se puede manipular desde el cliente",
+      "requisitos": ["RF-05", "RNF-03"],
+      "iso25010": "Seguridad / Integridad",
+      "defecto": "DEF-020",
+      "tests": [
+        {"tipo": "pytest", "ref": "Tests/integracion/test_api.py::test_api_cart_ignora_precio_y_total_manipulados"}
+      ]
+    }
+  ]
+}

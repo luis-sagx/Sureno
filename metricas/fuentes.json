@@ -1,0 +1,55 @@
+{
+  "_comentario": [
+    "Valores que NO se pueden derivar ejecutando la suite en local y que por tanto",
+    "se declaran explicitamente aqui, con su procedencia. Todo lo demas (cobertura,",
+    "pruebas pasadas/fallidas, carga, duplicacion) lo calcula calcular_metricas.py",
+    "parseando los reportes reales.",
+    "El bloque 'sonar_despues' se toma del dashboard de SonarQube Cloud tras el",
+    "analisis de la rama main posterior a la refactorizacion; el bloque 'antes' NO",
+    "se declara: se cuenta automaticamente desde issues.csv (export de SonarQube de",
+    "la linea base, 111 issues)."
+  ],
+
+  "sonar_antes_csv": "issues.csv",
+
+  "sonar_despues": {
+    "_procedencia": "Dashboard SonarQube Cloud - proyecto luis-sagx_Sureno, rama main, analisis posterior a la fase Act",
+    "vulnerabilidades": 0,
+    "bugs": 0,
+    "code_smells_critical_major": 4,
+    "code_smells_total": 4,
+    "issues_accesibilidad": 0,
+    "security_hotspots": 0,
+    "rating_fiabilidad": "A",
+    "rating_seguridad": "A",
+    "rating_mantenibilidad": "A",
+    "quality_gate": "Passed"
+  },
+
+  "defectos": {
+    "_procedencia": "GitHub Issues del repositorio luis-sagx/Sureno (etiqueta bug), seccion 9 del SQAP",
+    "total_registrados": 21,
+    "abiertos_al_cierre": 0,
+    "abiertos_criticos_o_bloqueantes": 0,
+    "por_modulo": {
+      "CFG": 5,
+      "AUTH": 6,
+      "CART": 4,
+      "ORDER": 1,
+      "PROD": 4,
+      "ADDR": 0,
+      "FRONTEND": 1
+    }
+  },
+
+  "alcance_codigo": {
+    "_procedencia": "conteo de lineas de los archivos del alcance (backend/app.py, config.py, validators.py, db_indexes.py, models/, routes/)",
+    "kloc": 1.142
+  },
+
+  "carga": {
+    "_procedencia": "locust -f Tests/carga/locustfile.py --users 50 --spawn-rate 5 --run-time 2m --headless",
+    "usuarios_concurrentes": 50,
+    "duracion_segundos": 120
+  }
+}

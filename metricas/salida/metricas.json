@@ -1,0 +1,615 @@
+{
+  "generado": "2026-07-23T18:43:19",
+  "norma_aplicada": "ISO/IEC 25010",
+  "normas_de_medicion": [
+    "ISO/IEC 25023",
+    "ISO/IEC 25022"
+  ],
+  "metricas": [
+    {
+      "id": "MC-01",
+      "nombre": "Completitud funcional",
+      "iso25010": "Adecuación funcional",
+      "subcaracteristica": "Completitud funcional",
+      "norma_medicion": "ISO/IEC 25023 - 8.2.1 Functional coverage",
+      "formula": "X = A / B",
+      "sustitucion": "X = 10 / 10",
+      "valor": 1.0,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 1.0,
+      "cumple": true,
+      "fuente": "trazabilidad.json resuelta contra JUnit/Vitest/Playwright"
+    },
+    {
+      "id": "MC-02",
+      "nombre": "Tasa de éxito de los casos de prueba",
+      "iso25010": "Adecuación funcional",
+      "subcaracteristica": "Corrección funcional",
+      "norma_medicion": "ISO/IEC 25023 - 8.2.2 Functional correctness",
+      "formula": "X = A / B",
+      "sustitucion": "X = 24 / 24",
+      "valor": 1.0,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.95,
+      "cumple": true,
+      "fuente": "casos CP-01..CP-24 de la matriz de trazabilidad"
+    },
+    {
+      "id": "MC-03",
+      "nombre": "Densidad de fallos de la suite",
+      "iso25010": "Fiabilidad",
+      "subcaracteristica": "Madurez",
+      "norma_medicion": "ISO/IEC 25023 - 8.3.1 Failure density against test cases",
+      "formula": "X = A / B",
+      "sustitucion": "X = 0 / 229",
+      "valor": 0.0,
+      "unidad": "razon",
+      "operador": "<=",
+      "umbral": 0.05,
+      "cumple": true,
+      "fuente": "junit_backend.xml + vitest-results.json + report.json (Playwright)"
+    },
+    {
+      "id": "MC-04",
+      "nombre": "Densidad de defectos abiertos",
+      "iso25010": "Fiabilidad",
+      "subcaracteristica": "Madurez",
+      "norma_medicion": "ISO/IEC 25023 - 8.3.2 Fault density (defectos por KLOC)",
+      "formula": "X = D / KLOC",
+      "sustitucion": "X = 0 / 1.142 KLOC",
+      "valor": 0.0,
+      "unidad": "def/KLOC",
+      "operador": "<=",
+      "umbral": 1.0,
+      "cumple": true,
+      "fuente": "GitHub Issues (fuentes.json) + conteo de lineas del alcance"
+    },
+    {
+      "id": "MC-05",
+      "nombre": "Disponibilidad bajo carga",
+      "iso25010": "Fiabilidad",
+      "subcaracteristica": "Disponibilidad",
+      "norma_medicion": "ISO/IEC 25023 - 8.3.3 Availability",
+      "formula": "X = (N - F) / N",
+      "sustitucion": "X = (2996 - 0) / 2996",
+      "valor": 1.0,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.99,
+      "cumple": true,
+      "fuente": "carga_stats.csv (Aggregated)"
+    },
+    {
+      "id": "MC-06",
+      "nombre": "Tiempo de respuesta p95",
+      "iso25010": "Eficiencia de desempeño",
+      "subcaracteristica": "Comportamiento temporal",
+      "norma_medicion": "ISO/IEC 25023 - 8.4.1 Response time",
+      "formula": "X = p95(t)",
+      "sustitucion": "X = p95 = 200 ms",
+      "valor": 200.0,
+      "unidad": "ms",
+      "operador": "<=",
+      "umbral": 800,
+      "cumple": true,
+      "fuente": "carga_stats.csv (Aggregated)"
+    },
+    {
+      "id": "MC-07",
+      "nombre": "Capacidad (rendimiento sostenido)",
+      "iso25010": "Eficiencia de desempeño",
+      "subcaracteristica": "Capacidad",
+      "norma_medicion": "ISO/IEC 25023 - 8.4.3 Throughput",
+      "formula": "X = N / T",
+      "sustitucion": "X = 2996 / 120 s = 25.13 req/s",
+      "valor": 25.132894874424476,
+      "unidad": "req/s",
+      "operador": ">=",
+      "umbral": 20,
+      "cumple": true,
+      "fuente": "carga_stats.csv (Aggregated)"
+    },
+    {
+      "id": "MC-08",
+      "nombre": "Vulnerabilidades críticas abiertas",
+      "iso25010": "Seguridad",
+      "subcaracteristica": "Confidencialidad / Integridad",
+      "norma_medicion": "ISO/IEC 25023 - 8.6 Security measures",
+      "formula": "X = V_blocker + V_critical",
+      "sustitucion": "X = 0 (BLOCKER+CRITICAL abiertas)",
+      "valor": 0.0,
+      "unidad": "issues",
+      "operador": "==",
+      "umbral": 0,
+      "cumple": true,
+      "fuente": "dashboard SonarQube Cloud DESPUES (fuentes.json)"
+    },
+    {
+      "id": "MC-09",
+      "nombre": "Índice de remediación de vulnerabilidades",
+      "iso25010": "Seguridad",
+      "subcaracteristica": "Integridad",
+      "norma_medicion": "ISO/IEC 25023 - 8.6 Security measures (medida derivada)",
+      "formula": "X = (V_antes - V_despues) / V_antes",
+      "sustitucion": "X = (33 - 0) / 33",
+      "valor": 1.0,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.9,
+      "cumple": true,
+      "fuente": "issues.csv (ANTES) vs dashboard SonarQube (DESPUES)"
+    },
+    {
+      "id": "MC-10",
+      "nombre": "Cobertura de código backend",
+      "iso25010": "Mantenibilidad",
+      "subcaracteristica": "Capacidad de ser probado",
+      "norma_medicion": "ISO/IEC 25023 - 8.7.5 Test coverage",
+      "formula": "X = L_cubiertas / L_totales",
+      "sustitucion": "X = 690 / 730 lineas",
+      "valor": 0.9452054794520548,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.6,
+      "cumple": true,
+      "fuente": "backend/coverage.xml"
+    },
+    {
+      "id": "MC-11",
+      "nombre": "Cobertura de código frontend",
+      "iso25010": "Mantenibilidad",
+      "subcaracteristica": "Capacidad de ser probado",
+      "norma_medicion": "ISO/IEC 25023 - 8.7.5 Test coverage",
+      "formula": "X = L_cubiertas / L_totales",
+      "sustitucion": "X = 210 / 210 lineas",
+      "valor": 1.0,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.6,
+      "cumple": true,
+      "fuente": "frontend/coverage/coverage-summary.json"
+    },
+    {
+      "id": "MC-12",
+      "nombre": "Densidad de código duplicado",
+      "iso25010": "Mantenibilidad",
+      "subcaracteristica": "Modularidad / Reusabilidad",
+      "norma_medicion": "ISO/IEC 25023 - 8.7.1 Modularity (medida por jscpd)",
+      "formula": "X = L_duplicadas / L_totales",
+      "sustitucion": "X = 60 / 4876 lineas",
+      "valor": 0.012305168170631665,
+      "unidad": "razon",
+      "operador": "<=",
+      "umbral": 0.03,
+      "cumple": true,
+      "fuente": "report/jscpd/jscpd-report.json"
+    },
+    {
+      "id": "MC-13",
+      "nombre": "Reducción de deuda técnica (code smells)",
+      "iso25010": "Mantenibilidad",
+      "subcaracteristica": "Analizabilidad / Modificabilidad",
+      "norma_medicion": "ISO/IEC 25023 - 8.7.2 Reusability / analisis estatico",
+      "formula": "X = (S_antes - S_despues) / S_antes",
+      "sustitucion": "X = (42 - 4) / 42",
+      "valor": 0.9047619047619048,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.5,
+      "cumple": true,
+      "fuente": "issues.csv (ANTES) vs dashboard SonarQube (DESPUES)"
+    },
+    {
+      "id": "MC-14",
+      "nombre": "Barreras de accesibilidad abiertas",
+      "iso25010": "Usabilidad",
+      "subcaracteristica": "Accesibilidad",
+      "norma_medicion": "ISO/IEC 25023 - 8.5 Usability measures (accesibilidad)",
+      "formula": "X = sum(issues_a11y_abiertos)",
+      "sustitucion": "X = 0 (ANTES: 52)",
+      "valor": 0.0,
+      "unidad": "issues",
+      "operador": "==",
+      "umbral": 0,
+      "cumple": true,
+      "fuente": "reglas Web:* de accesibilidad en SonarQube"
+    },
+    {
+      "id": "MC-15",
+      "nombre": "Eficacia: tareas de usuario completadas",
+      "iso25010": "Calidad en uso",
+      "subcaracteristica": "Eficacia",
+      "norma_medicion": "ISO/IEC 25022 - 6.1.1 Task completion",
+      "formula": "X = A / B",
+      "sustitucion": "X = 7 / 7 tareas E2E",
+      "valor": 1.0,
+      "unidad": "razon",
+      "operador": ">=",
+      "umbral": 0.95,
+      "cumple": true,
+      "fuente": "report.json (Playwright)"
+    },
+    {
+      "id": "MC-16",
+      "nombre": "Eficiencia: tiempo de la tarea de compra",
+      "iso25010": "Calidad en uso",
+      "subcaracteristica": "Eficiencia",
+      "norma_medicion": "ISO/IEC 25022 - 6.2.1 Task time",
+      "formula": "X = T_tarea",
+      "sustitucion": "X = 7.7 s (recorrido completo de compra)",
+      "valor": 7.671,
+      "unidad": "s",
+      "operador": "<=",
+      "umbral": 30,
+      "cumple": true,
+      "fuente": "report.json (Playwright, duracion del spec)"
+    }
+  ],
+  "trazabilidad": [
+    {
+      "id": "CP-01",
+      "titulo": "Registro exitoso con datos validos",
+      "requisitos": [
+        "RF-01"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_signup_crea_usuario"
+      ]
+    },
+    {
+      "id": "CP-02",
+      "titulo": "Registro rechazado con email duplicado",
+      "requisitos": [
+        "RF-01"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_signup_email_duplicado"
+      ]
+    },
+    {
+      "id": "CP-03",
+      "titulo": "Registro rechazado con campos vacios",
+      "requisitos": [
+        "RF-01"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_api_signup_faltan_campos"
+      ]
+    },
+    {
+      "id": "CP-04",
+      "titulo": "Login exitoso con credenciales de cliente",
+      "requisitos": [
+        "RF-02"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_login_exitoso",
+        "[playwright] passed: login exitoso con credenciales válidas redirige fuera de /login"
+      ]
+    },
+    {
+      "id": "CP-05",
+      "titulo": "Login rechazado con contrasena incorrecta",
+      "requisitos": [
+        "RF-02"
+      ],
+      "iso25010": "Seguridad / Autenticidad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_login_password_incorrecta",
+        "[playwright] passed: login fallido muestra error inline sin redirigir"
+      ]
+    },
+    {
+      "id": "CP-06",
+      "titulo": "Login de administrador va al panel",
+      "requisitos": [
+        "RF-02"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_casos_sqap.py::test_cp06_login_admin_redirige_al_panel"
+      ]
+    },
+    {
+      "id": "CP-07",
+      "titulo": "Cliente/anonimo NO accede al panel admin",
+      "requisitos": [
+        "RF-02",
+        "RNF-02"
+      ],
+      "iso25010": "Seguridad / Confidencialidad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_admin_stats_sin_sesion_401",
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_admin_stats_cliente_403",
+        "[playwright] passed: redirige panel administrativo al login sin sesión"
+      ]
+    },
+    {
+      "id": "CP-08",
+      "titulo": "Crear producto como administrador",
+      "requisitos": [
+        "RF-03"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_create_product_201"
+      ]
+    },
+    {
+      "id": "CP-09",
+      "titulo": "Editar producto existente",
+      "requisitos": [
+        "RF-03"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_update_product_200"
+      ]
+    },
+    {
+      "id": "CP-10",
+      "titulo": "Eliminar producto",
+      "requisitos": [
+        "RF-03"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_delete_product_200",
+        "[vitest] passed: bindDeleteDialog > deletes the row and closes the dialog on a successful response"
+      ]
+    },
+    {
+      "id": "CP-11",
+      "titulo": "Agregar producto al carrito",
+      "requisitos": [
+        "RF-04"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_cart_guarda",
+        "[vitest] passed: bindAddToCartButtons > adds the product read from the dataset to the cart"
+      ]
+    },
+    {
+      "id": "CP-12",
+      "titulo": "Carrito rechaza cantidad cero",
+      "requisitos": [
+        "RF-04"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_cart_cantidad_invalida_400"
+      ]
+    },
+    {
+      "id": "CP-13",
+      "titulo": "Carrito rechaza cantidad negativa",
+      "requisitos": [
+        "RF-04"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_casos_sqap.py::test_cp13_carrito_rechaza_cantidad_negativa"
+      ]
+    },
+    {
+      "id": "CP-14",
+      "titulo": "Checkout completo (E2E) con direccion",
+      "requisitos": [
+        "RF-05"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_order_create_exitoso_201",
+        "[playwright] passed: agregar producto al carrito y completar checkout"
+      ]
+    },
+    {
+      "id": "CP-15",
+      "titulo": "Checkout sin direccion de envio",
+      "requisitos": [
+        "RF-05"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_order_create_falta_campo_400"
+      ]
+    },
+    {
+      "id": "CP-16",
+      "titulo": "Historial de pedidos del cliente",
+      "requisitos": [
+        "RF-06"
+      ],
+      "iso25010": "Seguridad / Confidencialidad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_compras_autenticado_lista"
+      ]
+    },
+    {
+      "id": "CP-17",
+      "titulo": "Administrador visualiza los pedidos",
+      "requisitos": [
+        "RF-07"
+      ],
+      "iso25010": "Adecuacion funcional / Completitud funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_order_get_all_orders_admin_200"
+      ]
+    },
+    {
+      "id": "CP-18",
+      "titulo": "Contrasena almacenada hasheada (bcrypt)",
+      "requisitos": [
+        "RNF-01"
+      ],
+      "iso25010": "Seguridad / Confidencialidad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/unitarias/test_models.py::test_cp18_user_create_hashea_password"
+      ]
+    },
+    {
+      "id": "CP-19",
+      "titulo": "Acceso a compra/checkout sin sesion",
+      "requisitos": [
+        "RNF-02"
+      ],
+      "iso25010": "Seguridad / Confidencialidad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_compras_sin_sesion_401",
+        "[playwright] passed: logout cierra la sesión y bloquea rutas protegidas"
+      ]
+    },
+    {
+      "id": "CP-20",
+      "titulo": "API /api/user sin sesion devuelve 401",
+      "requisitos": [
+        "RNF-02"
+      ],
+      "iso25010": "Seguridad / Confidencialidad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_casos_sqap.py::test_cp20_api_user_sin_sesion_401"
+      ]
+    },
+    {
+      "id": "CP-21",
+      "titulo": "Registro rechaza email con formato invalido",
+      "requisitos": [
+        "RF-01"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_cp21_api_signup_email_con_formato_invalido",
+        "[playwright] passed: rechaza un correo con formato inválido"
+      ]
+    },
+    {
+      "id": "CP-22",
+      "titulo": "Registro valida la identificacion (cedula o RUC)",
+      "requisitos": [
+        "RF-01"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_cp22_api_signup_identificacion_con_formato_invalido",
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_signup_con_ruc_valido_crea_usuario",
+        "[pytest] passed: Tests/unitarias/test_validators.py::test_identificacion_acepta_cedula_valida",
+        "[pytest] passed: Tests/unitarias/test_validators.py::test_identificacion_acepta_ruc_valido",
+        "[pytest] passed: Tests/unitarias/test_validators.py::test_identificacion_rechaza_formato_arbitrario",
+        "[playwright] passed: rechaza una cédula o RUC inválido"
+      ]
+    },
+    {
+      "id": "CP-23",
+      "titulo": "No se puede comprar con carrito vacio",
+      "requisitos": [
+        "RF-05"
+      ],
+      "iso25010": "Adecuacion funcional / Correccion funcional",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api_extra.py::test_cp23_order_create_carrito_vacio_400"
+      ]
+    },
+    {
+      "id": "CP-24",
+      "titulo": "El total no se puede manipular desde el cliente",
+      "requisitos": [
+        "RF-05",
+        "RNF-03"
+      ],
+      "iso25010": "Seguridad / Integridad",
+      "estado": "PASS",
+      "pruebas": [
+        "[pytest] passed: Tests/integracion/test_api.py::test_api_cart_ignora_precio_y_total_manipulados"
+      ]
+    }
+  ],
+  "contexto": {
+    "sonar_antes": {
+      "total": 111,
+      "vulnerabilidades": 33,
+      "bugs": 30,
+      "code_smells_total": 48,
+      "code_smells_critical_major": 42,
+      "vulnerabilidades_criticas": 2,
+      "issues_accesibilidad": 52
+    },
+    "sonar_despues": {
+      "_procedencia": "Dashboard SonarQube Cloud - proyecto luis-sagx_Sureno, rama main, analisis posterior a la fase Act",
+      "vulnerabilidades": 0,
+      "bugs": 0,
+      "code_smells_critical_major": 4,
+      "code_smells_total": 4,
+      "issues_accesibilidad": 0,
+      "security_hotspots": 0,
+      "rating_fiabilidad": "A",
+      "rating_seguridad": "A",
+      "rating_mantenibilidad": "A",
+      "quality_gate": "Passed"
+    },
+    "jscpd": {
+      "clones": 14,
+      "duplicatedLines": 60,
+      "duplicatedTokens": 524,
+      "lines": 4876,
+      "newClones": 0,
+      "newDuplicatedLines": 0,
+      "percentage": 1.2305168170631664,
+      "percentageTokens": 2.1551369581311177,
+      "sources": 58,
+      "tokens": 24314
+    },
+    "kloc": 1.142,
+    "tests": {
+      "backend": 164,
+      "frontend": 47,
+      "e2e": 18
+    },
+    "defectos": {
+      "_procedencia": "GitHub Issues del repositorio luis-sagx/Sureno (etiqueta bug), seccion 9 del SQAP",
+      "total_registrados": 21,
+      "abiertos_al_cierre": 0,
+      "abiertos_criticos_o_bloqueantes": 0,
+      "por_modulo": {
+        "CFG": 5,
+        "AUTH": 6,
+        "CART": 4,
+        "ORDER": 1,
+        "PROD": 4,
+        "ADDR": 0,
+        "FRONTEND": 1
+      }
+    }
+  },
+  "avisos": [],
+  "veredicto": "APTO"
+}
