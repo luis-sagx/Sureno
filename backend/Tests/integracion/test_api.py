@@ -48,8 +48,8 @@ def test_api_signup_email_duplicado(client, db, usuario_cliente):
     assert r.status_code == 409
 
 
-def test_cp21_api_signup_identificacion_con_formato_invalido(client, db):
-    """CP-21: cédula/RUC con formato inválido (ni 10 ni 13 dígitos válidos) -> 400."""
+def test_cp22_api_signup_identificacion_con_formato_invalido(client, db):
+    """CP-22: cédula/RUC con formato inválido (ni 10 ni 13 dígitos válidos) -> 400."""
     db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
     r = client.post("/api/signup", json={
         "email": "n@test.com", "nombre": "N", "apellido": "U",
@@ -59,8 +59,8 @@ def test_cp21_api_signup_identificacion_con_formato_invalido(client, db):
     assert db.usuarios.find_one({"email": "n@test.com"}) is None
 
 
-def test_cp22_api_signup_email_con_formato_invalido(client, db):
-    """CP-22: email con formato inválido -> 400."""
+def test_cp21_api_signup_email_con_formato_invalido(client, db):
+    """CP-21: email con formato inválido -> 400."""
     db.roles.insert_one({"id_rol": 1, "rol": "cliente"})
     r = client.post("/api/signup", json={
         "email": "no-es-un-email", "nombre": "N", "apellido": "U",
